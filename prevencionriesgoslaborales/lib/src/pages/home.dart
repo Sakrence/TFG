@@ -4,8 +4,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
-import 'package:prevencionriesgoslaborales/src/providers/categorias_provider.dart';
-
 
 class HomePage extends StatelessWidget {
 
@@ -112,8 +110,8 @@ class HomePage extends StatelessWidget {
 
                 rows.add(TableRow(
                   children: [
-                    _crearBotonRedondeado( context, Colors.blue, AssetImage('assets/riesgos/${categorias.data[i].icon}_V-01.png'), '${categorias.data[i].name}' ),
-                    _crearBotonRedondeado( context, Colors.blue, AssetImage('assets/riesgos/${categorias.data[i+1].icon}_V-01.png'), '${categorias.data[i+1].name}' ),
+                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i], bloc ),
+                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i+1], bloc ),
                   ]
                 ));
 
@@ -121,7 +119,7 @@ class HomePage extends StatelessWidget {
                 
                 rows.add(TableRow(
                   children: [
-                    _crearBotonRedondeado( context, Colors.blue, AssetImage('assets/riesgos/${categorias.data[i].icon}_V-01.png'), '${categorias.data[i].name}' ),
+                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i], bloc ),
                     Container()
                   ]
                 ));
@@ -138,32 +136,26 @@ class HomePage extends StatelessWidget {
                   
   }
 
-  Widget _crearBotonRedondeado(BuildContext context, Color color, ImageProvider image, String texto) {
+  Widget _crearBotonRedondeado(BuildContext context, Color color, Categoria categoria, CategoriasBloc bloc) {
 
     final card = Container(
-      // height: 300.0,
-      // width: 150.0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
 
           FadeInImage(
             placeholder: AssetImage('assets/img/original.gif'),
-            image: image,
+            image: AssetImage('assets/riesgos/${categoria.icon}_V-01.png'),
             fadeInDuration: Duration( milliseconds: 200 ),
             height: 165.0,
-            // width: 160.0,
             fit: BoxFit.cover,
           ),
 
-          // Image(
-          //   image: NetworkImage('https://static.photocdn.pt/images/articles/2018/03/20/articles/2017_8/Natural_Night.jpg'),
-          // ),
           Expanded(
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(10.0),
-              child: Text(texto, style: TextStyle(fontWeight: FontWeight.w500 ))
+              child: Text(categoria.name, style: TextStyle(fontWeight: FontWeight.w500 ))
             ),
           )
         ],
@@ -171,7 +163,8 @@ class HomePage extends StatelessWidget {
     );
   
     return GestureDetector(
-      onTap: (){
+      onTap: () {
+        bloc.changeCategoriaSeleccionada(categoria);
         Navigator.pushNamed(context, 'subcategoria');
       },
       child: Padding(

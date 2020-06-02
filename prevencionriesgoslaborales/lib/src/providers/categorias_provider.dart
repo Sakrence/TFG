@@ -9,7 +9,7 @@ class _CategoriasProvider {
 
   _CategoriasProvider();
 
-  Future<List<Categoria>>  cargarData() async {
+  Future<List<Categoria>>  cargarCategorias() async {
 
     final respuesta = await rootBundle.loadString('data/categorias.json');
     
@@ -21,6 +21,20 @@ class _CategoriasProvider {
     
     return categorias;
   }
+
+  Future<List<Categoria>>  cargarSubcategorias(Categoria categoriaSeleccionada) async {
+
+    final respuesta = await rootBundle.loadString('data/subcategorias.json');
+    categorias = [];
+    Map dataMap = json.decode(respuesta); 
+    
+    for (var i = 0; i < dataMap['subcategorias']['${categoriaSeleccionada.id}'].length; i++) {
+      categorias.add(Categoria.fromJson(dataMap['subcategorias']['${categoriaSeleccionada.id}'][i]));
+    }
+    
+    return categorias;
+  }
+
 
 }
 

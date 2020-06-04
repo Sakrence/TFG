@@ -55,9 +55,9 @@ class EvaluacionesBloc {
     
   }
 
-  removeFactor( String id ) {
+  removeFactor( Categoria factor ) {
     final factores = _factoresController.value;
-    factores.removeAt(int.parse(id));
+    factores.remove(factor);
     final contador = _contadorController.value - 1;
     changeContador( contador );
   }

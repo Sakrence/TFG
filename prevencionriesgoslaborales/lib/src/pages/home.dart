@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final bloc = Provider.of(context);
+    final bloc = Provider.of(context).categoriasBloc;
 
     return Scaffold(
       body: Stack(

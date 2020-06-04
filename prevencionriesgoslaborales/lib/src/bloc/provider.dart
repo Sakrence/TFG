@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:prevencionriesgoslaborales/src/bloc/categorias_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
 export 'package:prevencionriesgoslaborales/src/bloc/categorias_bloc.dart';
 
 class Provider extends InheritedWidget{
@@ -19,7 +20,8 @@ class Provider extends InheritedWidget{
   }
   
   
-  final categoriasBloc = CategoriasBloc();
+  final categoriasBloc   = CategoriasBloc();
+  final evaluacionesBloc = EvaluacionesBloc();
 
   Provider._internal({ Key key, Widget child })
     : super(key: key, child: child);
@@ -27,8 +29,8 @@ class Provider extends InheritedWidget{
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;
 
-  static CategoriasBloc of ( BuildContext context ){
-    return context.dependOnInheritedWidgetOfExactType<Provider>().categoriasBloc;
+  static Provider of ( BuildContext context ){
+    return context.dependOnInheritedWidgetOfExactType<Provider>();
   }
 
 }

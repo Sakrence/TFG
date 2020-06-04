@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 
 import 'package:prevencionriesgoslaborales/src/pages/home.dart';
+import 'package:prevencionriesgoslaborales/src/pages/lista_evaluaciones_page.dart';
 import 'package:prevencionriesgoslaborales/src/pages/subcategorias.dart';
  
 void main() => runApp(MyApp());
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         routes: {
           'home' : ( BuildContext conext ) => HomePage(),
           'subcategoria' : ( BuildContext conext ) => SubcategoriaPage(),
+          'listaEvaluaciones' : ( BuildContext conext ) => ListaEvaluacionPage(),
         },
       ),
     );

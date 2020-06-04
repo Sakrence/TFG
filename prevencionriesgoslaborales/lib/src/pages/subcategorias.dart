@@ -2,15 +2,25 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
 
-class SubcategoriaPage extends StatelessWidget {
+class SubcategoriaPage extends StatefulWidget {
+
+  @override
+  _SubcategoriaPageState createState() => _SubcategoriaPageState();
+}
+
+class _SubcategoriaPageState extends State<SubcategoriaPage> {
+  
+  double _radius = 25.0;
 
   @override
   Widget build(BuildContext context) {
 
-    final bloc = Provider.of(context);
+    final evaluacionesBloc = Provider.of(context).evaluacionesBloc;
+    final provider = Provider.of(context);
     // bloc.obtenerSubcategorias();
 
     return Scaffold(
@@ -22,13 +32,13 @@ class SubcategoriaPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 _titulos(),
-                _botonesRedondeados(bloc),
+                _botonesRedondeados(provider),
               ],
             ),
           ),
-
         ],
       ),
+      floatingActionButton: _botonFlotante(evaluacionesBloc, _radius),
     );
   }
 
@@ -49,7 +59,7 @@ class SubcategoriaPage extends StatelessWidget {
       ),
     );
 
-    final cajaRosa = Transform.rotate(
+    final caja = Transform.rotate(
       angle: -pi / 5.2,
       child: Container(
         height: 350.0,
@@ -72,7 +82,7 @@ class SubcategoriaPage extends StatelessWidget {
         gradiente,
         Positioned(
           top: -100,
-          child: cajaRosa
+          child: caja
         ),
       ],
     );
@@ -95,11 +105,11 @@ class SubcategoriaPage extends StatelessWidget {
     );
   }
 
-  Widget _botonesRedondeados( CategoriasBloc bloc) {
+  Widget _botonesRedondeados( Provider provider) {
     
     return Container(
       child: StreamBuilder(
-        stream: bloc.subcategoriasStream,
+        stream: provider.categoriasBloc.subcategoriasStream,
         builder: (BuildContext context , AsyncSnapshot<List<Categoria>> categorias ){
           if (categorias.hasData) {
 
@@ -111,8 +121,8 @@ class SubcategoriaPage extends StatelessWidget {
 
                 rows.add(TableRow(
                   children: [
-                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i], bloc ),
-                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i+1], bloc ),
+                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i], provider.evaluacionesBloc ),
+                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i+1], provider.evaluacionesBloc ),
                   ]
                 ));
 
@@ -120,7 +130,7 @@ class SubcategoriaPage extends StatelessWidget {
                 
                 rows.add(TableRow(
                   children: [
-                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i], bloc ),
+                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i], provider.evaluacionesBloc ),
                     Container()
                   ]
                 ));
@@ -137,7 +147,7 @@ class SubcategoriaPage extends StatelessWidget {
                   
   }
 
-  Widget _crearBotonRedondeado(BuildContext context, Color color, Categoria categoria, CategoriasBloc bloc) {
+  Widget _crearBotonRedondeado(BuildContext context, Color color, Categoria categoria, EvaluacionesBloc bloc) {
 
     final card = Container(
       child: Column(
@@ -165,9 +175,10 @@ class SubcategoriaPage extends StatelessWidget {
     );
   
     return GestureDetector(
-      onTap: (){
-        // bloc.changeCategoriaSeleccionada(categoria);
-        // Navigator.pushNamed(context, 'subcategoria');
+      onTap: () async {
+        bloc.addFactor(categoria);
+        animateEventPart1();
+        await animateEventPart2();
       },
       child: Padding(
         padding: EdgeInsets.all(10.0),
@@ -193,5 +204,61 @@ class SubcategoriaPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _botonFlotante( EvaluacionesBloc bloc, double _radius ) {
+
+    return Stack(
+      children: <Widget>[
+        FloatingActionButton.extended(
+            icon: Icon(Icons.assignment_late, size: 27.0),
+            label: Text('Evaluar riesgos'),
+            backgroundColor: Colors.blue,
+            
+            onPressed: () {
+              Navigator.pushNamed(context, 'listaEvaluaciones');
+            }
+        ),
+        Positioned (
+          top: -0.5,
+          right: 0,
+          // height: 25.0,
+          // width: 25.0,
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 100),
+            curve: Curves.fastOutSlowIn,
+            width: _radius,
+            height: _radius,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: Colors.red
+            ),
+            child: Center(
+              child: StreamBuilder<int> (
+                    stream: bloc.contadorStream,
+                    initialData: 0,
+                    builder: (context, snapshot) {
+                      return Text (snapshot.data.toString(),
+                        style: TextStyle(fontSize:12.0, color: Colors.white));
+                    }
+              ),
+            ),
+          ),)
+
+      ],
+    );
+
+  }
+
+  void animateEventPart1() {
+    setState(() {
+      _radius = 1.0;
+    });
+  }
+  Future animateEventPart2() async {
+    await Future.delayed(Duration(milliseconds:280));
+    setState(() {
+      _radius = 25.0;
+    });
   }
 }

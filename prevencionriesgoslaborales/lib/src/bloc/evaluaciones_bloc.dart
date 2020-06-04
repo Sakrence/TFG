@@ -55,6 +55,13 @@ class EvaluacionesBloc {
     
   }
 
+  removeFactor( String id ) {
+    final factores = _factoresController.value;
+    factores.removeAt(int.parse(id));
+    final contador = _contadorController.value - 1;
+    changeContador( contador );
+  }
+
   // obtenerSubcategorias() async {
   //   // print("ID_Seleccionado: ${_categoriaSeleccionadaController.value.id}");
   //   _subcategoriasController.sink.add( await categoriasProvider.cargarSubcategorias(seleccionada) );

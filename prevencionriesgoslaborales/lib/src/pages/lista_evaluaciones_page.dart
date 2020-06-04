@@ -18,9 +18,31 @@ class ListaEvaluacionPage extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
             itemCount: evaluacionesBloc.factores.length,
-            itemBuilder: ( context, index) {
-              return _tarjeta(evaluacionesBloc.factores[index]);
-            },
+            itemBuilder: ( context, index)  => Dismissible(
+            key: UniqueKey(),
+            background: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 200.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(-8.0, 10.0)
+                    )
+                  ],
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.red.withOpacity(0.6),
+                      Colors.grey
+                    ]
+                  ),
+                ),
+              ),
+            ),
+            onDismissed: ( direction ) => { evaluacionesBloc.removeFactor( evaluacionesBloc.factores[index].id ) },
+            child: _tarjeta(evaluacionesBloc.factores[index]),
+            ),
           ),
         ),
       ],

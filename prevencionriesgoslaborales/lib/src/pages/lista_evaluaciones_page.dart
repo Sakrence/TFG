@@ -1,30 +1,26 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
+import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
 
 class ListaEvaluacionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final evaluacionesBloc = Provider.of(context).evaluacionesBloc;
+
     return Stack(
       children: <Widget>[
         _fondoApp(),
         SafeArea(
-          child: ListView(
+          child: ListView.builder(
             physics: BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-            children: <Widget>[
-              _tarjeta(),
-              _tarjeta(),
-              _tarjeta(),
-              _tarjeta(),
-              _tarjeta(),
-              _tarjeta(),
-              _tarjeta(),
-              _tarjeta(),
-              _tarjeta(),
-              _tarjeta(),
-              _tarjeta(),
-            ] ,
+            itemCount: evaluacionesBloc.factores.length,
+            itemBuilder: ( context, index) {
+              return _tarjeta(evaluacionesBloc.factores[index]);
+            },
           ),
         ),
       ],
@@ -78,7 +74,7 @@ class ListaEvaluacionPage extends StatelessWidget {
   }
 
 
-  Widget _tarjeta() {
+  Widget _tarjeta( Categoria categoria ) {
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 6.0),
@@ -99,18 +95,43 @@ class ListaEvaluacionPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-              _icono(),
-              Container(
-                width: 160,
-                child: Text(
-                  'Caídas de objetos por desplome o derrumbamiento',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0),
-                ),
-              ),
+              _icono(categoria),
+              _texto(categoria),
               _botonEvaluar()
           ],
         ),
+      ),
+    );
+
+  }
+
+  Widget _icono( Categoria categoria ) {
+
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      height: 100,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.0),
+        child: FadeInImage(
+          placeholder: AssetImage('assets/img/original.gif'),
+          image: AssetImage('assets/riesgos/${categoria.icon}_V-01.png'),
+          fadeInDuration: Duration( milliseconds: 200 ),
+          height: 10.0,
+          fit: BoxFit.fitWidth,
+        ),
+      ),
+    );
+
+  }
+
+  Widget _texto( Categoria categoria ) {
+
+    return Container(
+      width: 160,
+      child: Text(
+        categoria.name,
+        textAlign: TextAlign.left,
+        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0),
       ),
     );
 
@@ -137,22 +158,5 @@ class ListaEvaluacionPage extends StatelessWidget {
 
   }
 
-  Widget _icono() {
 
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      height: 100,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.0),
-        child: FadeInImage(
-          placeholder: AssetImage('assets/img/original.gif'),
-          image: AssetImage('assets/riesgos/01_V-01.png'),
-          fadeInDuration: Duration( milliseconds: 200 ),
-          height: 10.0,
-          fit: BoxFit.fitWidth,
-        ),
-      ),
-    );
-
-  }
 }

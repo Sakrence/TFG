@@ -1,5 +1,5 @@
 
-class Categoria {
+class CategoriaModel {
 
   static const _NAME_ = "name";
   static const _ID_ = "id";
@@ -9,13 +9,13 @@ class Categoria {
   String name;
   String icon;
 
-  Categoria({
+  CategoriaModel({
       this.id,
       this.name,
       this.icon,
   });
 
-  factory Categoria.fromJson(Map<String, dynamic> json) => Categoria(
+  factory CategoriaModel.fromJson(Map<String, dynamic> json) => CategoriaModel(
       id    : json[_ID_],
       name  : json[_NAME_],
       icon : json[_ICON_],
@@ -24,7 +24,7 @@ class Categoria {
   Map<String, dynamic> toJson() => {
       _ID_    : id,
       _NAME_  : name,
-      _ICON_ : icon,
+      _ICON_  : icon,
   };
 
 }

@@ -1,10 +1,15 @@
+import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/factores_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
+import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
+import 'package:prevencionriesgoslaborales/src/pages/lista_evaluaciones_page.dart';
 
 class SubcategoriaPage extends StatefulWidget {
 
@@ -19,9 +24,16 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
   @override
   Widget build(BuildContext context) {
 
-    final evaluacionesBloc = Provider.of(context).evaluacionesBloc;
-    final provider = Provider.of(context);
-    // bloc.obtenerSubcategorias();
+    // final _factoresBloc = BlocProvider.of<FactoresBloc>(context);
+    // final _deficienciasBloc = BlocProvider.of<DeficienciaBloc>(context);
+    // final _evaluacionesBloc = BlocProvider.of<EvaluacionesBloc>(context);
+    
+    // final CategoriaModel categoria = ModalRoute.of(context).settings.arguments;
+    // Provider.of(context).factoresBloc = FactoresBloc(categoria);
+
+    final _factoresBloc = Provider.of(context).factoresBloc;
+    final _deficienciasBloc = Provider.of(context).deficienciaBloc;
+    
 
     return Scaffold(
       body: Stack(
@@ -32,13 +44,13 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
             child: Column(
               children: <Widget>[
                 _titulos(),
-                _botonesRedondeados(provider),
+                _botonesRedondeados(_deficienciasBloc, _factoresBloc),
               ],
             ),
           ),
         ],
       ),
-      floatingActionButton: _botonFlotante(evaluacionesBloc, _radius),
+      floatingActionButton: _botonFlotante(_deficienciasBloc, _radius),
     );
   }
 
@@ -105,24 +117,24 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
     );
   }
 
-  Widget _botonesRedondeados( Provider provider) {
+  Widget _botonesRedondeados( DeficienciaBloc deficienciasBloc, FactoresBloc factoresBloc ) {
     
     return Container(
       child: StreamBuilder(
-        stream: provider.categoriasBloc.subcategoriasStream,
-        builder: (BuildContext context , AsyncSnapshot<List<Categoria>> categorias ){
-          if (categorias.hasData) {
+        stream: factoresBloc.factoresStream,
+        builder: (BuildContext context , AsyncSnapshot<List<FactorRiesgoModel>> factores ){
+          if (factores.hasData) {
 
             List<TableRow> rows = [];
 
-            for (var i = 0; i < categorias.data.length; i = i + 2) {
+            for (var i = 0; i < factores.data.length; i = i + 2) {
 
-              if ( i+1 != categorias.data.length ) {
+              if ( i+1 != factores.data.length ) {
 
                 rows.add(TableRow(
                   children: [
-                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i], provider.evaluacionesBloc ),
-                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i+1], provider.evaluacionesBloc ),
+                    _crearBotonRedondeado( context, Colors.blue, factores.data[i], deficienciasBloc ),
+                    _crearBotonRedondeado( context, Colors.blue, factores.data[i+1], deficienciasBloc ),
                   ]
                 ));
 
@@ -130,7 +142,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
                 
                 rows.add(TableRow(
                   children: [
-                    _crearBotonRedondeado( context, Colors.blue, categorias.data[i], provider.evaluacionesBloc ),
+                    _crearBotonRedondeado( context, Colors.blue, factores.data[i], deficienciasBloc ),
                     Container()
                   ]
                 ));
@@ -147,7 +159,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
                   
   }
 
-  Widget _crearBotonRedondeado(BuildContext context, Color color, Categoria categoria, EvaluacionesBloc bloc) {
+  Widget _crearBotonRedondeado(BuildContext context, Color color, FactorRiesgoModel factor, DeficienciaBloc deficienciasBloc) {
 
     final card = Container(
       child: Column(
@@ -156,7 +168,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
 
           FadeInImage(
             placeholder: AssetImage('assets/img/original.gif'),
-            image: AssetImage('assets/riesgos/${categoria.icon}_V-01.png'),
+            image: AssetImage('assets/riesgos/${factor.icon}_V-01.png'),
             fadeInDuration: Duration( milliseconds: 200 ),
             height: 165.0,
             // width: 160.0,
@@ -167,7 +179,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(10.0),
-              child: Text(categoria.name, style: TextStyle(fontWeight: FontWeight.w500 ))
+              child: Text(factor.name, style: TextStyle(fontWeight: FontWeight.w500 ))
             ),
           )
         ],
@@ -176,7 +188,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
   
     return GestureDetector(
       onTap: () async {
-        bloc.addFactor(categoria);
+        deficienciasBloc.addDeficiencia(factor);
         animateEventPart1();
         await animateEventPart2();
       },
@@ -206,7 +218,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
     );
   }
 
-  Widget _botonFlotante( EvaluacionesBloc bloc, double _radius ) {
+  Widget _botonFlotante( DeficienciaBloc bloc, double _radius ) {
 
     return Stack(
       children: <Widget>[
@@ -216,6 +228,12 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
             backgroundColor: Colors.blue,
             
             onPressed: () {
+              // Navigator.of(context).push(MaterialPageRoute(
+              //   builder: (BuildContext context) => BlocProvider<DeficienciaBloc> (
+              //                   bloc: DeficienciaBloc(),
+              //                   child: SubcategoriaPage(),
+              //                 )
+              // ));
               Navigator.pushNamed(context, 'listaEvaluaciones');
             }
         ),

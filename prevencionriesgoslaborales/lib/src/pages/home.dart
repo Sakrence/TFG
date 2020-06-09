@@ -2,13 +2,18 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/factores_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
+import 'package:prevencionriesgoslaborales/src/pages/subcategorias.dart';
 
 class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // final CategoriasBloc _categoriasBloc = BlocProvider.of<CategoriasBloc>(context);
 
     final bloc = Provider.of(context).categoriasBloc;
 
@@ -99,7 +104,7 @@ class HomePage extends StatelessWidget {
     return Container(
       child: StreamBuilder(
         stream: bloc.categoriasStream,
-        builder: (BuildContext context , AsyncSnapshot<List<Categoria>> categorias ){
+        builder: (BuildContext context , AsyncSnapshot<List<CategoriaModel>> categorias ){
           if (categorias.hasData) {
 
             List<TableRow> rows = [];
@@ -136,7 +141,7 @@ class HomePage extends StatelessWidget {
                   
   }
 
-  Widget _crearBotonRedondeado(BuildContext context, Color color, Categoria categoria, CategoriasBloc bloc) {
+  Widget _crearBotonRedondeado(BuildContext context, Color color, CategoriaModel categoria, CategoriasBloc bloc) {
 
     final card = Container(
       child: Column(
@@ -164,8 +169,11 @@ class HomePage extends StatelessWidget {
   
     return GestureDetector(
       onTap: () {
-        bloc.changeCategoriaSeleccionada(categoria);
+        // bloc.changeCategoriaSeleccionada(categoria);
+        Provider.of(context).factoresBloc = FactoresBloc(categoria);
+
         Navigator.pushNamed(context, 'subcategoria');
+        // navegarACategoria(context, categoria);
       },
       child: Padding(
         padding: EdgeInsets.all(10.0),
@@ -192,4 +200,14 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  // void navegarACategoria(BuildContext context , CategoriaModel categoria ){
+
+  //   Navigator.of(context).push( MaterialPageRoute (
+  //                             builder: (BuildContext context) => BlocProvider<FactoresBloc> (
+  //                               bloc: FactoresBloc(categoria),
+  //                               child: SubcategoriaPage(),
+  //                             )
+  //                           ));
+  // }
 }

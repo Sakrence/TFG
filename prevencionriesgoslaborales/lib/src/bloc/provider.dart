@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:prevencionriesgoslaborales/src/bloc/categorias_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/factores_bloc.dart';
 export 'package:prevencionriesgoslaborales/src/bloc/categorias_bloc.dart';
 
 class Provider extends InheritedWidget{
@@ -21,7 +23,10 @@ class Provider extends InheritedWidget{
   
   
   final categoriasBloc   = CategoriasBloc();
+  // final factoresBloc = FactoresBloc(categoria);
+  FactoresBloc factoresBloc = null ;
   final evaluacionesBloc = EvaluacionesBloc();
+  final deficienciaBloc = DeficienciaBloc();
 
   Provider._internal({ Key key, Widget child })
     : super(key: key, child: child);

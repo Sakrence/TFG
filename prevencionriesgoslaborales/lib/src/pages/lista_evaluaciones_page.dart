@@ -1,22 +1,26 @@
+import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
-import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
+import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 
 class ListaEvaluacionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final evaluacionesBloc = Provider.of(context).evaluacionesBloc;
+    final _deficienciaBloc = Provider.of(context).deficienciaBloc;
+
+    // final _deficienciaBloc = BlocProvider.of<DeficienciaBloc>(context); 
 
     return Stack(
       children: <Widget>[
         _fondoApp(),
         SafeArea(
           child: StreamBuilder(
-            stream: evaluacionesBloc.factoresStream,
-            builder: ( context, snapshot) {
+            stream: _deficienciaBloc.deficienciasStream,
+            builder: ( context, AsyncSnapshot<List<DeficienciaModel>> snapshot) {
 
               if ( !snapshot.hasData ){
 
@@ -53,8 +57,8 @@ class ListaEvaluacionPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onDismissed: ( direction ) => { evaluacionesBloc.removeFactor( snapshot.data[index] ) },
-                    child: _tarjeta(snapshot.data[index]),
+                    onDismissed: ( direction ) => { _deficienciaBloc.removeDeficiencia( snapshot.data[index] ) },
+                    child: _tarjeta(context, _deficienciaBloc, snapshot.data[index]),
                   ),
                 );
 
@@ -113,8 +117,9 @@ class ListaEvaluacionPage extends StatelessWidget {
   }
 
 
-  Widget _tarjeta( Categoria categoria ) {
+  Widget _tarjeta( BuildContext context, DeficienciaBloc bloc, DeficienciaModel deficiencia ) {
 
+// si quiero quitar el boton de evaluar pongo un gesture detector aqui y quito el boton
     return Container(
       margin: EdgeInsets.symmetric(vertical: 6.0),
       decoration: BoxDecoration(
@@ -134,9 +139,9 @@ class ListaEvaluacionPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-              _icono(categoria),
-              _texto(categoria),
-              _botonEvaluar()
+              _icono(deficiencia),
+              _texto(deficiencia),
+              _botonEvaluar(context, bloc, deficiencia)
           ],
         ),
       ),
@@ -144,7 +149,7 @@ class ListaEvaluacionPage extends StatelessWidget {
 
   }
 
-  Widget _icono( Categoria categoria ) {
+  Widget _icono( DeficienciaModel deficiencia ) {
 
     return Container(
       padding: EdgeInsets.all(10.0),
@@ -153,7 +158,7 @@ class ListaEvaluacionPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
         child: FadeInImage(
           placeholder: AssetImage('assets/img/original.gif'),
-          image: AssetImage('assets/riesgos/${categoria.icon}_V-01.png'),
+          image: AssetImage('assets/riesgos/${deficiencia.factor.icon}_V-01.png'),
           fadeInDuration: Duration( milliseconds: 200 ),
           height: 10.0,
           fit: BoxFit.fitWidth,
@@ -163,12 +168,12 @@ class ListaEvaluacionPage extends StatelessWidget {
 
   }
 
-  Widget _texto( Categoria categoria ) {
+  Widget _texto( DeficienciaModel deficiencia ) {
 
     return Container(
       width: 160,
       child: Text(
-        categoria.name,
+        deficiencia.factor.name,
         textAlign: TextAlign.left,
         style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0),
       ),
@@ -176,7 +181,7 @@ class ListaEvaluacionPage extends StatelessWidget {
 
   }
 
-  Widget _botonEvaluar() {
+  Widget _botonEvaluar( BuildContext context, DeficienciaBloc bloc, DeficienciaModel deficiencia) {
 
     return Container(
       height: 62,
@@ -184,7 +189,9 @@ class ListaEvaluacionPage extends StatelessWidget {
       child: FloatingActionButton(
         heroTag: UniqueKey(),
         backgroundColor: Color.fromRGBO(52, 54, 101, 1.0),
-        onPressed: (){},
+        onPressed: (){
+          Navigator.pushNamed(context, 'formPage', arguments: deficiencia);
+        },
         child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

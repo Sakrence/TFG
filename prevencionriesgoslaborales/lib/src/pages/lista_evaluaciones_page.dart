@@ -66,6 +66,19 @@ class ListaEvaluacionPage extends StatelessWidget {
             }
           ),
         ),
+        Positioned(
+          bottom: 0.0,
+          right: 0.0,
+          child: Container(
+            padding: EdgeInsets.all(12.0),
+            child: FloatingActionButton.extended(
+              onPressed: (){
+                // crear informe con las deficiencias
+              },
+              label: Text('Crear Informe'),
+            ),
+          ),
+        )
       ],
     );
   }

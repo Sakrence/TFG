@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:math';
 
 // import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
@@ -21,6 +26,7 @@ class _FormPageState extends State<FormPage> {
 
   // String _dropValue = 'Potencial';
   bool _guardando = false;
+  File foto;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,7 @@ class _FormPageState extends State<FormPage> {
         children: <Widget>[
           _fondoApp(),
           SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 25.0),
+            padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 20.0),
             child: Column(
               children: <Widget>[
                 _formulario(context),
@@ -49,47 +55,6 @@ class _FormPageState extends State<FormPage> {
       ),
     );
   }
-
-  // Widget _crearAppbar( BuildContext context, EvaluacionesBloc bloc ) {
-
-  //   final size = MediaQuery.of(context).size;
-
-  //   return SliverAppBar(
-  //     elevation: 2.0,
-  //     backgroundColor: Colors.indigoAccent,
-  //     expandedHeight: 250.0,
-  //     // expandedHeight: size.height * 0.30,
-  //     floating: false,
-  //     pinned: true,
-  //     titleSpacing: 2.0,
-  //     title: Container(
-  //       color: Colors.red,
-  //       margin: EdgeInsets.symmetric(vertical: 30.0),
-  //       child: Text(
-  //         bloc.evaluacionSeleccionada.name,
-  //         // , backgroundColor: Color.fromRGBO(186, 177, 168, 1.0)
-  //         style: TextStyle( color:Color.fromRGBO(51, 51, 255, 1.0), fontSize: 20.0),
-  //       ),
-  //     ),
-  //     flexibleSpace: FlexibleSpaceBar(
-  //       centerTitle: true,
-  //       title: Text(
-  //         bloc.evaluacionSeleccionada.name,
-  //         // , backgroundColor: Color.fromRGBO(186, 177, 168, 1.0)
-  //         style: TextStyle( color:Color.fromRGBO(51, 51, 255, 1.0), fontSize: 16.0),
-  //       ),
-  //       background: FadeInImage(
-  //         image: AssetImage('assets/riesgos/${bloc.evaluacionSeleccionada.icon}_V-01.png'),
-  //         placeholder: AssetImage('assets/img/loading.gif'),
-  //         fadeInDuration: Duration(milliseconds: 150),
-  //         fit: BoxFit.fill,
-  //         alignment: Alignment.topCenter,
-  //       ),
-  //     ),
-  //   );
-
-  // }
-
 
   Widget _fondoApp() {
 
@@ -180,7 +145,24 @@ class _FormPageState extends State<FormPage> {
                       alignment: Alignment.center,
                       height: size.height * 0.1,
                       width: double.infinity,
-                      child: Text('Evaluación de Riesgo', style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(child: Container()),
+                          Text('Evaluación de Riesgo', style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                          SizedBox(width: 5.0,),
+                          IconButton(
+                            icon: Icon(Icons.photo_size_select_actual),
+                            // onPressed: (){},
+                            onPressed: _seleccionarForo,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.camera_alt),
+                            // onPressed: (){},
+                            onPressed: _tomarForo,
+                          )
+                        ],
+                      ),
                     ),
                     Text(''),
                     _crearForm(),
@@ -209,6 +191,7 @@ class _FormPageState extends State<FormPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          _mostrarFoto(),
           _crearSeleccion(),
           _crearTextField(),
           _crearBoton(),
@@ -325,4 +308,82 @@ class _FormPageState extends State<FormPage> {
     scaffoldKey.currentState.showSnackBar(snackbar);
 
   }
+
+  Widget _mostrarFoto() {
+
+    if ( deficiencia.imagen != null ) {
+
+      String decoImage = deficiencia.imagen;
+      Uint8List _bytesImage = Base64Decoder().convert(decoImage);
+
+      return Image.memory(
+          _bytesImage,
+          fit: BoxFit.cover,
+          height: 300.0,
+          width: 300.0,
+      );
+
+    } else {
+
+      if( foto != null ){
+        return Image.file(
+          foto,
+          fit: BoxFit.cover,
+          height: 300.0,
+          width: 300.0,
+        );
+      }
+      return Image(
+
+        image: AssetImage( foto?.path ?? 'assets/img/no-image.png'),
+        height: 300.0,
+        width: 300.0,
+        fit: BoxFit.cover,
+
+      );
+
+    }
+
+  }
+
+  _seleccionarForo() async {
+
+    _procesarImagen( ImageSource.gallery );
+
+  }
+  
+  _procesarImagen( ImageSource source ) async {
+// TODO: mirar que no haya problemas de que pierdan los datos
+    final picker = ImagePicker();
+    
+    final pickedFile = await picker.getImage( source: source );
+
+    foto = File(pickedFile.path);
+
+
+
+    if ( foto != null ) {
+      
+      List<int> imageBytes = foto.readAsBytesSync();
+      String base64Image = base64Encode(imageBytes);
+      print(base64Image);
+
+      deficiencia.imagen = base64Image;
+
+      Uint8List _bytesImage = Base64Decoder().convert(base64Image);
+
+    }
+
+    setState(() {});
+
+
+  }
+  
+  _tomarForo() async {
+
+    _procesarImagen( ImageSource.camera );
+
+  }
+
+
 }

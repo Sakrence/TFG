@@ -29,6 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
   rxdart: ^0.24.1
+  image_picker:
   
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,7 @@ flutter:
     - assets/riesgos/
     - data/categorias.json
     - data/subcategorias.json
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

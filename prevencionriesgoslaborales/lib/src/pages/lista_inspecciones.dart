@@ -76,6 +76,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
             child: Row(
               children: <Widget>[
                 FloatingActionButton.extended(
+                  heroTag: UniqueKey(),
                   onPressed: (){
                     _mostrarAlertaInspector(context, _inspeccionBloc);
                     // crear informe con las deficiencias
@@ -84,6 +85,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                 ),
                 SizedBox(width: 10.0,),
                 FloatingActionButton.extended(
+                  heroTag: UniqueKey(),
                   onPressed: (){
                     _mostrarAlertaInspeccion(context, _inspeccionBloc);
                     // crear informe con las deficiencias

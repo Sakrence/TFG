@@ -330,6 +330,15 @@ class _FormPageState extends State<FormPage> {
 
     } else {
 
+      if( foto != null ){
+        return Image.file(
+          foto,
+          fit: BoxFit.cover,
+          height: 300.0,
+          width: 300.0,
+        );
+      }
+
       return Image(
 
         image: AssetImage( foto?.path ?? 'assets/img/no-image.png'),

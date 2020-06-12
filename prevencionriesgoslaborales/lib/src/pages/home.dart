@@ -12,6 +12,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final bloc = Provider.categoriasBloc(context);
+    // bloc.obtenerCategorias();
 
     return Scaffold(
       body: Stack(

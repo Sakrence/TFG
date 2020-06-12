@@ -18,12 +18,10 @@ class DeficienciaBloc extends BlocBase {
 
 
   final _contadorController = BehaviorSubject<int>();
-  // final _factoresController = BehaviorSubject<List<FactorRiesgoModel>>();
   final _deficienciasController = BehaviorSubject<List<DeficienciaModel>>();
 
   // Recuperar los datos del Stream
   Stream<int> get contadorStream                      => _contadorController.stream;
-  // Stream<List<FactorRiesgoModel>> get factoresStream          => _factoresController.stream;
   Stream<List<DeficienciaModel>> get deficienciasStream  => _deficienciasController.stream;
 
   // Insertar valores al Stream
@@ -32,12 +30,10 @@ class DeficienciaBloc extends BlocBase {
 
   // Obtener el último valor ingresado a los streams
   int get contador             => _contadorController.value;
-  // List<FactorRiesgoModel> get factores => _factoresController.value;
   List<DeficienciaModel> get deficiencias => _deficienciasController.value;
 
   dispose() {
     _contadorController?.close();
-    // _factoresController?.close();
     _deficienciasController?.close();
   }
 
@@ -51,7 +47,6 @@ class DeficienciaBloc extends BlocBase {
 
 
     final List<DeficienciaModel> deficiencias = _deficienciasController.value;
-    // final List<DeficienciaModel> deficiencias = [];
 
     if ( deficiencias == null || !deficiencias.contains(deficiencia) ) {
 
@@ -81,17 +76,7 @@ class DeficienciaBloc extends BlocBase {
     final contador = _contadorController.value -1;
     changeContador(contador);
 
-    // final factores = _factoresController.value;
-    // factores.remove(factor);
-    // final contador = _contadorController.value - 1;
-    // changeContador( contador );
   }
-
-  // obtenerSubCategoriaModels() async {
-  //   // print("ID_Seleccionado: ${_CategoriaModelSeleccionadaController.value.id}");
-  //   _subCategoriaModelsController.sink.add( await CategoriaModelsProvider.cargarSubCategoriaModels(seleccionada) );
-  //   // print("INDEX 7 de subCategoriaModels: ${_subCategoriaModelsController.value[0]}");
-  // }
 
 
 }

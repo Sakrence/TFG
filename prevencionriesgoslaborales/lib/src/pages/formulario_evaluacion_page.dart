@@ -4,11 +4,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'dart:math';
 
-// import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
-// import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
-// import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 
 class FormPage extends StatefulWidget {
@@ -19,17 +18,19 @@ class FormPage extends StatefulWidget {
 
 class _FormPageState extends State<FormPage> {
 
-  final formKey = GlobalKey<FormState>();
+  static final _formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  DeficienciaModel deficiencia = new DeficienciaModel();
 
-  // String _dropValue = 'Potencial';
+  DeficienciaBloc deficienciaBloc;
+  DeficienciaModel deficiencia = new DeficienciaModel();
   bool _guardando = false;
   File foto;
 
   @override
   Widget build(BuildContext context) {
+
+    deficienciaBloc = Provider.deficienciaBloc(context);
 
     final DeficienciaModel deficienciaData = ModalRoute.of(context).settings.arguments;
     if ( deficienciaData != null ) {
@@ -186,16 +187,19 @@ class _FormPageState extends State<FormPage> {
 
   Widget _crearForm() {
 
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          _mostrarFoto(),
-          _crearSeleccion(),
-          _crearTextField(),
-          _crearBoton(),
-        ],
+    return Container(
+      padding: EdgeInsets.all(15.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            _mostrarFoto(),
+            _crearSeleccion(),
+            _crearTextField(),
+            _crearBoton(),
+          ],
+        ),
       ),
     );
 
@@ -203,20 +207,15 @@ class _FormPageState extends State<FormPage> {
 
   Widget _crearSeleccion() {
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      child: DropdownButtonFormField(
+    return DropdownButtonFormField(
         decoration: InputDecoration(
           labelText: 'Selección',
           labelStyle: TextStyle(fontSize: 20.0)
         ),
-        value: deficiencia.tipo, // cambiar por evaluacion.seleccion
-        // value: evaluacion, // cambiar por evaluacion.seleccion
-        onChanged: ( value ) {
-          setState(() {
+        value: deficiencia.tipo,
+        onChanged: ( value ) => setState(() {
             deficiencia.tipo = value;
-          });
-        },
+        }),
         items: <String>['Potencial', 'Existente']
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
@@ -224,38 +223,27 @@ class _FormPageState extends State<FormPage> {
           child: Text(value),
         );
         }).toList(),
-      ),
     );
 
   }
 
   Widget _crearTextField() {
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      child: TextFormField(
-        // initialValue: '', // cambair por evaluacion.descripcion
-        initialValue: deficiencia.descripcion, // cambair por evaluacion.descripcion
+    return TextFormField(
+        initialValue: deficiencia.descripcion,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
           labelText: 'Descripción',
           labelStyle: TextStyle(fontSize: 20.0)
         ),
-        onChanged: (value) {
-          setState(() {
-            deficiencia.descripcion = value;
-          });
-        },
+        onChanged: (value) => deficiencia.descripcion = value,
         validator: (value) {
-          // (value.length < 3) ? 'Ingrese la descripción del riesgo' : null;
           if ( value.length < 3 ) {
             return 'Ingrese la descripción del riesgo';
           } else {
             return null;
           }
         },
-
-      ),
     );
 
   }
@@ -275,19 +263,32 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  void _submit() {
+  void _submit() async {
 
-    if ( !formKey.currentState.validate() ) return;
+    if ( !_formKey.currentState.validate() ) return;
 
     setState(() { _guardando = true; }); // para evitar que se guarden varias veces lo mismo sin querer
 
-    // cambiar valor de la evaluacion y crearla o editarla segun exita el id o no
-    // if ( evaluacion.id == null ) {
-    //  evaluacionProvider.crearEvaluacion(evaluacion);
+    
+
+    if ( foto != null ) {
+      // deficiencia.imagen = await deficienciaBloc.subirFoto(foto); // crearla para que suba foto a la base de datos y devuelva la foto
+      List<int> imageBytes = foto.readAsBytesSync();
+      String base64Image = base64Encode(imageBytes);
+      // print(base64Image);
+
+      deficiencia.imagen = base64Image;
+
+      // Uint8List _bytesImage = Base64Decoder().convert(base64Image);
+    }
+
+    // if ( deficiencia.tipo == null  ) {
+    //   deficienciaBloc.agregarDeficiencia(deficiencia); // crear para que cree la deficiencia en la BD
     // } else {
-    //  evaluacionProvider.editarEvaluacion(evaluacion);
+    //   deficienciaBloc.editarDeficiencia(deficiencia);
     // }
-    // 
+
+
     print('Todo OK');
 
 
@@ -316,23 +317,19 @@ class _FormPageState extends State<FormPage> {
       String decoImage = deficiencia.imagen;
       Uint8List _bytesImage = Base64Decoder().convert(decoImage);
 
-      return Image.memory(
+      return FadeInImage(
+        height: 300.0,
+        width: 300.0,
+        fit: BoxFit.cover,
+        placeholder: AssetImage('assets/img/original.gif'),
+        image: Image.memory(
           _bytesImage,
-          fit: BoxFit.cover,
-          height: 300.0,
-          width: 300.0,
+        ).image,
       );
+      
 
     } else {
 
-      if( foto != null ){
-        return Image.file(
-          foto,
-          fit: BoxFit.cover,
-          height: 300.0,
-          width: 300.0,
-        );
-      }
       return Image(
 
         image: AssetImage( foto?.path ?? 'assets/img/no-image.png'),
@@ -360,22 +357,11 @@ class _FormPageState extends State<FormPage> {
 
     foto = File(pickedFile.path);
 
-
-
     if ( foto != null ) {
-      
-      List<int> imageBytes = foto.readAsBytesSync();
-      String base64Image = base64Encode(imageBytes);
-      print(base64Image);
-
-      deficiencia.imagen = base64Image;
-
-      Uint8List _bytesImage = Base64Decoder().convert(base64Image);
-
+      deficiencia.imagen = null;
     }
 
     setState(() {});
-
 
   }
   

@@ -32,7 +32,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
     // Provider.of(context).factoresBloc = FactoresBloc(categoria);
 
     final _factoresBloc = Provider.of(context).factoresBloc;
-    final _deficienciasBloc = Provider.of(context).deficienciaBloc;
+    final _deficienciasBloc = Provider.deficienciaBloc(context);
     
 
     return Scaffold(

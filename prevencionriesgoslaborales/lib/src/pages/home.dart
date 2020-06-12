@@ -2,20 +2,16 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/factores_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
-import 'package:prevencionriesgoslaborales/src/pages/subcategorias.dart';
 
 class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
 
-    // final CategoriasBloc _categoriasBloc = BlocProvider.of<CategoriasBloc>(context);
-
-    final bloc = Provider.of(context).categoriasBloc;
+    final bloc = Provider.categoriasBloc(context);
 
     return Scaffold(
       body: Stack(
@@ -169,11 +165,9 @@ class HomePage extends StatelessWidget {
   
     return GestureDetector(
       onTap: () {
-        // bloc.changeCategoriaSeleccionada(categoria);
         Provider.of(context).factoresBloc = FactoresBloc(categoria);
 
         Navigator.pushNamed(context, 'subcategoria');
-        // navegarACategoria(context, categoria);
       },
       child: Padding(
         padding: EdgeInsets.all(10.0),

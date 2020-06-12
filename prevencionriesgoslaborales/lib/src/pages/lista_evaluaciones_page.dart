@@ -10,7 +10,7 @@ class ListaEvaluacionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final _deficienciaBloc = Provider.of(context).deficienciaBloc;
+    final _deficienciaBloc = Provider.deficienciaBloc(context);
 
     // final _deficienciaBloc = BlocProvider.of<DeficienciaBloc>(context); 
 

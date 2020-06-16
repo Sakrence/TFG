@@ -37,28 +37,33 @@ class InspeccionBloc {
     _inspectoresController?.close();
   }
 
-  agregarInspeccion( InspeccionModel inspeccion) {
+  agregarInspeccion( InspeccionModel inspeccion) async {
 
     // DBProvider.db.nuevaInspeccionRaw(inspeccion);
     inspeccion.fechaInicio = DateTime.now();
-    DBProvider.db.nuevaInspeccion(inspeccion);
+    await DBProvider.db.nuevaInspeccion(inspeccion);
+    obtenerInspecciones();
     // DbApi dbApi = DbApi();
     // _factores = dbApi.getFactores (categoria);
     // _inFactores.add (_factores);
 
-    final List<InspeccionModel> inspecciones = _inspeccionesController.value;
+    // final List<InspeccionModel> inspecciones = _inspeccionesController.value;
 
 
-    inspecciones.add(inspeccion);
-    changeInspecciones(inspecciones);
+    // inspecciones.add(inspeccion);
+    // changeInspecciones(inspecciones);
 
   }
 
-  eliminarInspeccion( InspeccionModel inspeccion ) {
+  eliminarInspeccion( InspeccionModel inspeccion ) async {
 
-    final inspecciones = _inspeccionesController.value;
-    inspecciones.remove(inspeccion);
-    changeInspecciones(inspecciones);
+    await DBProvider.db.deleteInspeccion(inspeccion.id);
+
+    obtenerInspecciones();
+
+    // final inspecciones = _inspeccionesController.value;
+    // inspecciones.remove(inspeccion);
+    // changeInspecciones(inspecciones);
 
   }
 

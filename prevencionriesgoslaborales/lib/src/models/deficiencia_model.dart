@@ -10,38 +10,27 @@ String evaluacionModelToJson(DeficienciaModel data) => json.encode(data.toJson()
 class DeficienciaModel {
     DeficienciaModel({
         this.id,
-        this.factor,
+        this.factorRiesgo,
         this.evaluacion,
-        this.descripcion,
-        this.riesgo,
-        this.tipo,
-        this.imagen,
+        this.idInspeccion,
     });
 
     int id;
-    FactorRiesgoModel factor;
+    FactorRiesgoModel factorRiesgo;
     EvaluacionModel evaluacion;
-    String descripcion;
-    String riesgo;
-    String tipo;
-    String imagen;
+    int idInspeccion;
 
     factory DeficienciaModel.fromJson(Map<String, dynamic> json) => DeficienciaModel(
-        id                  : json["id"],
-        factor              : json["factor"],
-        evaluacion          : json["evaluacion"],
-        descripcion         : json["descripcion"],
-        riesgo              : json["riesgo"],
-        tipo                : json["tipo"],
-        imagen              : json["imagen"],
+        id            : json["id"],
+        factorRiesgo  : FactorRiesgoModel.fromJson(json["factorRiesgo"]),
+        evaluacion    : EvaluacionModel.fromJson(json["evaluacion"]),
+        idInspeccion  : json["idInspeccion"],
     );
 
     Map<String, dynamic> toJson() => {
-        "factor"            : factor,
-        "evaluacion"        : evaluacion,
-        "descripcion"       : descripcion,
-        "riesgo"            : riesgo,
-        "tipo"              : tipo,
-        "imagen"            : imagen,
+        "id"          : id,
+        "factorRiesgo": factorRiesgo.toJson(),
+        "evaluacion"  : evaluacion.toJson(),
+        "idInspeccion": idInspeccion,
     };
 }

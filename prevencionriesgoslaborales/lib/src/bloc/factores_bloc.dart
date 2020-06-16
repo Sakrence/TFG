@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
 import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
 import 'package:prevencionriesgoslaborales/src/providers/categorias_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class FactoresBloc extends BlocBase {
+class FactoresBloc {
 
   FactoresBloc(CategoriaModel categoria) {
     // changeContador(0);
@@ -35,7 +34,7 @@ class FactoresBloc extends BlocBase {
     // _factores = dbApi.getFactores (categoria);
     // _inFactores.add (_factores);
     
-    final factores = await categoriasProvider.cargarSubcategorias(categoria);
+    final factores = await provider.cargarSubcategorias(categoria);
     changeFactores(factores);
 
   }

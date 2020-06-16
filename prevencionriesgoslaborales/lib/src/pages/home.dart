@@ -147,7 +147,7 @@ class HomePage extends StatelessWidget {
 
           FadeInImage(
             placeholder: AssetImage('assets/img/original.gif'),
-            image: AssetImage('assets/riesgos/${categoria.icon}_V-01.png'),
+            image: AssetImage('assets/riesgos/${categoria.icono}_V-01.png'),
             fadeInDuration: Duration( milliseconds: 200 ),
             height: 165.0,
             fit: BoxFit.cover,
@@ -157,7 +157,7 @@ class HomePage extends StatelessWidget {
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(10.0),
-              child: Text(categoria.name, style: TextStyle(fontWeight: FontWeight.w500 ))
+              child: Text(categoria.nombre, style: TextStyle(fontWeight: FontWeight.w500 ))
             ),
           )
         ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
@@ -174,7 +173,7 @@ class ListaEvaluacionPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
         child: FadeInImage(
           placeholder: AssetImage('assets/img/original.gif'),
-          image: AssetImage('assets/riesgos/${deficiencia.factor.icon}_V-01.png'),
+          image: AssetImage('assets/riesgos/${deficiencia.factorRiesgo.icono}_V-01.png'),
           fadeInDuration: Duration( milliseconds: 200 ),
           height: 10.0,
           fit: BoxFit.fitWidth,
@@ -189,7 +188,7 @@ class ListaEvaluacionPage extends StatelessWidget {
     return Container(
       width: 160,
       child: Text(
-        deficiencia.factor.name,
+        deficiencia.factorRiesgo.nombre,
         textAlign: TextAlign.left,
         style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0),
       ),

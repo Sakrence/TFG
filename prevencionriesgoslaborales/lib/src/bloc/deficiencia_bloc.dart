@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DeficienciaBloc extends BlocBase {
+class DeficienciaBloc {
 
   static final DeficienciaBloc _singleton = new DeficienciaBloc._internal();
 
@@ -41,7 +40,7 @@ class DeficienciaBloc extends BlocBase {
 
     final evaluacion = new EvaluacionModel();
 
-    final deficiencia = new DeficienciaModel(evaluacion: evaluacion, factor: factor);
+    final deficiencia = new DeficienciaModel(evaluacion: evaluacion, factorRiesgo: factor);
 
     if ( _deficienciasController.value == null ) changeDeficiencias([]);
 

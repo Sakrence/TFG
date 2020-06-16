@@ -1,30 +1,30 @@
 
 class CategoriaModel {
 
-  static const _NAME_ = "name";
+  static const _NOMBRE_ = "nombre";
   static const _ID_ = "id";
-  static const _ICON_ = "icon";
+  static const _ICONO_ = "icono";
 
   String id;
-  String name;
-  String icon;
+  String nombre;
+  String icono;
 
   CategoriaModel({
       this.id,
-      this.name,
-      this.icon,
+      this.nombre,
+      this.icono,
   });
 
   factory CategoriaModel.fromJson(Map<String, dynamic> json) => CategoriaModel(
       id    : json[_ID_],
-      name  : json[_NAME_],
-      icon : json[_ICON_],
+      nombre  : json[_NOMBRE_],
+      icono : json[_ICONO_],
   );
 
   Map<String, dynamic> toJson() => {
       _ID_    : id,
-      _NAME_  : name,
-      _ICON_  : icon,
+      _NOMBRE_  : nombre,
+      _ICONO_  : icono,
   };
 
 }

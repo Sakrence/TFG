@@ -1,10 +1,14 @@
 import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
+import 'package:prevencionriesgoslaborales/src/providers/categorias_provider.dart';
+import 'package:prevencionriesgoslaborales/src/providers/db_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class InspeccionBloc {
 
   InspeccionBloc() {
-    changeInspecciones([]);
+    obtenerInspecciones();
+    // DBProvider.db.getInspeccionesIdInspector(1);
+    // changeInspecciones([]);
     changeInspectores([]);
   }
 
@@ -35,11 +39,25 @@ class InspeccionBloc {
 
   agregarInspeccion( InspeccionModel inspeccion) {
 
+    // DBProvider.db.nuevaInspeccionRaw(inspeccion);
+    inspeccion.fechaInicio = DateTime.now();
+    DBProvider.db.nuevaInspeccion(inspeccion);
+    // DbApi dbApi = DbApi();
+    // _factores = dbApi.getFactores (categoria);
+    // _inFactores.add (_factores);
+
     final List<InspeccionModel> inspecciones = _inspeccionesController.value;
 
-    inspeccion.fechaInicio = DateTime.now();
 
     inspecciones.add(inspeccion);
+    changeInspecciones(inspecciones);
+
+  }
+
+  eliminarInspeccion( InspeccionModel inspeccion ) {
+
+    final inspecciones = _inspeccionesController.value;
+    inspecciones.remove(inspeccion);
     changeInspecciones(inspecciones);
 
   }
@@ -55,21 +73,17 @@ class InspeccionBloc {
 
   }
 
-
-  eliminarInspeccion( InspeccionModel inspeccion ) {
-
-    final inspecciones = _inspeccionesController.value;
-    inspecciones.remove(inspeccion);
-    changeInspecciones(inspecciones);
-
-  }
-
   eliminarInspectores( InspeccionModel inspector ) {
 
     final inspectores = _inspectoresController.value;
     inspectores.remove(inspector);
     changeInspectores(inspectores);
 
+  }
+
+  
+  obtenerInspecciones() async {
+    _inspeccionesController.sink.add( await DBProvider.db.getInspeccionesIdInspector(1) );
   }
 
 

@@ -7,23 +7,27 @@ String factorRiesgoModelToJson(FactorRiesgoModel data) => json.encode(data.toJso
 class FactorRiesgoModel {
     FactorRiesgoModel({
         this.id,
-        this.name,
-        this.icon,
+        this.nombre,
+        this.icono,
+        this.idPadre,
     });
 
     String id;
-    String name;
-    String icon;
+    String nombre;
+    String icono;
+    String idPadre;
 
     factory FactorRiesgoModel.fromJson(Map<String, dynamic> json) => FactorRiesgoModel(
-        id      : json["id"],
-        name    : json["name"],
-        icon    : json["icon"],
+        id        : json["id"],
+        nombre    : json["nombre"],
+        icono     : json["icono"],
+        idPadre   : json["idPadre"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id"    : id,
-        "name"  : name,
-        "icon"  : icon,
+        "id"      : id,
+        "nombre"  : nombre,
+        "icono"   : icono,
+        "idPadre" : idPadre,
     };
 }

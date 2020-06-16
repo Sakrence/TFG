@@ -16,88 +16,90 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
     final _inspeccionBloc = Provider.inspeccionBloc(context);
 
-    return Stack(
-      children: <Widget>[
-        _fondoApp(),
-        SafeArea(
-          child: StreamBuilder(
-            stream: _inspeccionBloc.inspeccionesStream,
-            builder: ( context, AsyncSnapshot<List<InspeccionModel>> snapshot) {
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          _fondoApp(),
+          SafeArea(
+            child: StreamBuilder(
+              stream: _inspeccionBloc.inspeccionesStream,
+              builder: ( context, AsyncSnapshot<List<InspeccionModel>> snapshot) {
 
-              if ( !snapshot.hasData ){
+                if ( !snapshot.hasData ){
 
-                return Text('No hay datos');
+                  return Center(child: Text('No hay datos', style: TextStyle(decoration: TextDecoration.none, fontSize: 16.0, color: Colors.white)));
 
-              } else {
+                } else {
 
-                return ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-                  itemCount: snapshot.data.length,
-                  itemBuilder: ( context, index)  => Dismissible(
-                    key: UniqueKey(),
-                    background: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Icon(Icons.delete),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 200.0,
-                              spreadRadius: 0.5,
-                              offset: Offset(-8.0, 10.0)
-                            )
-                          ],
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.red.withOpacity(0.6),
-                              Colors.grey
-                            ]
+                  return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: ( context, index)  => Dismissible(
+                      key: UniqueKey(),
+                      background: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Icon(Icons.delete),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 200.0,
+                                spreadRadius: 0.5,
+                                offset: Offset(-8.0, 10.0)
+                              )
+                            ],
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.red.withOpacity(0.6),
+                                Colors.grey
+                              ]
+                            ),
                           ),
                         ),
                       ),
+                      onDismissed: ( direction ) => { _inspeccionBloc.eliminarInspeccion( snapshot.data[index] ) },
+                      child: _tarjeta(context, _inspeccionBloc, snapshot.data[index]),
                     ),
-                    onDismissed: ( direction ) => { _inspeccionBloc.eliminarInspeccion( snapshot.data[index] ) },
-                    child: _tarjeta(context, _inspeccionBloc, snapshot.data[index]),
-                  ),
-                );
+                  );
 
-              } 
-            }
-          ),
-        ),
-        Positioned(
-          bottom: 0.0,
-          right: 0.0,
-          child: Container(
-            padding: EdgeInsets.all(12.0),
-            child: Row(
-              children: <Widget>[
-                FloatingActionButton.extended(
-                  heroTag: UniqueKey(),
-                  onPressed: (){
-                    _mostrarAlertaInspector(context, _inspeccionBloc);
-                    // crear informe con las deficiencias
-                  },
-                  label: Text('Crear Inspector'),
-                ),
-                SizedBox(width: 10.0,),
-                FloatingActionButton.extended(
-                  heroTag: UniqueKey(),
-                  onPressed: (){
-                    _mostrarAlertaInspeccion(context, _inspeccionBloc);
-                    // crear informe con las deficiencias
-                  },
-                  label: Text('Iniciar Inspeccion'),
-                ),
-              ],
-              
+                } 
+              }
             ),
           ),
-        )
-      ],
+          Positioned(
+            bottom: 0.0,
+            right: 0.0,
+            child: Container(
+              padding: EdgeInsets.all(12.0),
+              child: Row(
+                children: <Widget>[
+                  FloatingActionButton.extended(
+                    heroTag: UniqueKey(),
+                    onPressed: (){
+                      _mostrarAlertaInspector(context, _inspeccionBloc);
+                      // crear informe con las deficiencias
+                    },
+                    label: Text('Crear Inspector'),
+                  ),
+                  SizedBox(width: 10.0,),
+                  FloatingActionButton.extended(
+                    heroTag: UniqueKey(),
+                    onPressed: (){
+                      _mostrarAlertaInspeccion(context, _inspeccionBloc);
+                      // crear informe con las deficiencias
+                    },
+                    label: Text('Iniciar Inspeccion'),
+                  ),
+                ],
+                
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -183,7 +185,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     return Container(
       width: 160,
       child: Text(
-        inspeccion.lugar,
+        inspeccion.direccion,
         textAlign: TextAlign.center,
         style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0),
       ),
@@ -262,7 +264,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                         child: Column(
                           children: <Widget>[
                             _crearTextNombre(inspector),
-                            _crearTextDNI(inspector),
+                            // _crearTextDNI(inspector),
                           ],
                         ),
                       ),
@@ -364,6 +366,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                     FlatButton(
                       child: Text('Ok'),
                       onPressed: () {
+                        inspeccion.idInspector = 1;
                         bloc.agregarInspeccion(inspeccion);
                         Navigator.of(context).pop();
                       },
@@ -402,40 +405,40 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   }
 
-  Widget _crearTextDNI( Inspector inspector) {
+  // Widget _crearTextDNI( Inspector inspector) {
 
-    return TextFormField(
-      keyboardType: TextInputType.visiblePassword,
-      initialValue: inspector.dni,
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(
-        labelText: 'DNI',
-        labelStyle: TextStyle(fontSize: 20.0)
-      ),
-      onChanged: (value) => setState(() {
-          inspector.dni = value;
-      }),
-      validator: (value) {
-        if ( value.length < 2 ) {
-          return 'Ingrese más de 2 carácteres';
-        } else {
-          return null;
-        }
-      },
-    );
+  //   return TextFormField(
+  //     keyboardType: TextInputType.visiblePassword,
+  //     initialValue: inspector.,
+  //     textCapitalization: TextCapitalization.sentences,
+  //     decoration: InputDecoration(
+  //       labelText: 'DNI',
+  //       labelStyle: TextStyle(fontSize: 20.0)
+  //     ),
+  //     onChanged: (value) => setState(() {
+  //         inspector.dni = value;
+  //     }),
+  //     validator: (value) {
+  //       if ( value.length < 2 ) {
+  //         return 'Ingrese más de 2 carácteres';
+  //       } else {
+  //         return null;
+  //       }
+  //     },
+  //   );
 
-  }
+  // }
 
   Widget _crearTextFieldLugar( InspeccionModel inspeccion ) {
 
     return TextFormField(
-      initialValue: inspeccion.lugar,
+      initialValue: inspeccion.direccion,
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
-        labelText: 'Lugar',
+        labelText: 'Direccion',
         labelStyle: TextStyle(fontSize: 20.0)
       ),
-      onChanged: (value) => inspeccion.lugar = value,
+      onChanged: (value) => inspeccion.direccion = value,
       validator: (value) {
         if ( value.length < 3 ) {
           return 'Ingrese el lugar donde se va a realizar la inspección';
@@ -476,9 +479,9 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
         labelText: 'Selección Inspector',
         labelStyle: TextStyle(fontSize: 20.0)
       ),
-      value: inspeccion.inspector,
+      value: inspeccion.idInspector,
       onChanged: ( value ) => setState(() {
-          inspeccion.inspector = value;
+          inspeccion.idInspector = value;
       }),
       items: bloc.inspectores
         .map<DropdownMenuItem<Inspector>>((Inspector value) {

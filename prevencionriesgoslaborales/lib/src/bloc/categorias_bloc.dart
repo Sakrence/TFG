@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
 import 'package:prevencionriesgoslaborales/src/providers/categorias_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CategoriasBloc extends BlocBase {
+class CategoriasBloc{
 
   static final CategoriasBloc _singleton = new CategoriasBloc._internal();
 
@@ -29,13 +28,12 @@ class CategoriasBloc extends BlocBase {
   Function(List<CategoriaModel>) get changeCategorias    => _categoriasController.sink.add;
 
 
-  @override
   dispose() {
     _categoriasController?.close();
   }
 
   obtenerCategorias() async {
-    _categoriasController.sink.add( await categoriasProvider.cargarCategorias() );
+    _categoriasController.sink.add( await provider.cargarCategorias() );
   }
 
 

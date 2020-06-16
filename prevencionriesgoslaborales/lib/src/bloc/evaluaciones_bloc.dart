@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
 import 'package:rxdart/rxdart.dart';
 
-class EvaluacionesBloc extends BlocBase {
+class EvaluacionesBloc {
 
   static final EvaluacionesBloc _singleton = new EvaluacionesBloc._internal();
 

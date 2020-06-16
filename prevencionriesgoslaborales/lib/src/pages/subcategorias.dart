@@ -166,7 +166,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
 
           FadeInImage(
             placeholder: AssetImage('assets/img/original.gif'),
-            image: AssetImage('assets/riesgos/${factor.icon}_V-01.png'),
+            image: AssetImage('assets/riesgos/${factor.icono}_V-01.png'),
             fadeInDuration: Duration( milliseconds: 200 ),
             height: 165.0,
             // width: 160.0,
@@ -177,7 +177,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(10.0),
-              child: Text(factor.name, style: TextStyle(fontWeight: FontWeight.w500 ))
+              child: Text(factor.nombre, style: TextStyle(fontWeight: FontWeight.w500 ))
             ),
           )
         ],
@@ -187,7 +187,8 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
     return GestureDetector(
       onTap: () async {
         deficienciasBloc.addDeficiencia(factor);
-        inspeccionBloc.inspeccionSeleccionada.deficiencias = deficienciasBloc.deficiencias;
+        // inspeccionBloc.inspeccionSeleccionada.deficiencias = deficienciasBloc.deficiencias;
+        inspeccionBloc.inspeccionSeleccionada.deficiencias = 1;
         animateEventPart1();
         await animateEventPart2();
       },

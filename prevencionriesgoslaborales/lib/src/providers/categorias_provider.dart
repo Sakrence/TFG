@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
 import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
+import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
 
-class _CategoriasProvider {
+class _Provider {
 
   List<CategoriaModel> categorias = [];
   List<FactorRiesgoModel> factores = [];
 
-  _CategoriasProvider();
+  _Provider();
 
   Future<List<CategoriaModel>>  cargarCategorias() async {
 
@@ -37,7 +38,11 @@ class _CategoriasProvider {
     return factores;
   }
 
+  Future<List<InspeccionModel>> cargarInspecciones() async {
+    return null;
+  }
+
 
 }
 
-final categoriasProvider = new _CategoriasProvider();
+final provider = new _Provider();

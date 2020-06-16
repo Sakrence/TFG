@@ -212,9 +212,9 @@ class _FormPageState extends State<FormPage> {
           labelText: 'Selección',
           labelStyle: TextStyle(fontSize: 20.0)
         ),
-        value: deficiencia.tipo,
+        value: deficiencia.evaluacion.tipoFactor,
         onChanged: ( value ) => setState(() {
-            deficiencia.tipo = value;
+            deficiencia.evaluacion.tipoFactor = value;
         }),
         items: <String>['Potencial', 'Existente']
           .map<DropdownMenuItem<String>>((String value) {
@@ -230,13 +230,13 @@ class _FormPageState extends State<FormPage> {
   Widget _crearTextField() {
 
     return TextFormField(
-        initialValue: deficiencia.descripcion,
+        initialValue: deficiencia.evaluacion.riesgo,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
           labelText: 'Descripción',
           labelStyle: TextStyle(fontSize: 20.0)
         ),
-        onChanged: (value) => deficiencia.descripcion = value,
+        onChanged: (value) => deficiencia.evaluacion.riesgo = value,
         validator: (value) {
           if ( value.length < 3 ) {
             return 'Ingrese la descripción del riesgo';
@@ -277,7 +277,7 @@ class _FormPageState extends State<FormPage> {
       String base64Image = base64Encode(imageBytes);
       // print(base64Image);
 
-      deficiencia.imagen = base64Image;
+      deficiencia.evaluacion.fotos[0].foto = base64Image;
 
       // Uint8List _bytesImage = Base64Decoder().convert(base64Image);
     }
@@ -312,9 +312,9 @@ class _FormPageState extends State<FormPage> {
 
   Widget _mostrarFoto() {
 
-    if ( deficiencia.imagen != null ) {
+    if ( deficiencia.evaluacion.fotos != null ) {
 
-      String decoImage = deficiencia.imagen;
+      String decoImage = deficiencia.evaluacion.fotos[0].foto;
       Uint8List _bytesImage = Base64Decoder().convert(decoImage);
 
       return FadeInImage(
@@ -367,7 +367,7 @@ class _FormPageState extends State<FormPage> {
     foto = File(pickedFile.path);
 
     if ( foto != null ) {
-      deficiencia.imagen = null;
+      deficiencia.evaluacion.fotos[0].foto = null;
     }
 
     setState(() {});

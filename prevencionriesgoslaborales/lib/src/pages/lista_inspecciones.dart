@@ -90,7 +90,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                     _mostrarAlertaInspeccion(context, _inspeccionBloc);
                     // crear informe con las deficiencias
                   },
-                  label: Text('Crear Inspeccion'),
+                  label: Text('Iniciar Inspeccion'),
                 ),
               ],
               
@@ -199,6 +199,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
         heroTag: UniqueKey(),
         backgroundColor: Color.fromRGBO(52, 54, 101, 1.0),
         onPressed: (){
+          bloc.changeInspeccionSeleccionada(inspeccion);
           Navigator.pushNamed(context, 'categorias', arguments: inspeccion);
         },
         label: Text('Inspeccionar', overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.white),),

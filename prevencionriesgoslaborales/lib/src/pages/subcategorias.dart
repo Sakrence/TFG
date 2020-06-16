@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:prevencionriesgoslaborales/src/bloc/bloc_provider.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
-import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/factores_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
-import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
 import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
-import 'package:prevencionriesgoslaborales/src/pages/lista_evaluaciones_page.dart';
 
 class SubcategoriaPage extends StatefulWidget {
 
@@ -33,6 +30,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
 
     final _factoresBloc = Provider.of(context).factoresBloc;
     final _deficienciasBloc = Provider.deficienciaBloc(context);
+    final _inspeccionBloc = Provider.inspeccionBloc(context);
     
 
     return Scaffold(
@@ -44,7 +42,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
             child: Column(
               children: <Widget>[
                 _titulos(),
-                _botonesRedondeados(_deficienciasBloc, _factoresBloc),
+                _botonesRedondeados(_deficienciasBloc, _factoresBloc, _inspeccionBloc),
               ],
             ),
           ),
@@ -117,7 +115,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
     );
   }
 
-  Widget _botonesRedondeados( DeficienciaBloc deficienciasBloc, FactoresBloc factoresBloc ) {
+  Widget _botonesRedondeados( DeficienciaBloc deficienciasBloc, FactoresBloc factoresBloc, InspeccionBloc inspeccionBloc ) {
     
     return Container(
       child: StreamBuilder(
@@ -133,8 +131,8 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
 
                 rows.add(TableRow(
                   children: [
-                    _crearBotonRedondeado( context, Colors.blue, factores.data[i], deficienciasBloc ),
-                    _crearBotonRedondeado( context, Colors.blue, factores.data[i+1], deficienciasBloc ),
+                    _crearBotonRedondeado( context, Colors.blue, factores.data[i], deficienciasBloc, inspeccionBloc ),
+                    _crearBotonRedondeado( context, Colors.blue, factores.data[i+1], deficienciasBloc, inspeccionBloc ),
                   ]
                 ));
 
@@ -142,7 +140,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
                 
                 rows.add(TableRow(
                   children: [
-                    _crearBotonRedondeado( context, Colors.blue, factores.data[i], deficienciasBloc ),
+                    _crearBotonRedondeado( context, Colors.blue, factores.data[i], deficienciasBloc, inspeccionBloc ),
                     Container()
                   ]
                 ));
@@ -159,7 +157,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
                   
   }
 
-  Widget _crearBotonRedondeado(BuildContext context, Color color, FactorRiesgoModel factor, DeficienciaBloc deficienciasBloc) {
+  Widget _crearBotonRedondeado(BuildContext context, Color color, FactorRiesgoModel factor, DeficienciaBloc deficienciasBloc, InspeccionBloc inspeccionBloc) {
 
     final card = Container(
       child: Column(
@@ -189,6 +187,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
     return GestureDetector(
       onTap: () async {
         deficienciasBloc.addDeficiencia(factor);
+        inspeccionBloc.inspeccionSeleccionada.deficiencias = deficienciasBloc.deficiencias;
         animateEventPart1();
         await animateEventPart2();
       },

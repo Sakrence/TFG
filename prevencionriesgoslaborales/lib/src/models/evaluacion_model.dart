@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
-
 EvaluacionModel evaluacionModelFromJson(String str) => EvaluacionModel.fromJson(json.decode(str));
 
 String evaluacionModelToJson(EvaluacionModel data) => json.encode(data.toJson());

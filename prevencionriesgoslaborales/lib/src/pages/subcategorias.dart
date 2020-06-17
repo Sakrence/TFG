@@ -186,9 +186,9 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
   
     return GestureDetector(
       onTap: () async {
-        deficienciasBloc.addDeficiencia(factor);
+        deficienciasBloc.addDeficiencia(factor, inspeccionBloc.inspeccionSeleccionada.id);
         // inspeccionBloc.inspeccionSeleccionada.deficiencias = deficienciasBloc.deficiencias;
-        inspeccionBloc.inspeccionSeleccionada.deficiencias = 1;
+        inspeccionBloc.inspeccionSeleccionada.deficiencias = [];
         animateEventPart1();
         await animateEventPart2();
       },

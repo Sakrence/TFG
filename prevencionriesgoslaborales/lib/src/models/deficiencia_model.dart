@@ -10,27 +10,29 @@ String evaluacionModelToJson(DeficienciaModel data) => json.encode(data.toJson()
 class DeficienciaModel {
     DeficienciaModel({
         this.id,
+        this.idFactorRiesgo,
         this.factorRiesgo,
         this.evaluacion,
         this.idInspeccion,
     });
 
     int id;
+    int idFactorRiesgo;
     FactorRiesgoModel factorRiesgo;
     EvaluacionModel evaluacion;
     int idInspeccion;
 
     factory DeficienciaModel.fromJson(Map<String, dynamic> json) => DeficienciaModel(
-        id            : json["id"],
-        factorRiesgo  : FactorRiesgoModel.fromJson(json["factorRiesgo"]),
-        evaluacion    : EvaluacionModel.fromJson(json["evaluacion"]),
-        idInspeccion  : json["idInspeccion"],
+        id              : json["id"],
+        idFactorRiesgo  : json["idFactorRiesgo"],
+        // evaluacion    : EvaluacionModel.fromJson(json["evaluacion"]),
+        idInspeccion    : json["idInspeccion"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id"          : id,
-        "factorRiesgo": factorRiesgo.toJson(),
-        "evaluacion"  : evaluacion.toJson(),
-        "idInspeccion": idInspeccion,
+        "id"            : id,
+        "idFactorRiesgo": idFactorRiesgo,
+        // "evaluacion"  : evaluacion.toJson(),
+        "idInspeccion"  : idInspeccion,
     };
 }

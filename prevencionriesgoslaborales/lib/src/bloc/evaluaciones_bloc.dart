@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
+import 'package:prevencionriesgoslaborales/src/providers/db_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class EvaluacionesBloc {
@@ -14,7 +15,7 @@ class EvaluacionesBloc {
 
   EvaluacionesBloc._internal() {
     // changeContador(0);
-    changeEvaluaciones([]);
+    // changeEvaluaciones([]);
     // Obtener CategoriaModels de la Base de datos
     // obtenerCategoriaModels();
     // _CategoriaModelSeleccionadaController.listen((value) {
@@ -23,58 +24,42 @@ class EvaluacionesBloc {
   }
 
 
-  final _contadorController = BehaviorSubject<int>();
-  // final _factoresController = BehaviorSubject<List<FactorRiesgoModel>>();
-  final _evaluacionesController = BehaviorSubject<List<EvaluacionModel>>();
+  // final _evaluacionesController = BehaviorSubject<List<EvaluacionModel>>();
+  final _evaluacionController = BehaviorSubject<EvaluacionModel>();
 
   // Recuperar los datos del Stream
-  Stream<int> get contadorStream                      => _contadorController.stream;
-  // Stream<List<FactorRiesgoModel>> get factoresStream          => _factoresController.stream;
-  Stream<List<EvaluacionModel>> get evaluacionesStream  => _evaluacionesController.stream;
+  // Stream<List<EvaluacionModel>> get evaluacionesStream  => _evaluacionesController.stream;
+  Stream<EvaluacionModel> get evaluacionStream  => _evaluacionController.stream;
 
   // Insertar valores al Stream
-  Function(int) get changeContador              => _contadorController.sink.add;
-  // Function(List<FactorRiesgoModel>) get changeFactores  => _factoresController.sink.add;
-  Function(List<EvaluacionModel>) get changeEvaluaciones  => _evaluacionesController.sink.add;
+  // Function(List<EvaluacionModel>) get changeEvaluaciones  => _evaluacionesController.sink.add;
 
   // Obtener el último valor ingresado a los streams
-  int get contador             => _contadorController.value;
-  // List<FactorRiesgoModel> get factores => _factoresController.value;
-  List<EvaluacionModel> get evaluaciones => _evaluacionesController.value;
+  // List<EvaluacionModel> get evaluaciones => _evaluacionesController.value;
+  EvaluacionModel get evaluacion => _evaluacionController.value;
 
   dispose() {
-    _contadorController?.close();
-    // _factoresController?.close();
-    _evaluacionesController?.close();
+    // _evaluacionesController?.close();
+    _evaluacionController?.close();
   }
 
-  addFactor(FactorRiesgoModel factor) {
-
-    final evalucion = new EvaluacionModel();
-
-    // final factores = _factoresController.value;
-
-    // if ( !factores.contains(factor) ) {
-    //   factores.add(factor);
-    //   changeFactores(factores);
-    //   final contador = _contadorController.value + 1;
-    //   changeContador( contador );
-    // }
-    
+  addEvaluacion( EvaluacionModel nuevaEvaluacion, int idDeficiencia ) async {
+    // final nuevaEvaluacion = EvaluacionModel(idDeficiencia: idDeficiencia);
+    nuevaEvaluacion.nivelDeficiencia = idDeficiencia;
+    await DBProvider.db.nuevaEvaluacion(nuevaEvaluacion);
   }
 
-  removeFactor( FactorRiesgoModel factor ) {
-    // final factores = _factoresController.value;
-    // factores.remove(factor);
-    // final contador = _contadorController.value - 1;
-    // changeContador( contador );
-  }
+  getEvaluacion( int idDeficiencia ) async {
+    final evaluacion = await DBProvider.db.getEvaluacionByIdDeficiencia(idDeficiencia);
+    if ( evaluacion != null ) {
+      evaluacion.fotos = await DBProvider.db.getFotoByIdEvaluacion(evaluacion.id);
+      evaluacion.coordenadas = await DBProvider.db.getCoordenadasByIdEvaluacion(evaluacion.id);
+    }
+ 
+    _evaluacionController.sink.add(evaluacion);
+ }
 
-  // obtenerSubCategoriaModels() async {
-  //   // print("ID_Seleccionado: ${_CategoriaModelSeleccionadaController.value.id}");
-  //   _subCategoriaModelsController.sink.add( await CategoriaModelsProvider.cargarSubCategoriaModels(seleccionada) );
-  //   // print("INDEX 7 de subCategoriaModels: ${_subCategoriaModelsController.value[0]}");
-  // }
+
 
 
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
+import 'package:prevencionriesgoslaborales/src/providers/db_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DeficienciaBloc {
@@ -36,34 +37,37 @@ class DeficienciaBloc {
     _deficienciasController?.close();
   }
 
-  addDeficiencia(FactorRiesgoModel factor) {
+  addDeficiencia(FactorRiesgoModel factor, int idInspeccion) async {
 
-    final evaluacion = new EvaluacionModel();
+    final nuevaDeficiencia = DeficienciaModel(idFactorRiesgo: factor.id, idInspeccion: idInspeccion);
+    await DBProvider.db.nuevaDeficiencia(nuevaDeficiencia);
+    obtenerDeficiencias(idInspeccion);
 
-    final deficiencia = new DeficienciaModel(evaluacion: evaluacion, factorRiesgo: factor);
+    // final evaluacion = new EvaluacionModel();
 
-    if ( _deficienciasController.value == null ) changeDeficiencias([]);
+    // final deficiencia = new DeficienciaModel(evaluacion: evaluacion, factorRiesgo: factor);
+
+    // if ( _deficienciasController.value == null ) changeDeficiencias([]);
 
 
-    final List<DeficienciaModel> deficiencias = _deficienciasController.value;
+    // final List<DeficienciaModel> deficiencias = _deficienciasController.value;
 
-    if ( deficiencias == null || !deficiencias.contains(deficiencia) ) {
+    // if ( deficiencias == null || !deficiencias.contains(deficiencia) ) {
 
-      deficiencias.add(deficiencia);
-      changeDeficiencias(deficiencias);
+    //   // deficiencias.add(deficiencia);
+    //   changeDeficiencias(deficiencias);
 
-      int contador;
-      if ( _contadorController.value == null ){
-        contador = 0;
-      } else {
-        contador = _contadorController.value;
-      }
+    //   int contador;
+    //   if ( _contadorController.value == null ){
+    //     contador = 0;
+    //   } else {
+    //     contador = _contadorController.value;
+    //   }
       
-      contador = contador + 1;
-      changeContador( contador );
+    //   contador = contador + 1;
+    //   changeContador( contador );
 
-    }
-
+    // }
 
   }
 
@@ -75,6 +79,21 @@ class DeficienciaBloc {
     final contador = _contadorController.value -1;
     changeContador(contador);
 
+  }
+
+  obtenerDeficiencias( int idInspeccion ) async {
+
+    List<DeficienciaModel> deficiencias = await DBProvider.db.getDeficienciasByIdInspeccion(idInspeccion);
+
+    for (var i = 0; i < deficiencias.length; i++) {
+      deficiencias[i].factorRiesgo = await DBProvider.db.getFactorById(deficiencias[i].idFactorRiesgo);
+
+      // deficiencias[i].evaluacion = await DBProvider.db.getEvaluacionByIdDeficiencia(deficiencias[i].id);
+    }
+
+    _deficienciasController.sink.add( deficiencias );
+    _contadorController.sink.add( deficiencias.length );
+    
   }
 
 

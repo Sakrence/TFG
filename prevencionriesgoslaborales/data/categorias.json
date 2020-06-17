@@ -1,46 +1,53 @@
 {
     "categorias" : [
         {
-            "id": "01",
+            "id": 1,
+            "codigo": "01",
             "nombre" : "Caídas de personas a distinto nivel",
             "icono" : "01",
-            "idPadre": ""
+            "idPadre": null
         },
         {
-            "id": "02",
+            "id": 2,
+            "codigo": "02",
             "nombre" : "Caídas de personas al mismo nivel",
             "icono" : "02",
-            "idPadre": ""
+            "idPadre": null
         },
         {
-            "id": "03",
+            "id": 3,
+            "codigo": "03",
             "nombre" : "Caídas de objetos por desplome o derrumbamiento",
             "icono" : "03",
-            "idPadre": ""
+            "idPadre": null
         },
         {
-            "id": "04",
+            "id": 4,
+            "codigo": "04",
             "nombre" : "Caídas de objetos en manipulación",
             "icono" : "04",
-            "idPadre": ""
+            "idPadre": null
         },
         {
-            "id": "05",
+            "id": 5,
+            "codigo": "05",
             "nombre" : "Caídas de objetos desprendidos",
             "icono" : "05",
-            "idPadre": ""
+            "idPadre": null
         },
         {
-            "id": "06",
+            "id": 6,
+            "codigo": "06",
             "nombre" : "Pisadas sobre objetos",
             "icono" : "06",
-            "idPadre": ""
+            "idPadre": null
         },
         {
-            "id": "07",
+            "id": 7,
+            "codigo": "07",
             "nombre" : "Choques contra objetos inmóviles",
             "icono" : "07",
-            "idPadre": ""
+            "idPadre": null
         }
     ]
 }

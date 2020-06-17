@@ -19,7 +19,15 @@ class EvaluacionModel {
         this.coordenadas,
         this.nivelRiesgo,
         this.idDeficiencia,
-    });
+    }){
+      if ( this.nivelRiesgo == null ) {
+        this.nivelDeficiencia = 1;
+        this.nivelExposicion = 1;
+        this.nivelConsecuencias = 1;
+        this.accionCorrectora = "";
+        this.nivelRiesgo = 0;
+      }
+    }
 
     int id;
     String riesgo;
@@ -40,9 +48,9 @@ class EvaluacionModel {
         nivelDeficiencia    : json["nivelDeficiencia"],
         nivelExposicion     : json["nivelExposicion"],
         nivelConsecuencias  : json["nivelConsecuencias"],
-        fotos               : List<Foto>.from(json["fotos"].map((x) => x)),
+        // fotos               : List<Foto>.from(json["fotos"].map((x) => x)),
         accionCorrectora    : json["accionCorrectora"],
-        coordenadas         : Coordenadas.fromJson(json["coordenadas"]),
+        // coordenadas         : Coordenadas.fromJson(json["coordenadas"]),
         nivelRiesgo         : json["nivelRiesgo"],
         idDeficiencia       : json["idDeficiencia"],
     );
@@ -54,9 +62,9 @@ class EvaluacionModel {
         "nivelDeficiencia"  : nivelDeficiencia,
         "nivelExposicion"   : nivelExposicion,
         "nivelConsecuencias": nivelConsecuencias,
-        "fotos"             : List<Foto>.from(fotos.map((x) => x.toJson())),
+        // "fotos"             : List<Foto>.from(fotos.map((x) => x.toJson())),
         "accionCorrectora"  : accionCorrectora,
-        "coordenadas"       : coordenadas.toJson(),
+        // "coordenadas"       : coordenadas.toJson(),
         "nivelRiesgo"       : nivelRiesgo,
         "idDeficiencia"     : idDeficiencia,
     };

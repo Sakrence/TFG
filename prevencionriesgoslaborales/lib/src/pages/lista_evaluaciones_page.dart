@@ -10,10 +10,7 @@ class ListaEvaluacionPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final _deficienciaBloc = Provider.deficienciaBloc(context);
-    final _inspeccionBloc = Provider.inspeccionBloc(context);
-
-
-    // final _deficienciaBloc = BlocProvider.of<DeficienciaBloc>(context); 
+    // final _inspeccionBloc = Provider.inspeccionBloc(context);
 
     return Stack(
       children: <Widget>[
@@ -21,7 +18,6 @@ class ListaEvaluacionPage extends StatelessWidget {
         SafeArea(
           child: StreamBuilder(
             stream: _deficienciaBloc.deficienciasStream,
-            // stream: _deficienciaBloc.deficienciasStream,
             builder: ( context, AsyncSnapshot<List<DeficienciaModel>> snapshot) {
 
               if ( !snapshot.hasData ){

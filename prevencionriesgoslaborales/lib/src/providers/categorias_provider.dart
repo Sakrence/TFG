@@ -31,8 +31,8 @@ class _Provider {
     factores = [];
     Map dataMap = json.decode(respuesta); 
     
-    for (var i = 0; i < dataMap['subcategorias']['${categoriaSeleccionada.id}'].length; i++) {
-      factores.add(FactorRiesgoModel.fromJson(dataMap['subcategorias']['${categoriaSeleccionada.id}'][i]));
+    for (var i = 0; i < dataMap['subcategorias'].length; i++) {
+      factores.add(FactorRiesgoModel.fromJson(dataMap['subcategorias'][i]));
     }
     
     return factores;

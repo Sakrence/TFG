@@ -1,52 +1,53 @@
 {
-    "subcategorias" : {
-        "01": [
-            {
-                "id": "01",
-                "nombre" : "Caídas de personas a distinto nivel",
-                "icono" : "01",
-                "idPadre": "01"
-            },
-            {
-                "id": "02",
-                "nombre" : "Caídas de personas al mismo nivel",
-                "icono" : "02",
-                "idPadre": "01"
-            },
-            {
-                "id": "03",
-                "nombre" : "Caídas de objetos por desplome o derrumbamiento",
-                "icono" : "03",
-                "idPadre": "01"
-            }
-        ],
-        "02" : [
-            {
-                "id": "04",
-                "nombre" : "Caídas de objetos en manipulación",
-                "icono" : "04",
-                "idPadre": "02"
-            },
-            {
-                "id": "05",
-                "nombre" : "Caídas de objetos desprendidos",
-                "icono" : "05",
-                "idPadre": "02"
-            },
-            {
-                "id": "06",
-                "nombre" : "Pisadas sobre objetos",
-                "icono" : "06",
-                "idPadre": "02"
-            }
-        ],
-        "03" : [
-            {
-                "id": "07",
-                "nombre" : "Choques contra objetos inmóviles",
-                "icono" : "07",
-                "idPadre": "03"
-            }
-        ]
-    }
+    "subcategorias" : [
+        {
+            "id": 8,
+            "codigo": "01",
+            "nombre" : "Caídas de personas a distinto nivel",
+            "icono" : "01",
+            "idPadre": 1
+        },
+        {
+            "id": 9,
+            "codigo": "02",
+            "nombre" : "Caídas de personas al mismo nivel",
+            "icono" : "02",
+            "idPadre": 1
+        },
+        {
+            "id": 10,
+            "codigo": "03",
+            "nombre" : "Caídas de objetos por desplome o derrumbamiento",
+            "icono" : "03",
+            "idPadre": 1
+        },
+        {
+            "id": 11,
+            "codigo": "04",
+            "nombre" : "Caídas de objetos en manipulación",
+            "icono" : "04",
+            "idPadre": 2
+        },
+        {
+            "id": 12,
+            "codigo": "05",
+            "nombre" : "Caídas de objetos desprendidos",
+            "icono" : "05",
+            "idPadre": 2
+        },
+        {
+            "id": 13,
+            "codigo": "06",
+            "nombre" : "Pisadas sobre objetos",
+            "icono" : "06",
+            "idPadre": 2
+        },
+        {
+            "id": 14,
+            "codigo": "07",
+            "nombre" : "Choques contra objetos inmóviles",
+            "icono" : "07",
+            "idPadre": 3
+        }
+    ]
 }

@@ -5,10 +5,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'dart:math';
 
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
+import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
+import 'package:prevencionriesgoslaborales/src/providers/db_provider.dart';
 
 class FormPage extends StatefulWidget {
 
@@ -22,20 +25,30 @@ class _FormPageState extends State<FormPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
 
-  DeficienciaBloc deficienciaBloc;
-  DeficienciaModel deficiencia = new DeficienciaModel();
+  // DeficienciaBloc deficienciaBloc;
+  // DeficienciaModel deficiencia = new DeficienciaModel();
+  // EvaluacionModel evaluacion;
   bool _guardando = false;
   File foto;
+
+  final TextEditingController c1 = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
-    deficienciaBloc = Provider.deficienciaBloc(context);
+    EvaluacionModel evaluacion;
+    // deficienciaBloc = Provider.deficienciaBloc(context);
+    EvaluacionesBloc evaluacionBloc = Provider.evaluacionesBloc(context);
 
     final DeficienciaModel deficienciaData = ModalRoute.of(context).settings.arguments;
-    if ( deficienciaData != null ) {
-      deficiencia = deficienciaData;
+    
+    evaluacionBloc.getEvaluacion(deficienciaData.id);
+    if ( evaluacionBloc.evaluacion == null ) {
+      evaluacion = EvaluacionModel(idDeficiencia: deficienciaData.id);
+    } else {
+      evaluacion = evaluacionBloc.evaluacion;
     }
+    // deficiencia = deficienciaData;
 
     // final _deficienciasBloc = BlocProvider.of<DeficienciaBloc>(context);
 
@@ -48,7 +61,7 @@ class _FormPageState extends State<FormPage> {
             padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 20.0),
             child: Column(
               children: <Widget>[
-                _formulario(context),
+                _formulario(context, evaluacion),
               ],
             ),
           ),
@@ -105,7 +118,7 @@ class _FormPageState extends State<FormPage> {
 
 
 
-  Widget _formulario( BuildContext context ) {
+  Widget _formulario( BuildContext context, EvaluacionModel evaluacion ) {
 
     final size = MediaQuery.of(context).size;
 
@@ -155,18 +168,18 @@ class _FormPageState extends State<FormPage> {
                           IconButton(
                             icon: Icon(Icons.photo_size_select_actual),
                             // onPressed: (){},
-                            onPressed: _seleccionarForo,
+                            onPressed: () => _seleccionarForo(evaluacion),
                           ),
                           IconButton(
                             icon: Icon(Icons.camera_alt),
                             // onPressed: (){},
-                            onPressed: _tomarForo,
+                            onPressed: () => _tomarForo(evaluacion),
                           )
                         ],
                       ),
                     ),
                     Text(''),
-                    _crearForm(),
+                    _crearForm(evaluacion),
                     
                     SizedBox(height: 60.0),
                     // _crearSelect(),
@@ -185,7 +198,7 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  Widget _crearForm() {
+  Widget _crearForm( EvaluacionModel evaluacion ) {
 
     return Container(
       padding: EdgeInsets.all(15.0),
@@ -194,10 +207,10 @@ class _FormPageState extends State<FormPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            _mostrarFoto(),
-            _crearSeleccion(),
-            _crearTextField(),
-            _crearBoton(),
+            _mostrarFoto(evaluacion),
+            _crearSeleccion(evaluacion),
+            _crearTextField(evaluacion),
+            _crearBoton(evaluacion),
           ],
         ),
       ),
@@ -205,38 +218,43 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  Widget _crearSeleccion() {
+  Widget _crearSeleccion( EvaluacionModel evaluacion ) {
 
     return DropdownButtonFormField(
-        decoration: InputDecoration(
-          labelText: 'Selección',
-          labelStyle: TextStyle(fontSize: 20.0)
-        ),
-        value: deficiencia.evaluacion.tipoFactor,
-        onChanged: ( value ) => setState(() {
-            deficiencia.evaluacion.tipoFactor = value;
-        }),
-        items: <String>['Potencial', 'Existente']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-        }).toList(),
+      decoration: InputDecoration(
+        labelText: 'Selección',
+        labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      value: evaluacion.tipoFactor,
+      onChanged: ( value ) => setState(() {
+          evaluacion.tipoFactor = value;
+      }),
+      onSaved: ( value ) => setState(() {
+          evaluacion.tipoFactor = value;
+      }),
+      items: <String>['Potencial', 'Existente']
+        .map<DropdownMenuItem<String>>((String value) {
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+      }).toList(),
     );
 
   }
 
-  Widget _crearTextField() {
+  Widget _crearTextField( EvaluacionModel evaluacion ) {
 
     return TextFormField(
-        initialValue: deficiencia.evaluacion.riesgo,
+      controller: c1,
+        initialValue: evaluacion.riesgo,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
           labelText: 'Descripción',
           labelStyle: TextStyle(fontSize: 20.0)
         ),
-        onChanged: (value) => deficiencia.evaluacion.riesgo = value,
+        onChanged: (value) => evaluacion.riesgo = value,
+        onSaved: (value) => evaluacion.riesgo = value,
         validator: (value) {
           if ( value.length < 3 ) {
             return 'Ingrese la descripción del riesgo';
@@ -248,7 +266,7 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  Widget _crearBoton() {
+  Widget _crearBoton( EvaluacionModel evaluacion ) {
 
     return RaisedButton.icon(
       shape: RoundedRectangleBorder(
@@ -258,12 +276,13 @@ class _FormPageState extends State<FormPage> {
       textColor: Colors.white,
       label: Text('Guardar'),
       icon: Icon( Icons.save ),
-      onPressed: (_guardando) ? null :  _submit,
+      // onPressed: (_guardando) ? null :  _submit,
+      onPressed: () => _submit(evaluacion),
     );
 
   }
 
-  void _submit() async {
+  void _submit( EvaluacionModel evaluacion ) async {
 
     if ( !_formKey.currentState.validate() ) return;
 
@@ -276,11 +295,19 @@ class _FormPageState extends State<FormPage> {
       List<int> imageBytes = foto.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
       // print(base64Image);
-
-      deficiencia.evaluacion.fotos[0].foto = base64Image;
+      if ( evaluacion.fotos == null ) {
+        List<Foto> lista = List();
+        Foto aux = Foto(foto: Base64Decoder().convert(base64Image), idEvaluacion: evaluacion.id);
+        lista.add(aux);
+        evaluacion.fotos = lista;
+      } else {
+        evaluacion.fotos[0].foto = Base64Decoder().convert(base64Image);
+      }
 
       // Uint8List _bytesImage = Base64Decoder().convert(base64Image);
     }
+
+    await DBProvider.db.nuevaEvaluacion(evaluacion);
 
     // if ( deficiencia.tipo == null  ) {
     //   deficienciaBloc.agregarDeficiencia(deficiencia); // crear para que cree la deficiencia en la BD
@@ -310,12 +337,13 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  Widget _mostrarFoto() {
+  Widget _mostrarFoto( EvaluacionModel evaluacion ) {
 
-    if ( deficiencia.evaluacion.fotos != null ) {
+    if ( evaluacion.fotos != null ) {
 
-      String decoImage = deficiencia.evaluacion.fotos[0].foto;
-      Uint8List _bytesImage = Base64Decoder().convert(decoImage);
+      // String decoImage = deficiencia.evaluacion.fotos[0].foto;
+      // Uint8List _bytesImage = Base64Decoder().convert(decoImage);
+      Uint8List _bytesImage = evaluacion.fotos[0].foto;
 
       return FadeInImage(
         height: 300.0,
@@ -352,13 +380,13 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  _seleccionarForo() async {
+  _seleccionarForo( EvaluacionModel evaluacion ) async {
 
-    _procesarImagen( ImageSource.gallery );
+    _procesarImagen( ImageSource.gallery, evaluacion );
 
   }
   
-  _procesarImagen( ImageSource source ) async {
+  _procesarImagen( ImageSource source, EvaluacionModel evaluacion  ) async {
 // TODO: mirar que no haya problemas de que pierdan los datos
     final picker = ImagePicker();
     
@@ -367,16 +395,16 @@ class _FormPageState extends State<FormPage> {
     foto = File(pickedFile.path);
 
     if ( foto != null ) {
-      deficiencia.evaluacion.fotos[0].foto = null;
+      if (evaluacion.fotos != null ) evaluacion.fotos[0].foto = null;
     }
 
     setState(() {});
 
   }
   
-  _tomarForo() async {
+  _tomarForo( EvaluacionModel evaluacion ) async {
 
-    _procesarImagen( ImageSource.camera );
+    _procesarImagen( ImageSource.camera, evaluacion );
 
   }
 

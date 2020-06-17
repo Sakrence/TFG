@@ -40,7 +40,7 @@ class InspeccionBloc {
   agregarInspeccion( InspeccionModel inspeccion) async {
 
     // DBProvider.db.nuevaInspeccionRaw(inspeccion);
-    inspeccion.fechaInicio = DateTime.now();
+    inspeccion.fechaInicio = DateTime.now().millisecondsSinceEpoch;
     await DBProvider.db.nuevaInspeccion(inspeccion);
     obtenerInspecciones();
     // DbApi dbApi = DbApi();
@@ -88,7 +88,17 @@ class InspeccionBloc {
 
   
   obtenerInspecciones() async {
-    _inspeccionesController.sink.add( await DBProvider.db.getInspeccionesIdInspector(1) );
+    List<InspeccionModel> list = await DBProvider.db.getInspeccionesIdInspector(1);
+
+    for (var i = 0; i < list.length; i++) {
+      list[i].deficiencias = await DBProvider.db.getDeficienciasByIdInspeccion(list[i].id);
+      list[i].coordenadas = await DBProvider.db.getCoordenadasByIdEvaluacion(list[i].id);
+      // if ( coordenadas.length != 0 ){
+      //   list[i].coordenadas = coordenadas[0];
+      // }
+    }
+
+    _inspeccionesController.sink.add( list );
   }
 
 

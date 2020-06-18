@@ -27,10 +27,11 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
     
     // final CategoriaModel categoria = ModalRoute.of(context).settings.arguments;
     // Provider.of(context).factoresBloc = FactoresBloc(categoria);
-
     final _factoresBloc = Provider.of(context).factoresBloc;
     final _deficienciasBloc = Provider.deficienciaBloc(context);
     final _inspeccionBloc = Provider.inspeccionBloc(context);
+    _deficienciasBloc.obtenerDeficiencias(_inspeccionBloc.inspeccionSeleccionada.id);
+    
     
 
     return Scaffold(
@@ -188,7 +189,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
       onTap: () async {
         deficienciasBloc.addDeficiencia(factor, inspeccionBloc.inspeccionSeleccionada.id);
         // inspeccionBloc.inspeccionSeleccionada.deficiencias = deficienciasBloc.deficiencias;
-        inspeccionBloc.inspeccionSeleccionada.deficiencias = [];
+        // inspeccionBloc.inspeccionSeleccionada.deficiencias = [];
         animateEventPart1();
         await animateEventPart2();
       },

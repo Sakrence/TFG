@@ -172,6 +172,19 @@ class DBProvider {
     return res;
   }
 
+  nuevaFoto( EvaluacionModel evaluacion ) async {
+    
+    final db  = await database;
+    int res = 0;
+    for (var i = 0; i < evaluacion.fotos.length ; i++) {
+      evaluacion.fotos[i].idEvaluacion = evaluacion.id;
+      await db.insert('Foto', evaluacion.fotos[i].toJson());
+      res++;
+    }
+    return res;
+  }
+
+
 
   // SELECT
   Future<List<InspeccionModel>> getInspeccionesIdInspector( int id ) async {
@@ -256,10 +269,35 @@ class DBProvider {
   }
 
   // UPDATE
-  Future<int> updateInspeccion( InspeccionModel nuevaInspeccion ) async {
+  Future<int> updateInspeccion( InspeccionModel inspeccion ) async {
 
     final db  = await database;
-    final res = await db.update('Inspecciones', nuevaInspeccion.toJson(), where: 'id = ?', whereArgs: [nuevaInspeccion.id] );
+    final res = await db.update('Inspecciones', inspeccion.toJson(), where: 'id = ?', whereArgs: [inspeccion.id] );
+    return res;
+  }
+
+  Future<int> editarEvaluacion( EvaluacionModel evaluacion ) async {
+
+    final db  = await database;
+    final res = await db.update('Evaluaciones', evaluacion.toJson(), where: 'id = ?', whereArgs: [evaluacion.id] );
+    return res;
+  }
+
+  Future<int> editarFoto( EvaluacionModel evaluacion ) async {
+
+    final db  = await database;
+    int res = 0;
+    for (var i = 0; i < evaluacion.fotos.length ; i++) {
+
+      if ( evaluacion.fotos[i].idEvaluacion == null ) {
+        evaluacion.fotos[i].idEvaluacion = evaluacion.id;
+        await db.insert('Foto', evaluacion.fotos[i].toJson());
+        res++;
+      } else {
+        await db.update('Foto', evaluacion.fotos[i].toJson(), where: 'id = ?', whereArgs: [evaluacion.fotos[i].id] );
+        res++;
+      }
+    }
     return res;
   }
 
@@ -269,6 +307,24 @@ class DBProvider {
     final db  = await database;
     final res = await db.delete('Inspecciones', where: 'id = ?', whereArgs: [id]);
     return res;
+  }
+
+  Future<int> deleteDeficiencia( DeficienciaModel deficiencia ) async {
+
+    final db  = await database;
+    await db.delete('Deficiencias', where: 'id = ?', whereArgs: [deficiencia.id]);
+
+    // EvaluacionModel evaluacion = await getEvaluacionByIdDeficiencia(deficiencia.id);
+    // final aux = await db.query('Evaluaciones', where: 'idDeficiencia = ?', whereArgs: [id] );
+    // EvaluacionModel evaluacion = aux.isNotEmpty ? EvaluacionModel.fromJson( aux.first ) : null;
+    int res = 0;
+    if ( deficiencia.evaluacion != null ) {
+      res = await db.delete('Foto', where: 'idEvaluacion = ?', whereArgs: [deficiencia.evaluacion.id]);
+      await db.delete('Coordenadas', where: 'idEvaluacion = ?', whereArgs: [deficiencia.evaluacion.id]);
+    }
+    
+    await db.delete('Evaluaciones', where: 'idDeficiencia = ?', whereArgs: [deficiencia.id]);
+    return (res+3);
   }
 
   // Future<int> deleteAll() async {

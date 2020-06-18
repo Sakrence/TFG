@@ -71,13 +71,16 @@ class DeficienciaBloc {
 
   }
 
-  removeDeficiencia( DeficienciaModel deficiencia ) {
+  removeDeficiencia( DeficienciaModel deficiencia, InspeccionModel inspeccion ) async {
 
-    final deficiencias = _deficienciasController.value;
-    deficiencias.remove(deficiencia);
-    changeDeficiencias(deficiencias);
-    final contador = _contadorController.value -1;
-    changeContador(contador);
+    // final deficiencias = _deficienciasController.value;
+    // deficiencias.remove(deficiencia);
+    // changeDeficiencias(deficiencias);
+    // final contador = _contadorController.value -1;
+    // changeContador(contador);
+
+    await DBProvider.db.deleteDeficiencia(deficiencia);
+    obtenerDeficiencias(inspeccion.id);
 
   }
 
@@ -88,7 +91,11 @@ class DeficienciaBloc {
     for (var i = 0; i < deficiencias.length; i++) {
       deficiencias[i].factorRiesgo = await DBProvider.db.getFactorById(deficiencias[i].idFactorRiesgo);
 
-      // deficiencias[i].evaluacion = await DBProvider.db.getEvaluacionByIdDeficiencia(deficiencias[i].id);
+      deficiencias[i].evaluacion = await DBProvider.db.getEvaluacionByIdDeficiencia(deficiencias[i].id);
+      if ( deficiencias[i].evaluacion != null ) {
+        deficiencias[i].evaluacion.fotos = await DBProvider.db.getFotoByIdEvaluacion(deficiencias[i].evaluacion.id);
+        deficiencias[i].evaluacion.coordenadas = await DBProvider.db.getCoordenadasByIdEvaluacion(deficiencias[i].evaluacion.id);
+      }
     }
 
     _deficienciasController.sink.add( deficiencias );

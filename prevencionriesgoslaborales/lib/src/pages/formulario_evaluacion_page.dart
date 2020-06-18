@@ -30,27 +30,35 @@ class _FormPageState extends State<FormPage> {
   // EvaluacionModel evaluacion;
   bool _guardando = false;
   File foto;
+  EvaluacionModel evaluacion;
+  EvaluacionesBloc evaluacionBloc;
+  DeficienciaModel deficiencia;
+
 
   final TextEditingController c1 = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
-    EvaluacionModel evaluacion;
     // deficienciaBloc = Provider.deficienciaBloc(context);
-    EvaluacionesBloc evaluacionBloc = Provider.evaluacionesBloc(context);
-
+    evaluacionBloc = Provider.evaluacionesBloc(context);
     final DeficienciaModel deficienciaData = ModalRoute.of(context).settings.arguments;
-    
-    evaluacionBloc.getEvaluacion(deficienciaData.id);
-    if ( evaluacionBloc.evaluacion == null ) {
-      evaluacion = EvaluacionModel(idDeficiencia: deficienciaData.id);
-    } else {
-      evaluacion = evaluacionBloc.evaluacion;
-    }
-    // deficiencia = deficienciaData;
 
-    // final _deficienciasBloc = BlocProvider.of<DeficienciaBloc>(context);
+
+    evaluacion = deficienciaData.evaluacion;
+    deficiencia = deficienciaData;
+
+
+    // evaluacionBloc.getEvaluacion(deficienciaData.id);
+
+    // if ( evaluacionBloc.evaluacion == null ) {
+    //   if ( deficienciaData != null ) {
+    //     evaluacion = deficienciaData.evaluacion;
+    //     deficiencia = deficienciaData;
+    //   }
+    // } else {
+    //   evaluacion = evaluacionBloc.evaluacion;
+    // }
 
     return Scaffold(
       key: scaffoldKey,
@@ -61,7 +69,8 @@ class _FormPageState extends State<FormPage> {
             padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 20.0),
             child: Column(
               children: <Widget>[
-                _formulario(context, evaluacion),
+                // _formulario(context, evaluacion),
+                _formulario(context),
               ],
             ),
           ),
@@ -118,87 +127,92 @@ class _FormPageState extends State<FormPage> {
 
 
 
-  Widget _formulario( BuildContext context, EvaluacionModel evaluacion ) {
+  // Widget _formulario( BuildContext context, EvaluacionModel evaluacion ) {
+  Widget _formulario( BuildContext context ) {
 
     final size = MediaQuery.of(context).size;
 
     return Column(
+      children: <Widget>[
+        // SafeArea(
+        //   child: Container(),
+        // ),
+        Container(
+          width: size.width * 0.90,
+          margin: EdgeInsets.symmetric(vertical: 30.0),
+          // padding: EdgeInsets.symmetric(vertical: 40.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5.0),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 3.0,
+                offset: Offset(0.0, 5.0),
+                spreadRadius: 3.0
+              )
+            ]
+          ),
+          child: Column(
             children: <Widget>[
-              // SafeArea(
-              //   child: Container(),
-              // ),
-              Container(
-                width: size.width * 0.90,
-                margin: EdgeInsets.symmetric(vertical: 30.0),
-                // padding: EdgeInsets.symmetric(vertical: 40.0),
+              Container( 
                 decoration: BoxDecoration(
-                  color: Colors.white,
                   borderRadius: BorderRadius.circular(5.0),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 3.0,
-                      offset: Offset(0.0, 5.0),
-                      spreadRadius: 3.0
-                    )
-                  ]
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.purple,
+                      Colors.blue
+                    ]
+                  )
+
                 ),
-                child: Column(
+                alignment: Alignment.center,
+                height: size.height * 0.1,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Container( 
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.0),
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.purple,
-                            Colors.blue
-                          ]
-                        )
-
-                      ),
-                      alignment: Alignment.center,
-                      height: size.height * 0.1,
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(child: Container()),
-                          Text('Evaluación de Riesgo', style: TextStyle(fontSize: 20.0, color: Colors.white)),
-                          SizedBox(width: 5.0,),
-                          IconButton(
-                            icon: Icon(Icons.photo_size_select_actual),
-                            // onPressed: (){},
-                            onPressed: () => _seleccionarForo(evaluacion),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.camera_alt),
-                            // onPressed: (){},
-                            onPressed: () => _tomarForo(evaluacion),
-                          )
-                        ],
-                      ),
+                    Expanded(child: Container()),
+                    Text('Evaluación de Riesgo', style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                    SizedBox(width: 5.0,),
+                    IconButton(
+                      icon: Icon(Icons.photo_size_select_actual),
+                      // onPressed: (){},
+                      // onPressed: () => _seleccionarForo(evaluacion),
+                      onPressed: _seleccionarForo,
                     ),
-                    Text(''),
-                    _crearForm(evaluacion),
-                    
-                    SizedBox(height: 60.0),
-                    // _crearSelect(),
-                    SizedBox(height: 30.0),    
-
-                    SizedBox(height: 30.0),
-
-                    
+                    IconButton(
+                      icon: Icon(Icons.camera_alt),
+                      // onPressed: (){},
+                      // onPressed: () => _tomarForo(evaluacion),
+                      onPressed: _tomarForo,
+                    )
                   ],
                 ),
               ),
-              Text('¿Olvido la contraseña?', style: TextStyle(color: Colors.white)),
-              SizedBox( height: 100.0 ),
+              Text(''),
+              // _crearForm(evaluacion),
+              _crearForm(),
+              
+              SizedBox(height: 60.0),
+              // _crearSelect(),
+              SizedBox(height: 30.0),    
+
+              SizedBox(height: 30.0),
+
+              
             ],
+          ),
+        ),
+        Text('¿Olvido la contraseña?', style: TextStyle(color: Colors.white)),
+        SizedBox( height: 100.0 ),
+      ],
     );
 
   }
 
-  Widget _crearForm( EvaluacionModel evaluacion ) {
+  // Widget _crearForm( EvaluacionModel evaluacion ) {
+  Widget _crearForm() {
 
     return Container(
       padding: EdgeInsets.all(15.0),
@@ -207,10 +221,14 @@ class _FormPageState extends State<FormPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            _mostrarFoto(evaluacion),
-            _crearSeleccion(evaluacion),
-            _crearTextField(evaluacion),
-            _crearBoton(evaluacion),
+            // _mostrarFoto(evaluacion),
+            // _crearSeleccion(evaluacion),
+            // _crearTextField(evaluacion),
+            // _crearBoton(evaluacion),
+            _mostrarFoto(),
+            _crearSeleccion(),
+            _crearTextField(),
+            _crearBoton(),
           ],
         ),
       ),
@@ -218,7 +236,8 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  Widget _crearSeleccion( EvaluacionModel evaluacion ) {
+  // Widget _crearSeleccion( EvaluacionModel evaluacion ) {
+  Widget _crearSeleccion() {
 
     return DropdownButtonFormField(
       decoration: InputDecoration(
@@ -226,12 +245,16 @@ class _FormPageState extends State<FormPage> {
         labelStyle: TextStyle(fontSize: 20.0)
       ),
       value: evaluacion.tipoFactor,
-      onChanged: ( value ) => setState(() {
-          evaluacion.tipoFactor = value;
-      }),
-      onSaved: ( value ) => setState(() {
-          evaluacion.tipoFactor = value;
-      }),
+      onChanged: ( value ) => evaluacion.tipoFactor = value,
+      // onSaved: ( value ) => setState(() {
+      //     evaluacion.tipoFactor = value;
+      // }),
+      // onChanged: ( value ) => setState(() {
+      //     evaluacion.tipoFactor = value;
+      // }),
+      // onSaved: ( value ) => setState(() {
+      //     evaluacion.tipoFactor = value;
+      // }),
       items: <String>['Potencial', 'Existente']
         .map<DropdownMenuItem<String>>((String value) {
       return DropdownMenuItem<String>(
@@ -243,30 +266,34 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  Widget _crearTextField( EvaluacionModel evaluacion ) {
+  // Widget _crearTextField( EvaluacionModel evaluacion ) {
+  Widget _crearTextField( ) {
 
     return TextFormField(
-      controller: c1,
-        initialValue: evaluacion.riesgo,
-        textCapitalization: TextCapitalization.sentences,
-        decoration: InputDecoration(
-          labelText: 'Descripción',
-          labelStyle: TextStyle(fontSize: 20.0)
-        ),
-        onChanged: (value) => evaluacion.riesgo = value,
-        onSaved: (value) => evaluacion.riesgo = value,
-        validator: (value) {
-          if ( value.length < 3 ) {
-            return 'Ingrese la descripción del riesgo';
-          } else {
-            return null;
-          }
-        },
+      initialValue: evaluacion.riesgo,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+        labelText: 'Descripción',
+        labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      // onChanged: (value) {
+      //   evaluacion.riesgo = value;
+      //   // print(evaluacion.riesgo);
+      // },
+      onSaved: (value) => evaluacion.riesgo = value,
+      validator: (value) {
+        if ( value.length < 3 ) {
+          return 'Ingrese la descripción del riesgo';
+        } else {
+          return null;
+        }
+      },
     );
 
   }
 
-  Widget _crearBoton( EvaluacionModel evaluacion ) {
+  // Widget _crearBoton( EvaluacionModel evaluacion ) {
+  Widget _crearBoton(  ) {
 
     return RaisedButton.icon(
       shape: RoundedRectangleBorder(
@@ -277,16 +304,19 @@ class _FormPageState extends State<FormPage> {
       label: Text('Guardar'),
       icon: Icon( Icons.save ),
       // onPressed: (_guardando) ? null :  _submit,
-      onPressed: () => _submit(evaluacion),
+      // onPressed: () => _submit(evaluacion),
+      onPressed: _submit,
     );
 
   }
 
-  void _submit( EvaluacionModel evaluacion ) async {
+  // void _submit( EvaluacionModel evaluacion ) async {
+  void _submit() async {
 
     if ( !_formKey.currentState.validate() ) return;
 
-    setState(() { _guardando = true; }); // para evitar que se guarden varias veces lo mismo sin querer
+    _formKey.currentState.save();
+    // setState(() { _guardando = true; }); // para evitar que se guarden varias veces lo mismo sin querer
 
     
 
@@ -307,7 +337,13 @@ class _FormPageState extends State<FormPage> {
       // Uint8List _bytesImage = Base64Decoder().convert(base64Image);
     }
 
-    await DBProvider.db.nuevaEvaluacion(evaluacion);
+   
+    // await DBProvider.db.nuevaEvaluacion(evaluacion);
+    if ( evaluacion.id != null ) {
+      await evaluacionBloc.editarEvaluacion(evaluacion);
+    } else {
+      await evaluacionBloc.addEvaluacion(evaluacion, deficiencia.id);
+    }
 
     // if ( deficiencia.tipo == null  ) {
     //   deficienciaBloc.agregarDeficiencia(deficiencia); // crear para que cree la deficiencia en la BD
@@ -319,7 +355,7 @@ class _FormPageState extends State<FormPage> {
     print('Todo OK');
 
 
-    setState(() { _guardando = false; }); // mejor cambiarlo a que vuelva a la pagina anterior
+    // setState(() { _guardando = false; }); // mejor cambiarlo a que vuelva a la pagina anterior
     mostrarSnackbar('Registro guardado');
 
     Navigator.pop(context);
@@ -337,7 +373,8 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  Widget _mostrarFoto( EvaluacionModel evaluacion ) {
+  // Widget _mostrarFoto( EvaluacionModel evaluacion ) {
+  Widget _mostrarFoto( ) {
 
     if ( evaluacion.fotos != null ) {
 
@@ -380,13 +417,16 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  _seleccionarForo( EvaluacionModel evaluacion ) async {
+  // _seleccionarForo( EvaluacionModel evaluacion ) async {
+  _seleccionarForo(  ) async {
 
-    _procesarImagen( ImageSource.gallery, evaluacion );
+    // _procesarImagen( ImageSource.gallery, evaluacion );
+    _procesarImagen( ImageSource.gallery);
 
   }
   
-  _procesarImagen( ImageSource source, EvaluacionModel evaluacion  ) async {
+  // _procesarImagen( ImageSource source, EvaluacionModel evaluacion  ) async {
+  _procesarImagen( ImageSource source) async {
 // TODO: mirar que no haya problemas de que pierdan los datos
     final picker = ImagePicker();
     
@@ -402,9 +442,11 @@ class _FormPageState extends State<FormPage> {
 
   }
   
-  _tomarForo( EvaluacionModel evaluacion ) async {
+  // _tomarForo( EvaluacionModel evaluacion ) async {
+  _tomarForo( ) async {
 
-    _procesarImagen( ImageSource.camera, evaluacion );
+    // _procesarImagen( ImageSource.camera, evaluacion );
+    _procesarImagen( ImageSource.camera);
 
   }
 

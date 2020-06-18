@@ -9,25 +9,17 @@ String evaluacionModelToJson(EvaluacionModel data) => json.encode(data.toJson())
 class EvaluacionModel {
     EvaluacionModel({
         this.id,
-        this.riesgo,
-        this.tipoFactor,
-        this.nivelDeficiencia,
-        this.nivelExposicion,
-        this.nivelConsecuencias,
+        this.riesgo = '',
+        this.tipoFactor = 'Potencial',
+        this.nivelDeficiencia = 0,
+        this.nivelExposicion = 0 ,
+        this.nivelConsecuencias = 0,
         this.fotos,
-        this.accionCorrectora,
+        this.accionCorrectora = '',
         this.coordenadas,
-        this.nivelRiesgo,
+        this.nivelRiesgo = 0,
         this.idDeficiencia,
-    }){
-      if ( this.nivelRiesgo == null ) {
-        this.nivelDeficiencia = 1;
-        this.nivelExposicion = 1;
-        this.nivelConsecuencias = 1;
-        this.accionCorrectora = "";
-        this.nivelRiesgo = 0;
-      }
-    }
+    });
 
     int id;
     String riesgo;

@@ -47,6 +47,10 @@ class EvaluacionesBloc {
     // final nuevaEvaluacion = EvaluacionModel(idDeficiencia: idDeficiencia);
     nuevaEvaluacion.nivelDeficiencia = idDeficiencia;
     await DBProvider.db.nuevaEvaluacion(nuevaEvaluacion);
+
+    final evaluacion = await DBProvider.db.getEvaluacionByIdDeficiencia(idDeficiencia);
+    nuevaEvaluacion.id = evaluacion.id;
+    await DBProvider.db.nuevaFoto(nuevaEvaluacion);
   }
 
   getEvaluacion( int idDeficiencia ) async {
@@ -57,7 +61,13 @@ class EvaluacionesBloc {
     }
  
     _evaluacionController.sink.add(evaluacion);
- }
+  }
+
+  editarEvaluacion( EvaluacionModel evaluacion ) async {
+    await DBProvider.db.editarEvaluacion(evaluacion);
+    await DBProvider.db.editarFoto(evaluacion);
+
+  }
 
 
 

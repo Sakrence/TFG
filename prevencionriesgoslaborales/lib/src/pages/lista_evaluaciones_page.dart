@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
+import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
 
 class ListaEvaluacionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
     final _deficienciaBloc = Provider.deficienciaBloc(context);
-    // final _inspeccionBloc = Provider.inspeccionBloc(context);
+    final _evaluacionBloc = Provider.evaluacionesBloc(context);
+    final _inspeccionBloc = Provider.inspeccionBloc(context);
 
     return Stack(
       children: <Widget>[
@@ -55,8 +58,8 @@ class ListaEvaluacionPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onDismissed: ( direction ) => { _deficienciaBloc.removeDeficiencia( snapshot.data[index] ) },
-                    child: _tarjeta(context, _deficienciaBloc, snapshot.data[index]),
+                    onDismissed: ( direction ) => { _deficienciaBloc.removeDeficiencia( snapshot.data[index], _inspeccionBloc.inspeccionSeleccionada ) },
+                    child: _tarjeta(context, _deficienciaBloc, snapshot.data[index], _evaluacionBloc),
                   ),
                 );
 
@@ -128,7 +131,7 @@ class ListaEvaluacionPage extends StatelessWidget {
   }
 
 
-  Widget _tarjeta( BuildContext context, DeficienciaBloc bloc, DeficienciaModel deficiencia ) {
+  Widget _tarjeta( BuildContext context, DeficienciaBloc bloc, DeficienciaModel deficiencia, EvaluacionesBloc evaluacionBloc) {
 
 // si quiero quitar el boton de evaluar pongo un gesture detector aqui y quito el boton
     return Container(
@@ -152,7 +155,7 @@ class ListaEvaluacionPage extends StatelessWidget {
           children: <Widget>[
               _icono(deficiencia),
               _texto(deficiencia),
-              _botonEvaluar(context, bloc, deficiencia)
+              _botonEvaluar(context, bloc, deficiencia, evaluacionBloc)
           ],
         ),
       ),
@@ -192,7 +195,7 @@ class ListaEvaluacionPage extends StatelessWidget {
 
   }
 
-  Widget _botonEvaluar( BuildContext context, DeficienciaBloc bloc, DeficienciaModel deficiencia) {
+  Widget _botonEvaluar( BuildContext context, DeficienciaBloc bloc, DeficienciaModel deficiencia, EvaluacionesBloc evaluacionBloc) {
 
     return Container(
       height: 62,
@@ -201,6 +204,12 @@ class ListaEvaluacionPage extends StatelessWidget {
         heroTag: UniqueKey(),
         backgroundColor: Color.fromRGBO(52, 54, 101, 1.0),
         onPressed: (){
+          if ( deficiencia.evaluacion == null ) {
+            EvaluacionModel evaluacion = EvaluacionModel(idDeficiencia: deficiencia.id);
+            // evaluacionBloc.addEvaluacion(evaluacion, deficiencia.id);
+
+            deficiencia.evaluacion = evaluacion;
+          }
           Navigator.pushNamed(context, 'formPage', arguments: deficiencia);
         },
         child: Column(

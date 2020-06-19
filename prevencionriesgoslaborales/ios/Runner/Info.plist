@@ -12,6 +12,11 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Necesito acceso al microfono para videos</string>
 
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Necesito acceso a la ubicación</string>
+
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Necesito acceso a la ubicación</string>
 
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

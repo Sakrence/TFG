@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
@@ -11,6 +12,10 @@ class ListaInspeccionPage extends StatefulWidget {
 }
 
 class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
+  static final _formKey = GlobalKey<FormState>();
+  final _latitudController = TextEditingController(text:'0.0');
+  final _longitudController = TextEditingController(text:'0.0');
+
   @override
   Widget build(BuildContext context) {
 
@@ -346,9 +351,15 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                   child: Container(
                     padding: EdgeInsets.all(20.0),
                     child: Form(
+                      key: _formKey,
                       child: Column(
                         children: <Widget>[
-                          _crearTextFieldLugar(inspeccion),
+                          _crearTextFieldDireccion(inspeccion),
+                          _crearTextFieldProvincia(inspeccion),
+                          _crearTextFieldPais(inspeccion),
+                          _crearFieldCoordenadas(inspeccion),
+                          // _crearTextFieldLatitud(inspeccion),
+                          // _crearTextFieldLongitud(inspeccion),
                           _crearTextFieldComentarios(inspeccion),
                           _crearSeleccionInspector(inspeccion, bloc),
                         ],
@@ -405,31 +416,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   }
 
-  // Widget _crearTextDNI( Inspector inspector) {
-
-  //   return TextFormField(
-  //     keyboardType: TextInputType.visiblePassword,
-  //     initialValue: inspector.,
-  //     textCapitalization: TextCapitalization.sentences,
-  //     decoration: InputDecoration(
-  //       labelText: 'DNI',
-  //       labelStyle: TextStyle(fontSize: 20.0)
-  //     ),
-  //     onChanged: (value) => setState(() {
-  //         inspector.dni = value;
-  //     }),
-  //     validator: (value) {
-  //       if ( value.length < 2 ) {
-  //         return 'Ingrese más de 2 carácteres';
-  //       } else {
-  //         return null;
-  //       }
-  //     },
-  //   );
-
-  // }
-
-  Widget _crearTextFieldLugar( InspeccionModel inspeccion ) {
+  Widget _crearTextFieldDireccion( InspeccionModel inspeccion ) {
 
     return TextFormField(
       initialValue: inspeccion.direccion,
@@ -441,13 +428,134 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
       onChanged: (value) => inspeccion.direccion = value,
       validator: (value) {
         if ( value.length < 3 ) {
-          return 'Ingrese el lugar donde se va a realizar la inspección';
+          return 'Ingrese la dirección donde se va a realizar la inspección';
         } else {
           return null;
         }
       },
     );
 
+  }
+
+  Widget _crearTextFieldProvincia( InspeccionModel inspeccion ) {
+
+    return TextFormField(
+      initialValue: inspeccion.provincia,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: 'Provincia',
+        labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      onChanged: (value) => inspeccion.provincia = value,
+      validator: (value) {
+        if ( value.length < 3 ) {
+          return 'Ingrese la provincia donde se va a realizar la inspección';
+        } else {
+          return null;
+        }
+      },
+    );
+
+  }
+
+  Widget _crearTextFieldPais( InspeccionModel inspeccion ) {
+
+    return TextFormField(
+      initialValue: inspeccion.pais,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: 'País',
+        labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      onChanged: (value) => inspeccion.pais = value,
+      validator: (value) {
+        if ( value.length < 3 ) {
+          return 'Ingrese el país donde se va a realizar la inspección';
+        } else {
+          return null;
+        }
+      },
+    );
+
+  }
+
+  Widget _crearFieldCoordenadas( InspeccionModel inspeccion ) {
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              children: <Widget>[
+                _crearTextFieldLatitud(inspeccion),
+                _crearTextFieldLongitud(inspeccion)
+              ],
+            ),
+          ),
+          IconButton(
+            iconSize: 30.0,
+            icon: Icon(Icons.location_searching),
+            color: Theme.of(context).primaryColor,
+            onPressed: () => _getLocation(inspeccion)
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _crearTextFieldLatitud( InspeccionModel inspeccion ) {
+    return TextFormField(
+      keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
+      // initialValue: '${inspeccion.coordenadas.latitud}',
+      controller: _latitudController,
+      enabled: false,
+      decoration: InputDecoration(
+        labelText: 'Latitud',
+        labelStyle: TextStyle(fontSize: 20.0),
+      ),
+      readOnly: true,
+      // onChanged: (value) => setState(() {
+      //   print('Latitud: ${value}');
+      //     inspeccion.coordenadas.latitud = num.tryParse(value);
+      // }),
+      onSaved: (value) => _latitudController.text = '${inspeccion.coordenadas.latitud}',
+      validator: (value) {
+        bool flag;
+        if ( value.isEmpty) flag = false;
+        (num.tryParse(value) == null ) ? flag = false : flag = true;
+
+        if ( flag ){
+          return null;
+        } else {
+          return 'Solo numeros';
+        }  
+      },
+    );
+  }
+
+  Widget _crearTextFieldLongitud( InspeccionModel inspeccion ) {
+    return TextFormField(
+      keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
+      // initialValue: '${inspeccion.coordenadas.longitud}',
+      controller: _longitudController,
+      enabled: false,
+      decoration: InputDecoration(
+        labelText: 'Longitud',
+        labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      onSaved: (value) => _longitudController.text = '${inspeccion.coordenadas.longitud}',
+      validator: (value) {
+        bool flag;
+        if ( value.isEmpty) flag = false;
+        (num.tryParse(value) == null ) ? flag = false : flag = true;
+
+        if ( flag ){
+          return null;
+        } else {
+          return 'Solo numeros';
+        }  
+      },
+    );
   }
 
   Widget _crearTextFieldComentarios( InspeccionModel inspeccion ) {
@@ -492,5 +600,45 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
       }).toList(),
     );
 
+  }
+
+  _getLocation( InspeccionModel inspeccion ) async {
+
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+
+    setState(() {
+      inspeccion.coordenadas.latitud = _locationData.latitude;
+      print(_locationData.latitude);
+      print(inspeccion.coordenadas.latitud);
+      inspeccion.coordenadas.longitud = _locationData.longitude;
+      print(_locationData.longitude);
+      print(inspeccion.coordenadas.longitud);
+    });
+
+    _formKey.currentState.save();
+
+    
   }
 }

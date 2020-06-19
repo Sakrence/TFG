@@ -5,6 +5,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:prevencionriesgoslaborales/src/providers/db_provider.dart';
+
 import 'deficiencia_model.dart';
 
 InspeccionModel inspeccionModelFromJson(String str) => InspeccionModel.fromJson(json.decode(str));
@@ -31,6 +33,7 @@ class InspeccionModel {
             this.fechaFin = DateTime.now().millisecondsSinceEpoch;
             // this.latitud = 1.0;
             // this.longitud = 1.0;
+            this.coordenadas = new Coordenadas(latitud: 0.0, longitud: 0.0);
             this.pais = "";
             this.provincia = "";
             this.deficiencias = [];
@@ -78,8 +81,8 @@ class InspeccionModel {
         "direccion"   : direccion,
         "provincia"   : provincia,
         "pais"        : pais,
-        // "latitud"     : latitud,
-        // "longitud"    : longitud,
+        "latitud"     : coordenadas.latitud,
+        "longitud"    : coordenadas.longitud,
         // "coordenadas" : coordenadas.toJson(),
         "comentarios" : comentarios,
         "idInspector" : idInspector,
@@ -95,8 +98,8 @@ class Coordenadas {
         this.longitud,
     });
 
-    int latitud;
-    int longitud;
+    double latitud;
+    double longitud;
 
     factory Coordenadas.fromJson(Map<String, dynamic> json) => Coordenadas(
         latitud   : json["latitud"],

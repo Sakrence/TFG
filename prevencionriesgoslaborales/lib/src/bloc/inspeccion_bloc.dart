@@ -39,54 +39,17 @@ class InspeccionBloc {
 
   agregarInspeccion( InspeccionModel inspeccion) async {
 
-    // DBProvider.db.nuevaInspeccionRaw(inspeccion);
     inspeccion.fechaInicio = DateTime.now().millisecondsSinceEpoch;
     await DBProvider.db.nuevaInspeccion(inspeccion);
     obtenerInspecciones();
-    // DbApi dbApi = DbApi();
-    // _factores = dbApi.getFactores (categoria);
-    // _inFactores.add (_factores);
-
-    // final List<InspeccionModel> inspecciones = _inspeccionesController.value;
-
-
-    // inspecciones.add(inspeccion);
-    // changeInspecciones(inspecciones);
-
   }
 
   eliminarInspeccion( InspeccionModel inspeccion ) async {
 
     await DBProvider.db.deleteInspeccion(inspeccion.id);
-
     obtenerInspecciones();
-
-    // final inspecciones = _inspeccionesController.value;
-    // inspecciones.remove(inspeccion);
-    // changeInspecciones(inspecciones);
-
   }
 
-  agregarInspector( Inspector inspector) {
-
-    List<Inspector> inspectores = _inspectoresController.value;
-
-    if ( inspectores == null ) inspectores = [];
-
-    inspectores.add(inspector);
-    changeInspectores(inspectores);
-
-  }
-
-  eliminarInspectores( InspeccionModel inspector ) {
-
-    final inspectores = _inspectoresController.value;
-    inspectores.remove(inspector);
-    changeInspectores(inspectores);
-
-  }
-
-  
   obtenerInspecciones() async {
     List<InspeccionModel> list = await DBProvider.db.getInspeccionesIdInspector(1);
 
@@ -100,6 +63,37 @@ class InspeccionBloc {
 
     _inspeccionesController.sink.add( list );
   }
+
+  agregarInspector( Inspector inspector) async {
+
+    await DBProvider.db.nuevoInspector(inspector);
+
+    obtenerInspectores();
+
+  }
+
+  eliminarInspector( Inspector inspector ) async {
+
+    await DBProvider.db.deleteInspector(inspector.id);
+
+    final inspectores = _inspectoresController.value;
+    inspectores.remove(inspector);
+    changeInspectores(inspectores);
+  }
+
+  Future<Inspector> getLogin( String usuario, String contrasena ) async {
+
+    return await DBProvider.db.getLogin(usuario, contrasena);
+  }
+
+  obtenerInspectores() async {
+
+    List<Inspector> list = await DBProvider.db.getAllInspectores();
+    _inspectoresController.sink.add( list );
+  }
+
+  
+
 
 
 }

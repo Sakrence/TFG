@@ -1,13 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
+import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
+import 'package:prevencionriesgoslaborales/src/utils/login/login_response.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> implements LoginCallBack {
+
+  bool _isLoading = false;
+  final formKey = new GlobalKey<FormState>();
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  String _usuario, _contrasena;
+
+  LoginResponse _response;
+
+  _LoginPageState() {
+    _response = new LoginResponse(this);
+  }
+
   @override
   Widget build(BuildContext context) {
+    
+    final _inspeccionBloc = Provider.inspeccionBloc(context);
+    
     return Scaffold(
+      key: scaffoldKey,
       body: Stack(
         children: <Widget>[
           _crearFondo( context ),
-          _loginForm( context ),
+          _loginForm( context, _inspeccionBloc ),
         ],
       ),
     );
@@ -67,7 +93,7 @@ class LoginPage extends StatelessWidget {
 
   }
 
-  Widget _loginForm(BuildContext context) {
+  Widget _loginForm( BuildContext context, InspeccionBloc inspeccionBloc ) {
 
     // final bloc = Provider.of(context);
     final size = MediaQuery.of(context).size;
@@ -117,20 +143,34 @@ class LoginPage extends StatelessWidget {
                   child: Text('Ingreso', style: TextStyle(decoration: TextDecoration.none, fontSize: 20.0, color: Colors.white) ,),
                 ),
                 SizedBox(height: 30.0),
-                // _crearEmail(bloc),
-                _crearEmail(),
-                SizedBox(height: 30.0),                
-                // _crearPassword(bloc),
-                _crearPassword(),
+                Form(
+                  key: formKey,
+                  child: new Column(
+                    children: <Widget>[
+                       _crearUsuario(),
+                        SizedBox(height: 30.0),                
+                        // _crearPassword(bloc),
+                        _crearPassword(),
+                    ]
+                  ),
+                ),
                 SizedBox(height: 30.0),
-                // _crearBoton(bloc),
-                _crearBoton(),
+                _crearBoton(inspeccionBloc),
                 SizedBox(height: 30.0),
-
               ],
             ),
           ),
-          Text('¿Olvido la contraseña?'),
+          GestureDetector(
+            child: Text('Registrarse'),
+            onTap: () {
+              _mostrarAlertaInspector(context, inspeccionBloc);
+            },
+          ),
+          SizedBox(height: 10.0),
+          GestureDetector(
+            child: Text('¿Olvido la contraseña?'),
+            onTap: () {},
+          ),
           SizedBox( height: 100.0 ),
         ],
       ),
@@ -138,23 +178,23 @@ class LoginPage extends StatelessWidget {
 
   }
 
-  // Widget _crearEmail( LoginBloc bloc ) {
-  Widget _crearEmail(  ) {
+  Widget _crearUsuario(  ) {
 
     // return StreamBuilder(
     //   stream: bloc.emailStream ,
     //   builder: (BuildContext context, AsyncSnapshot snapshot){
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: TextField(
-            keyboardType: TextInputType.emailAddress,
+          child: TextFormField(
+            // keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
-              hintText: 'ejemplo@correo.com',
-              labelText: 'Correo electrónico',
+              icon: Icon(Icons.person_outline, color: Colors.deepPurple),
+              hintText: 'Usuario',
+              labelText: 'Usuario',
               // counterText: snapshot.data,
               // errorText: snapshot.error
             ),
+            onSaved: (value) => _usuario = value,
             // onChanged: bloc.changeEmail,
           ),
         );
@@ -166,7 +206,6 @@ class LoginPage extends StatelessWidget {
     
   }
 
-  // Widget _crearPassword( LoginBloc bloc ) {
   Widget _crearPassword( ) {
 
     // return StreamBuilder(
@@ -175,14 +214,15 @@ class LoginPage extends StatelessWidget {
 
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: TextField(
+          child: TextFormField(
             obscureText: true,
             decoration: InputDecoration(
-              icon: Icon(Icons.alternate_email, color: Colors.deepPurple),
+              icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
               labelText: 'Contraseña',
               // counterText: snapshot.data,
               // errorText: snapshot.error
             ),
+            onSaved: (value) => _contrasena = value,
             // onChanged: bloc.changePassword,
           ),
         );
@@ -193,8 +233,7 @@ class LoginPage extends StatelessWidget {
     
   }
 
-  // Widget _crearBoton( LoginBloc bloc ) {
-  Widget _crearBoton( ) {
+  Widget _crearBoton( InspeccionBloc inspeccionBloc ) {
 
     // return StreamBuilder(
     //   stream: bloc.formValidStream ,
@@ -210,23 +249,192 @@ class LoginPage extends StatelessWidget {
           elevation: 0.0,
           color: Colors.deepPurple,
           textColor: Colors.white,
-          onPressed: () {},
+          onPressed: () => _submit(inspeccionBloc),
           // onPressed: snapshot.hasData ? () => _login(bloc, context) : null
         );
     //   },
     // );
   }
- 
-  // _login( LoginBloc bloc, BuildContext context ) {
-  _login(  ) {
 
-    print('============ ');
-    // print('Email: ${ bloc.email }');
-    // print('Password: ${ bloc.password }');
-    print('============ ');
+  _mostrarAlertaInspector( BuildContext context, InspeccionBloc bloc) {
 
-    // Navigator.pushReplacementNamed(context, 'home'); // para que la sisguiente pagina sea el root
+    final size = MediaQuery.of(context).size;
 
+    final inspector = Inspector();
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+
+        return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 35.0),
+            child: Container(
+              width: size.width * 0.80,
+              // margin: EdgeInsets.symmetric(vertical: 30.0),
+              // padding: EdgeInsets.symmetric(vertical: 40.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5.0),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 3.0,
+                    offset: Offset(0.0, 5.0),
+                    spreadRadius: 3.0
+                  )
+                ]
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container( 
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.purple,
+                          Colors.blue
+                        ]
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    height: size.height * 0.1,
+                    width: double.infinity,
+                    child: Text('Resgistro', style: TextStyle(decoration: TextDecoration.none, fontSize: 20.0, color: Colors.white) ,),
+                  ),
+                  Material(
+                    child: Container(
+                      padding: EdgeInsets.all(20.0),
+                      child: Form(
+                        child: Column(
+                          children: <Widget>[
+                            _crearTextUsuario(inspector),
+                            _crearTextContrasena(inspector)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text('Cancelar'),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      FlatButton(
+                        child: Text('Ok'),
+                        onPressed: () {
+                          bloc.agregarInspector(inspector);
+                          Navigator.of(context).pop();
+                          _showSnackBar('Se ha creado el usuario satisfactoriamente');
+                        },
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+        );
+      }
+    );
+
+  }
+
+  Widget _crearTextUsuario( Inspector inspector) {
+
+    return TextFormField(
+      initialValue: inspector.usuario,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: 'Usuario',
+        labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      onChanged: (value) => setState(() {
+          inspector.usuario = value;
+      }),
+      validator: (value) {
+        if ( value.length < 2 ) {
+          return 'Ingrese más de 2 carácteres';
+        } else {
+          return null;
+        }
+      },
+    );
+
+  }
+  
+  Widget _crearTextContrasena( Inspector inspector) {
+
+    return TextFormField(
+      initialValue: inspector.contrasena,
+      keyboardType: TextInputType.visiblePassword,
+      decoration: InputDecoration(
+        labelText: 'Contraseña',
+        labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      onChanged: (value) => setState(() {
+          inspector.contrasena = value;
+      }),
+      validator: (value) {
+        if ( value.length < 2 ) {
+          return 'Ingrese más de 2 carácteres';
+        } else {
+          return null;
+        }
+      },
+    );
+
+  }
+
+  void _submit( InspeccionBloc bloc ) {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      setState(() {
+        _isLoading = true;
+        form.save();
+        _response.doLogin(bloc, _usuario, _contrasena);
+      });
+    }
+  }
+
+  @override
+  void onLoginError() {
+
+    _showSnackBar('No existe ese usuario, prueba de nuevo');
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void onLoginSuccess(Inspector inspector, InspeccionBloc bloc) async {   
+
+    if ( inspector != null ){
+
+      List<Inspector> list = bloc.inspectores;
+
+      list.add(inspector);
+      bloc.changeInspectores(list);
+
+      Navigator.of(context).pushNamed("inspecciones");
+    
+    }else{
+
+      _showSnackBar("No se ha podido recuperar el Usuario, prueba otra vez");
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    
+  }
+
+  void _showSnackBar(String text) {
+    scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(text),
+    ));
   }
 
 }

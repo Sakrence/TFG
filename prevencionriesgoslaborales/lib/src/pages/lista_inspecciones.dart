@@ -411,8 +411,8 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                       child: Column(
                         children: <Widget>[
                           _crearTextFieldDireccion(inspeccion),
-                          _crearTextFieldProvincia(inspeccion),
                           _crearTextFieldPais(inspeccion),
+                          _crearTextFieldProvincia(inspeccion),
                           _crearFieldCoordenadas(inspeccion),
                           _crearTextFieldComentarios(inspeccion),
                           _crearSeleccionInspector(inspeccion, bloc),
@@ -431,7 +431,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                     FlatButton(
                       child: Text('Ok'),
                       onPressed: () {
-                        inspeccion.idInspector = 1;
+                        // inspeccion.idInspector = 1;
                         if ( !_formKey.currentState.validate() ) return;
                         bloc.agregarInspeccion(inspeccion);
                         Navigator.of(context).pop();
@@ -451,14 +451,14 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
   Widget _crearTextNombre( Inspector inspector) {
 
     return TextFormField(
-      initialValue: inspector.nombre,
+      initialValue: inspector.usuario,
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
-        labelText: 'Nombre',
+        labelText: 'Usuario',
         labelStyle: TextStyle(fontSize: 20.0)
       ),
       onChanged: (value) => setState(() {
-          inspector.nombre = value;
+          inspector.usuario = value;
       }),
       validator: (value) {
         if ( value.length < 2 ) {
@@ -640,13 +640,13 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
       ),
       value: inspeccion.idInspector,
       onChanged: ( value ) => setState(() {
-          inspeccion.idInspector = value;
+        inspeccion.idInspector = value.id;
       }),
       items: bloc.inspectores
         .map<DropdownMenuItem<Inspector>>((Inspector value) {
       return DropdownMenuItem<Inspector>(
         value: value,
-        child: (value.nombre) == null ? Text('') : Text(value.nombre),
+        child: (value.usuario) == null ? Text('') : Text(value.usuario),
       );
       }).toList(),
     );

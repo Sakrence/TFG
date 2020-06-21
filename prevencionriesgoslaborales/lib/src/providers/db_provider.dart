@@ -44,7 +44,8 @@ class DBProvider {
         await db.execute(
           'CREATE TABLE Inspector ('
           ' id INTEGER PRIMARY KEY AUTOINCREMENT,'
-          ' nombre TEXT'
+          ' usuario TEXT,'
+          ' contrasena TEXT'
           ')'
         );
 
@@ -146,6 +147,12 @@ class DBProvider {
   }
 
   // CREAR Registros
+  nuevoInspector( Inspector nuevoInspector ) async {
+    final db = await database;
+    final res = await db.insert('Inspector', nuevoInspector.toJson());
+    return res;
+  }
+
   nuevaInspeccionRaw( InspeccionModel nuevaInspeccion ) async {
 
     final db = await database;
@@ -202,6 +209,23 @@ class DBProvider {
 
 
   // SELECT
+  Future<Inspector> getLogin( String usuario, String contrasena ) async {
+
+    final db  = await database;
+    final res = await db.query('Inspector', where: 'usuario = ? and contrasena = ?', whereArgs: [usuario, contrasena] );
+    return res.isNotEmpty ? Inspector.fromJson( res.first ) : null;
+  }
+
+  Future<List<Inspector>> getAllInspectores() async {
+
+    final db  = await database;
+    final res = await db.query('Inspector');
+    List<Inspector> list = res.isNotEmpty 
+                                    ? res.map((e) => Inspector.fromJson(e) ).toList()
+                                    : [];
+    return list;
+  }
+
   Future<List<InspeccionModel>> getInspeccionesIdInspector( int id ) async {
 
     final db  = await database;
@@ -325,6 +349,13 @@ class DBProvider {
   }
 
   // DELETE
+  Future<int> deleteInspector( int id ) async {
+
+    final db = await database;
+    final res = await db.delete('Inspector', where: 'id = ?', whereArgs: [id]);
+    return res;
+  }
+
   Future<int> deleteInspeccion( int id ) async {
 
     final db  = await database;

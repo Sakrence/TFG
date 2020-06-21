@@ -153,20 +153,37 @@ class Foto {
 
 class Inspector {
     Inspector({
-        this.id,
-        this.nombre,
+      this.id,
+      this.usuario,
+      this.contrasena,
     });
 
     int id;
-    String nombre;
+    String usuario;
+    String contrasena;
 
     factory Inspector.fromJson(Map<String, dynamic> json) => Inspector(
-        id      : json["id"],
-        nombre  : json["nombre"],
+      id      : json["id"],
+      usuario  : json["usuario"],
+      contrasena  : json["contrasena"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id"    : id,
-        "nombre": nombre,
+      "id"    : id,
+      "usuario": usuario,
+      "contrasena": contrasena,
     };
+
+    // Inspector.fromMap(dynamic obj) {
+    //   this.usuario = obj['usuario'];
+    //   this.contrasena = obj['contrasena'];
+    // }
+
+    // Map<String, dynamic> toMap() {
+    //   var map = new Map<String, dynamic>();
+    //   map["usuario"] = usuario;
+    //   map["contrasena"] = contrasena;
+    //   return map;
+    // }
+
 }

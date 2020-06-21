@@ -19,7 +19,11 @@ class EvaluacionModel {
         this.coordenadas,
         this.nivelRiesgo = 0,
         this.idDeficiencia,
-    });
+    }){
+      if ( this.coordenadas == null) {
+        this.coordenadas = Coordenadas(latitud: 0.0, longitud: 0.0);
+      }
+    }
 
     int id;
     String riesgo;

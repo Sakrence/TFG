@@ -45,12 +45,17 @@ class EvaluacionesBloc {
 
   addEvaluacion( EvaluacionModel nuevaEvaluacion, int idDeficiencia ) async {
     // final nuevaEvaluacion = EvaluacionModel(idDeficiencia: idDeficiencia);
-    nuevaEvaluacion.nivelDeficiencia = idDeficiencia;
+    nuevaEvaluacion.idDeficiencia = idDeficiencia;
     await DBProvider.db.nuevaEvaluacion(nuevaEvaluacion);
 
     final evaluacion = await DBProvider.db.getEvaluacionByIdDeficiencia(idDeficiencia);
     nuevaEvaluacion.id = evaluacion.id;
-    await DBProvider.db.nuevaFoto(nuevaEvaluacion);
+    if ( nuevaEvaluacion.fotos != null ) {
+      await DBProvider.db.nuevaFoto(nuevaEvaluacion);
+    }
+    if ( nuevaEvaluacion.coordenadas.latitud != 0.0 ) {
+      await DBProvider.db.nuevaCoordenada(nuevaEvaluacion);
+    }
   }
 
   getEvaluacion( int idDeficiencia ) async {
@@ -65,7 +70,17 @@ class EvaluacionesBloc {
 
   editarEvaluacion( EvaluacionModel evaluacion ) async {
     await DBProvider.db.editarEvaluacion(evaluacion);
-    await DBProvider.db.editarFoto(evaluacion);
+    if ( evaluacion.coordenadas.latitud != null ) {
+      final coordenadas = await DBProvider.db.getCoordenadasByIdEvaluacion(evaluacion.id);
+      if(  coordenadas != null ){
+        await DBProvider.db.editarCoordenadas(coordenadas);
+      } else {
+        await DBProvider.db.nuevaCoordenada(evaluacion);
+      }
+    }
+    if ( evaluacion.fotos != null ) {
+      await DBProvider.db.editarFoto(evaluacion);
+    }
 
   }
 

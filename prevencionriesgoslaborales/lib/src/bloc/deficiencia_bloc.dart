@@ -95,6 +95,9 @@ class DeficienciaBloc {
       if ( deficiencias[i].evaluacion != null ) {
         deficiencias[i].evaluacion.fotos = await DBProvider.db.getFotoByIdEvaluacion(deficiencias[i].evaluacion.id);
         deficiencias[i].evaluacion.coordenadas = await DBProvider.db.getCoordenadasByIdEvaluacion(deficiencias[i].evaluacion.id);
+        if ( deficiencias[i].evaluacion.coordenadas == null ) {          
+          deficiencias[i].evaluacion.coordenadas = Coordenadas(latitud: 0.0, longitud: 0.0);
+        }
       }
     }
 

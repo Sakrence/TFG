@@ -195,14 +195,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-  // void navegarACategoria(BuildContext context , CategoriaModel categoria ){
-
-  //   Navigator.of(context).push( MaterialPageRoute (
-  //                             builder: (BuildContext context) => BlocProvider<FactoresBloc> (
-  //                               bloc: FactoresBloc(categoria),
-  //                               child: SubcategoriaPage(),
-  //                             )
-  //                           ));
-  // }
 }

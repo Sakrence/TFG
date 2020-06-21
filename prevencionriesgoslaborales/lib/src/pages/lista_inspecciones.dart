@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -158,6 +159,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
 // si quiero quitar el boton de evaluar pongo un gesture detector aqui y quito el boton
     return Container(
+      height: 70.0,
       margin: EdgeInsets.symmetric(vertical: 6.0),
       decoration: BoxDecoration(
         boxShadow: [
@@ -177,7 +179,8 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
               _texto(inspeccion),
-              _botonEvaluar(context, bloc, inspeccion)
+              // _botonInspeccionar(context, bloc, inspeccion),
+              _acciones(bloc, inspeccion),
           ],
         ),
       ),
@@ -188,7 +191,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
   Widget _texto( InspeccionModel inspeccion ) {
 
     return Container(
-      width: 160,
+      width: 150,
       child: Text(
         inspeccion.direccion,
         textAlign: TextAlign.center,
@@ -198,7 +201,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   }
 
-  Widget _botonEvaluar( BuildContext context, InspeccionBloc bloc, InspeccionModel inspeccion) {
+  Widget _botonInspeccionar( BuildContext context, InspeccionBloc bloc, InspeccionModel inspeccion) {
 
     return Container(
       padding: EdgeInsets.all(10.0),
@@ -215,6 +218,77 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     );
 
   }
+
+  _inspeccionar( InspeccionBloc bloc, inspeccion ){
+    bloc.changeInspeccionSeleccionada(inspeccion);
+    Navigator.pushNamed(context, 'categorias', arguments: inspeccion);
+  }
+
+  _crearInforme( InspeccionBloc bloc, inspeccion ) {
+
+  }
+
+  _cerrarInspeccion(  InspeccionBloc bloc, inspeccion  ) {
+    
+  }
+
+  _acciones( InspeccionBloc bloc, InspeccionModel inspeccion ) {
+
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 7.0),
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            _crearAcciones(Icons.edit, 'Inspeccionar', Colors.green, _inspeccionar, bloc, inspeccion),
+            SizedBox(width: 10.0,),
+            _crearAcciones(Icons.insert_drive_file, 'Informe', Colors.blueAccent, _crearInforme, bloc, inspeccion),
+            SizedBox(width: 10.0,),
+            _crearAcciones(Icons.lock, 'Cerrar', Colors.red, _cerrarInspeccion, bloc, inspeccion),
+            SizedBox(width: 10.0,),
+          ],
+        ),
+      ),
+    );
+
+  }
+
+    Widget _crearAcciones(IconData icono, String texto, Color color, Function callback,  InspeccionBloc bloc, InspeccionModel inspeccion) {
+
+      return GestureDetector(
+      child: Column(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40.0),
+              gradient: LinearGradient(
+                begin: FractionalOffset(-0.93, -0.25),
+                end: FractionalOffset.bottomRight,
+                colors: [
+                  Colors.white,
+                  color.withOpacity(1.0)
+                ],
+              )
+            ),
+            child: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              radius: 16.0,
+              child: Icon( icono, color: Colors.white, size: 20.0 ),
+            ),
+          ),
+          Text(texto, style: TextStyle( color: color)),
+        ],
+      ),
+      onTap: () => callback(bloc, inspeccion), 
+    );
+
+      
+              
+
+    
+  }
+
 
   void _mostrarAlertaInspector( BuildContext context, InspeccionBloc bloc) {
 
@@ -378,6 +452,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                       child: Text('Ok'),
                       onPressed: () {
                         inspeccion.idInspector = 1;
+                        if ( !_formKey.currentState.validate() ) return;
                         bloc.agregarInspeccion(inspeccion);
                         Navigator.of(context).pop();
                       },
@@ -508,27 +583,23 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
       keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
       // initialValue: '${inspeccion.coordenadas.latitud}',
       controller: _latitudController,
-      enabled: false,
+      // enabled: false,
       decoration: InputDecoration(
         labelText: 'Latitud',
         labelStyle: TextStyle(fontSize: 20.0),
       ),
       readOnly: true,
-      // onChanged: (value) => setState(() {
-      //   print('Latitud: ${value}');
-      //     inspeccion.coordenadas.latitud = num.tryParse(value);
-      // }),
       onSaved: (value) => _latitudController.text = '${inspeccion.coordenadas.latitud}',
       validator: (value) {
         bool flag;
         if ( value.isEmpty) flag = false;
         (num.tryParse(value) == null ) ? flag = false : flag = true;
 
-        if ( flag ){
+        if ( flag && num.tryParse(value).ceilToDouble() != 0.0){
           return null;
         } else {
           return 'Solo numeros';
-        }  
+        }   
       },
     );
   }
@@ -538,7 +609,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
       keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
       // initialValue: '${inspeccion.coordenadas.longitud}',
       controller: _longitudController,
-      enabled: false,
+      // enabled: false,
       decoration: InputDecoration(
         labelText: 'Longitud',
         labelStyle: TextStyle(fontSize: 20.0)
@@ -549,7 +620,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
         if ( value.isEmpty) flag = false;
         (num.tryParse(value) == null ) ? flag = false : flag = true;
 
-        if ( flag ){
+        if ( flag && num.tryParse(value).ceilToDouble() != 0.0){
           return null;
         } else {
           return 'Solo numeros';
@@ -569,13 +640,13 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
         labelStyle: TextStyle(fontSize: 20.0)
       ),
       onChanged: (value) => inspeccion.comentarios = value,
-      validator: (value) {
-        if ( value.length < 3 ) {
-          return 'Ingrese un comentario';
-        } else {
-          return null;
-        }
-      },
+      // validator: (value) {
+      //   if ( value.length < 3 ) {
+      //     return 'Ingrese un comentario';
+      //   } else {
+      //     return null;
+      //   }
+      // },
     );
 
   }

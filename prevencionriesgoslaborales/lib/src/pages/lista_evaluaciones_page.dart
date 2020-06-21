@@ -67,19 +67,6 @@ class ListaEvaluacionPage extends StatelessWidget {
             }
           ),
         ),
-        Positioned(
-          bottom: 0.0,
-          right: 0.0,
-          child: Container(
-            padding: EdgeInsets.all(12.0),
-            child: FloatingActionButton.extended(
-              onPressed: (){
-                // crear informe con las deficiencias
-              },
-              label: Text('Crear Informe'),
-            ),
-          ),
-        )
       ],
     );
   }
@@ -206,10 +193,15 @@ class ListaEvaluacionPage extends StatelessWidget {
         onPressed: (){
           if ( deficiencia.evaluacion == null ) {
             EvaluacionModel evaluacion = EvaluacionModel(idDeficiencia: deficiencia.id);
-            // evaluacionBloc.addEvaluacion(evaluacion, deficiencia.id);
+            evaluacionBloc.addEvaluacion(evaluacion, deficiencia.id);
+            evaluacionBloc.getEvaluacion(deficiencia.id);
 
             deficiencia.evaluacion = evaluacion;
-          }
+          } 
+          // else {
+          //   // evaluacionBloc.getEvaluacion(deficiencia.id);
+          //   deficiencia.evaluacion = evaluacionBloc.evaluacion;
+          // }
           Navigator.pushNamed(context, 'formPage', arguments: deficiencia);
         },
         child: Column(

@@ -94,21 +94,30 @@ class InspeccionModel {
 
 class Coordenadas {
     Coordenadas({
-        this.latitud,
-        this.longitud,
+      this.id,
+      this.latitud,
+      this.longitud,
+      this.idEvaluacion,
     });
 
+    int id;
     double latitud;
     double longitud;
+    int idEvaluacion;
+
 
     factory Coordenadas.fromJson(Map<String, dynamic> json) => Coordenadas(
-        latitud   : json["latitud"],
-        longitud  : json["longitud"],
+        id             : json["id"],
+        latitud        : json["latitud"],
+        longitud       : json["longitud"],
+        idEvaluacion   : json["idEvaluacion"],
     );
 
     Map<String, dynamic> toJson() => {
+        "id" : id,
         "latitud" : latitud,
         "longitud": longitud,
+        "idEvaluacion" : idEvaluacion,
     };
 }
 

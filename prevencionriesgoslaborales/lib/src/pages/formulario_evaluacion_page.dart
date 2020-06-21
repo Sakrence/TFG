@@ -3,8 +3,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
+import 'package:location/location.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'dart:math';
@@ -24,41 +26,37 @@ class _FormPageState extends State<FormPage> {
   static final _formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-
-  // DeficienciaBloc deficienciaBloc;
-  // DeficienciaModel deficiencia = new DeficienciaModel();
-  // EvaluacionModel evaluacion;
-  bool _guardando = false;
+  // bool _guardando = false;
   File foto;
   EvaluacionModel evaluacion;
   EvaluacionesBloc evaluacionBloc;
   DeficienciaModel deficiencia;
-
+  double _valueDeficiencia = 0.0;
+  double _valueConsecuencias = 0.0;
+  
+  TextEditingController _latitudController;
+  TextEditingController _longitudController;
 
   final TextEditingController c1 = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
-    // deficienciaBloc = Provider.deficienciaBloc(context);
     evaluacionBloc = Provider.evaluacionesBloc(context);
     final DeficienciaModel deficienciaData = ModalRoute.of(context).settings.arguments;
 
-
+    // evaluacionBloc.getEvaluacion(deficienciaData.id);
+    // if ( deficienciaData.evaluacion.id != null ) {
+    //   evaluacion = evaluacionBloc.evaluacion;
+    // } else {
     evaluacion = deficienciaData.evaluacion;
+    // }
     deficiencia = deficienciaData;
 
+    _actualizarValues();
 
-    // evaluacionBloc.getEvaluacion(deficienciaData.id);
-
-    // if ( evaluacionBloc.evaluacion == null ) {
-    //   if ( deficienciaData != null ) {
-    //     evaluacion = deficienciaData.evaluacion;
-    //     deficiencia = deficienciaData;
-    //   }
-    // } else {
-    //   evaluacion = evaluacionBloc.evaluacion;
-    // }
+    _latitudController = TextEditingController(text:'${evaluacion.coordenadas.latitud}');
+    _longitudController = TextEditingController(text:'${evaluacion.coordenadas.longitud}');
 
     return Scaffold(
       key: scaffoldKey,
@@ -75,6 +73,10 @@ class _FormPageState extends State<FormPage> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.camera_alt),
+        onPressed: _tomarForo,
       ),
     );
   }
@@ -125,9 +127,6 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
-
-
-  // Widget _formulario( BuildContext context, EvaluacionModel evaluacion ) {
   Widget _formulario( BuildContext context ) {
 
     final size = MediaQuery.of(context).size;
@@ -194,13 +193,6 @@ class _FormPageState extends State<FormPage> {
               // _crearForm(evaluacion),
               _crearForm(),
               
-              SizedBox(height: 60.0),
-              // _crearSelect(),
-              SizedBox(height: 30.0),    
-
-              SizedBox(height: 30.0),
-
-              
             ],
           ),
         ),
@@ -211,7 +203,6 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  // Widget _crearForm( EvaluacionModel evaluacion ) {
   Widget _crearForm() {
 
     return Container(
@@ -221,13 +212,15 @@ class _FormPageState extends State<FormPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // _mostrarFoto(evaluacion),
-            // _crearSeleccion(evaluacion),
-            // _crearTextField(evaluacion),
-            // _crearBoton(evaluacion),
-            _mostrarFoto(),
+            _crearTextFieldInfo(),
+            _crearTextFieldRiesgo(),
             _crearSeleccion(),
-            _crearTextField(),
+            _crearSliderNDeficiencia(),
+            _crearSliderNExposicion(),
+            _crearSliderNConsecuencias(),
+            _crearFieldCoordenadas(),
+            _crearTextFieldAccionCorrectora(),
+            _mostrarFoto(),
             _crearBoton(),
           ],
         ),
@@ -235,13 +228,26 @@ class _FormPageState extends State<FormPage> {
     );
 
   }
+  
+  Widget _crearTextFieldInfo() {
 
-  // Widget _crearSeleccion( EvaluacionModel evaluacion ) {
+    return TextFormField(
+      initialValue: deficiencia.factorRiesgo.nombre,
+      enabled: false,
+      decoration: InputDecoration(
+        labelText: 'Factor de Riesgo',
+        labelStyle: TextStyle(fontSize: 20.0),
+      ),
+      readOnly: true,
+    );
+
+  }
+
   Widget _crearSeleccion() {
 
     return DropdownButtonFormField(
       decoration: InputDecoration(
-        labelText: 'Selección',
+        labelText: 'Tipo Factor',
         labelStyle: TextStyle(fontSize: 20.0)
       ),
       value: evaluacion.tipoFactor,
@@ -266,14 +272,313 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  // Widget _crearTextField( EvaluacionModel evaluacion ) {
-  Widget _crearTextField( ) {
+  Widget _crearSliderNDeficiencia() {
+
+    final _size = MediaQuery.of(context).size;
+
+    return  Container(
+      padding: EdgeInsets.symmetric(vertical: 15),
+      child: Column(
+        children: <Widget>[
+          Text('Nivel de Deficiencia', style: TextStyle(fontSize: 17),),
+          Container(
+            width: _size.width * 0.77,
+            height: 25,
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: Theme.of(context).primaryColor.withOpacity(0.7),
+                inactiveTrackColor: Theme.of(context).primaryColor.withOpacity(0.3),
+                trackShape: RoundedRectSliderTrackShape(),
+                trackHeight: 4.0,
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                thumbColor: Theme.of(context).primaryColor.withOpacity(0.8),
+                overlayColor: Theme.of(context).primaryColor.withAlpha(32),
+                overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                tickMarkShape: RoundSliderTickMarkShape(),
+                activeTickMarkColor: Colors.black,
+                inactiveTickMarkColor: Colors.black,
+                valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                valueIndicatorColor: Theme.of(context).primaryColor.withOpacity(0.8),
+                valueIndicatorTextStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                showValueIndicator: ShowValueIndicator.always,
+              ),
+              child: Slider(
+                value: _valueDeficiencia,
+                min: 0,
+                max: 3,
+                divisions: 3,
+                // label: 'Nivel de Exposicion: ${evaluacion.nivelDeficiencia}',
+                onChanged: (value) {
+                  _valueDeficiencia = value;
+                  switch ( value.ceil() ) {
+                    case 0:
+                      evaluacion.nivelDeficiencia = 0;
+                      break;
+                    case 1:
+                      evaluacion.nivelDeficiencia = 2;
+                      break;
+                    case 2:
+                      evaluacion.nivelDeficiencia = 6;
+                      break;
+                    case 3:
+                      evaluacion.nivelDeficiencia = 10;
+                      break;
+                  }
+                  setState(() {});
+                },
+              ),
+            ),
+          ),
+          Container(
+            width: _size.width * 0.82,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text('0'),
+                Text('2'),
+                Text('6'),
+                Text('10'),
+              ],
+            ),
+          ),
+        ],
+        
+      ),
+    );
+  }
+
+  Widget _crearSliderNExposicion() {
+
+    final _size = MediaQuery.of(context).size;
+
+    return  Container(
+      padding: EdgeInsets.symmetric(vertical: 15),
+      child: Column(
+        children: <Widget>[
+          Text('Nivel de Exposicion', style: TextStyle(fontSize: 17),),
+          Container(
+            width: _size.width * 0.77,
+            height: 25,
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: Theme.of(context).primaryColor.withOpacity(0.7),
+                inactiveTrackColor: Theme.of(context).primaryColor.withOpacity(0.3),
+                trackShape: RoundedRectSliderTrackShape(),
+                trackHeight: 4.0,
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                thumbColor: Theme.of(context).primaryColor.withOpacity(0.8),
+                overlayColor: Theme.of(context).primaryColor.withAlpha(32),
+                overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                tickMarkShape: RoundSliderTickMarkShape(),
+                activeTickMarkColor: Colors.black,
+                inactiveTickMarkColor: Colors.black,
+                valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                valueIndicatorColor: Theme.of(context).primaryColor.withOpacity(0.8),
+                valueIndicatorTextStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                showValueIndicator: ShowValueIndicator.always,
+              ),
+              child: Slider(
+                value: evaluacion.nivelExposicion.ceilToDouble(),
+                min: 0,
+                max: 3,
+                divisions: 3,
+                // label: 'Nivel de Exposicion: ${evaluacion.nivelExposicion}',
+                onChanged: (value) {
+                  setState(
+                    () {
+                      evaluacion.nivelExposicion = value.ceil();
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+          Container(
+            width: _size.width * 0.82,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text('1'),
+                Text('2'),
+                Text('3'),
+                Text('4'),
+              ],
+            ),
+          ),
+        ],
+        
+      ),
+    );
+
+  }
+
+  Widget _crearSliderNConsecuencias() {
+
+    final _size = MediaQuery.of(context).size;
+
+    return  Container(
+      padding: EdgeInsets.symmetric(vertical: 15),
+      child: Column(
+        children: <Widget>[
+          Text('Nivel Consecuencias', style: TextStyle(fontSize: 17),),
+          Container(
+            width: _size.width * 0.77,
+            height: 25,
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: Theme.of(context).primaryColor.withOpacity(0.7),
+                inactiveTrackColor: Theme.of(context).primaryColor.withOpacity(0.3),
+                trackShape: RoundedRectSliderTrackShape(),
+                trackHeight: 4.0,
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                thumbColor: Theme.of(context).primaryColor.withOpacity(0.8),
+                overlayColor: Theme.of(context).primaryColor.withAlpha(32),
+                overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                tickMarkShape: RoundSliderTickMarkShape(),
+                activeTickMarkColor: Colors.black,
+                inactiveTickMarkColor: Colors.black,
+                valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                valueIndicatorColor: Theme.of(context).primaryColor.withOpacity(0.8),
+                valueIndicatorTextStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                showValueIndicator: ShowValueIndicator.always,
+              ),
+              child: Slider(
+                value: _valueConsecuencias,
+                min: 0,
+                max: 3,
+                divisions: 3,
+                // label: 'Nivel de Exposicion: ${evaluacion.nivelDeficiencia}',
+                onChanged: (value) {
+                  _valueConsecuencias = value;
+                  switch ( value.ceil() ) {
+                    case 0:
+                      evaluacion.nivelConsecuencias = 10;
+                      break;
+                    case 1:
+                      evaluacion.nivelConsecuencias = 25;
+                      break;
+                    case 2:
+                      evaluacion.nivelConsecuencias = 60;
+                      break;
+                    case 3:
+                      evaluacion.nivelConsecuencias = 100;
+                      break;
+                  }
+                  setState(() {});
+                },
+              ),
+            ),
+          ),
+          Container(
+            width: _size.width * 0.82,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text('10'),
+                Text('25'),
+                Text('60'),
+                Text('100'),
+              ],
+            ),
+          ),
+        ],
+        
+      ),
+    );
+  }
+
+  Widget _crearFieldCoordenadas() {
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              children: <Widget>[
+                _crearTextFieldLatitud(),
+                _crearTextFieldLongitud()
+              ],
+            ),
+          ),
+          IconButton(
+            iconSize: 30.0,
+            icon: Icon(Icons.location_searching),
+            color: Theme.of(context).primaryColor,
+            onPressed: _getLocation
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _crearTextFieldLatitud() {
+    return TextFormField(
+      keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
+      // initialValue: '${inspeccion.coordenadas.latitud}',
+      controller: _latitudController,
+      enabled: false,
+      decoration: InputDecoration(
+        labelText: 'Latitud',
+        labelStyle: TextStyle(fontSize: 20.0),
+      ),
+      readOnly: true,
+      // onChanged: (value) => setState(() {
+      //   print('Latitud: ${value}');
+      //     inspeccion.coordenadas.latitud = num.tryParse(value);
+      // }),
+      onSaved: (value) => _latitudController.text = '${evaluacion.coordenadas.latitud}',
+      validator: (value) {
+        bool flag;
+        if ( value.isEmpty) flag = false;
+        (num.tryParse(value) == null ) ? flag = false : flag = true;
+
+        if ( flag ){
+          return null;
+        } else {
+          return 'Solo números';
+        }  
+      },
+    );
+  }
+
+  Widget _crearTextFieldLongitud() {
+    return TextFormField(
+      keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
+      // initialValue: '${inspeccion.coordenadas.longitud}',
+      controller: _longitudController,
+      enabled: false,
+      decoration: InputDecoration(
+        labelText: 'Longitud',
+        labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      onSaved: (value) => _longitudController.text = '${evaluacion.coordenadas.longitud}',
+      validator: (value) {
+        bool flag;
+        if ( value.isEmpty) flag = false;
+        (num.tryParse(value) == null ) ? flag = false : flag = true;
+
+        if ( flag ){
+          return null;
+        } else {
+          return 'Solo numeros';
+        }  
+      },
+    );
+  }
+
+  Widget _crearTextFieldRiesgo( ) {
 
     return TextFormField(
       initialValue: evaluacion.riesgo,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
-        labelText: 'Descripción',
+        labelText: 'Riesgo',
         labelStyle: TextStyle(fontSize: 20.0)
       ),
       // onChanged: (value) {
@@ -292,25 +597,49 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  // Widget _crearBoton( EvaluacionModel evaluacion ) {
+  Widget _crearTextFieldAccionCorrectora() {
+    return Container(
+      padding: EdgeInsets.only(bottom: 15),
+      child: TextFormField(
+        maxLines: 3,
+        initialValue: evaluacion.accionCorrectora,
+        textCapitalization: TextCapitalization.sentences,
+        decoration: InputDecoration(
+          labelText: 'Acción Correctora',
+          labelStyle: TextStyle(fontSize: 20.0)
+        ),
+        onChanged: (value) => evaluacion.accionCorrectora = value,
+        validator: (value) {
+          if ( value.length < 3 ) {
+            return 'Ingrese una acción correctora';
+          } else {
+            return null;
+          }
+        },
+      ),
+    );
+  }
+
   Widget _crearBoton(  ) {
 
-    return RaisedButton.icon(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0)
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: RaisedButton.icon(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0)
+        ),
+        color: Colors.deepPurple,
+        textColor: Colors.white,
+        label: Text('Guardar'),
+        icon: Icon( Icons.save ),
+        // onPressed: (_guardando) ? null :  _submit,
+        // onPressed: () => _submit(evaluacion),
+        onPressed: _submit,
       ),
-      color: Colors.deepPurple,
-      textColor: Colors.white,
-      label: Text('Guardar'),
-      icon: Icon( Icons.save ),
-      // onPressed: (_guardando) ? null :  _submit,
-      // onPressed: () => _submit(evaluacion),
-      onPressed: _submit,
     );
 
   }
 
-  // void _submit( EvaluacionModel evaluacion ) async {
   void _submit() async {
 
     if ( !_formKey.currentState.validate() ) return;
@@ -319,23 +648,25 @@ class _FormPageState extends State<FormPage> {
     // setState(() { _guardando = true; }); // para evitar que se guarden varias veces lo mismo sin querer
 
     
+    // addFoto();
 
-    if ( foto != null ) {
-      // deficiencia.imagen = await deficienciaBloc.subirFoto(foto); // crearla para que suba foto a la base de datos y devuelva la foto
-      List<int> imageBytes = foto.readAsBytesSync();
-      String base64Image = base64Encode(imageBytes);
-      // print(base64Image);
-      if ( evaluacion.fotos == null ) {
-        List<Foto> lista = List();
-        Foto aux = Foto(foto: Base64Decoder().convert(base64Image), idEvaluacion: evaluacion.id);
-        lista.add(aux);
-        evaluacion.fotos = lista;
-      } else {
-        evaluacion.fotos[0].foto = Base64Decoder().convert(base64Image);
-      }
+    // if ( foto != null ) {
+    //   // deficiencia.imagen = await deficienciaBloc.subirFoto(foto); // crearla para que suba foto a la base de datos y devuelva la foto
+    //   List<int> imageBytes = foto.readAsBytesSync();
+    //   String base64Image = base64Encode(imageBytes);
+    //   // print(base64Image);
+    //   if ( evaluacion.fotos == null ) {
+    //     List<Foto> lista = List();
+    //     Foto aux = Foto(foto: Base64Decoder().convert(base64Image), idEvaluacion: evaluacion.id);
+    //     lista.add(aux);
+    //     evaluacion.fotos = lista;
+    //   } else {
+    //     evaluacion.fotos.add(Foto(foto: Base64Decoder().convert(base64Image), idEvaluacion: evaluacion.id));
+    //     //evaluacion.fotos[0].foto = Base64Decoder().convert(base64Image);
+    //   }
 
-      // Uint8List _bytesImage = Base64Decoder().convert(base64Image);
-    }
+    //   // Uint8List _bytesImage = Base64Decoder().convert(base64Image);
+    // }
 
    
     // await DBProvider.db.nuevaEvaluacion(evaluacion);
@@ -344,12 +675,6 @@ class _FormPageState extends State<FormPage> {
     } else {
       await evaluacionBloc.addEvaluacion(evaluacion, deficiencia.id);
     }
-
-    // if ( deficiencia.tipo == null  ) {
-    //   deficienciaBloc.agregarDeficiencia(deficiencia); // crear para que cree la deficiencia en la BD
-    // } else {
-    //   deficienciaBloc.editarDeficiencia(deficiencia);
-    // }
 
 
     print('Todo OK');
@@ -373,76 +698,177 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  // Widget _mostrarFoto( EvaluacionModel evaluacion ) {
   Widget _mostrarFoto( ) {
 
-    if ( evaluacion.fotos != null ) {
-
-      // String decoImage = deficiencia.evaluacion.fotos[0].foto;
-      // Uint8List _bytesImage = Base64Decoder().convert(decoImage);
-      Uint8List _bytesImage = evaluacion.fotos[0].foto;
-
-      return FadeInImage(
-        height: 300.0,
-        width: 300.0,
-        fit: BoxFit.cover,
-        placeholder: AssetImage('assets/img/original.gif'),
-        image: Image.memory(
-          _bytesImage,
-        ).image,
-      );
+    if ( evaluacion.fotos != null && evaluacion.fotos.length > 0 ) {
       
+      if ( foto != null ) {
 
+        return addFoto();
+      }
+      
+      return fotoCarrusel( evaluacion.fotos );
+    
     } else {
 
-      if( foto != null ){
-        return Image.file(
-          foto,
-          fit: BoxFit.cover,
-          height: 300.0,
-          width: 300.0,
-        );
+      if ( foto != null ) {
+      
+        return addFoto();
+      
+      } else {
+
+        return _carruselNoImg();
       }
-
-      return Image(
-
-        image: AssetImage( foto?.path ?? 'assets/img/no-image.png'),
-        height: 300.0,
-        width: 300.0,
-        fit: BoxFit.cover,
-
-      );
 
     }
 
   }
 
-  // _seleccionarForo( EvaluacionModel evaluacion ) async {
-  _seleccionarForo(  ) async {
+  Widget addFoto() {
 
-    // _procesarImagen( ImageSource.gallery, evaluacion );
-    _procesarImagen( ImageSource.gallery);
+    List<int> imageBytes = foto.readAsBytesSync();
+    String base64Image = base64Encode(imageBytes);
+
+    if ( evaluacion.fotos == null ) {
+      List<Foto> lista = List();
+      Foto aux = Foto(foto: Base64Decoder().convert(base64Image), idEvaluacion: evaluacion.id);
+      lista.add(aux);
+      evaluacion.fotos = lista;
+    } else {
+      evaluacion.fotos.add(Foto(foto: Base64Decoder().convert(base64Image), idEvaluacion: evaluacion.id));
+    }
+    
+    foto = null;
+    return fotoCarrusel( evaluacion.fotos );
 
   }
-  
-  // _procesarImagen( ImageSource source, EvaluacionModel evaluacion  ) async {
+
   _procesarImagen( ImageSource source) async {
-// TODO: mirar que no haya problemas de que pierdan los datos
+  // TODO: mirar que no haya problemas de que pierdan los datos
     final picker = ImagePicker();
     
     final pickedFile = await picker.getImage( source: source );
 
     foto = File(pickedFile.path);
 
-    if ( foto != null ) {
-      if (evaluacion.fotos != null ) evaluacion.fotos[0].foto = null;
-    }
-
     setState(() {});
 
   }
+
+  _seleccionarForo(  ) async {
+
+    _procesarImagen( ImageSource.gallery);
+
+  }
   
-  // _tomarForo( EvaluacionModel evaluacion ) async {
+  Widget _carruselNoImg() {
+
+    final _screenSize = MediaQuery.of(context).size;
+
+    return Container(
+      height: _screenSize.height * 0.2,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.0),
+        child: Image(
+            image: AssetImage('assets/img/no-image.png'),
+            // height: 300.0,
+            // width: 300.0,
+            fit: BoxFit.cover,
+          ),
+      ),
+    );
+  }
+  
+  Widget fotoCarrusel( List<Foto> fotos ) {
+
+    final _pageController = new PageController(
+      initialPage: 0,
+      viewportFraction: 0.3
+    );
+
+    final _screenSize = MediaQuery.of(context).size;
+
+
+    return Container(
+      height: _screenSize.height * 0.2,
+      child: PageView.builder(
+        pageSnapping: false,
+        controller: _pageController,
+        // children: _tarjetas( context ),
+        itemCount: fotos.length,
+        itemBuilder: ( context, i ) => _tarjeta(context, fotos[i])
+      ),
+    );
+  }
+
+  Widget _tarjeta( BuildContext context, Foto foto ) {
+
+    // final tarjeta = Container(
+    return Container(
+        margin: EdgeInsets.only(right: 15.0),
+        child: Column(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: FadeInImage(
+                    height: 150.0,
+                    width: 150.0,
+                    fit: BoxFit.cover,
+                    placeholder: AssetImage('assets/img/original.gif'),
+                    image: Image.memory(
+                      foto.foto,
+                    ).image,
+                  ),
+                ),
+                Positioned(
+                  top: -2,
+                  right: -2,
+                  height: 40,
+                  width: 40,
+                  child: Container(
+                    child: Ink(
+                      decoration: ShapeDecoration(
+                        color: Colors.red,
+                        shape: CircleBorder(),
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.delete_forever),
+                        color: Colors.white,
+                        onPressed: () async {
+                          if ( foto.id != null ){
+                            await DBProvider.db.deleteFoto(foto);
+                            evaluacion.fotos.remove(foto);
+                            setState(() {});
+                          } else {
+                            evaluacion.fotos.remove(foto);
+                            setState(() {});
+                          }
+                        }
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            
+          ],
+        ),
+      );
+
+    // return GestureDetector(
+    //   child: tarjeta,
+    //   onTap: () {
+
+    //     Navigator.pushNamed(context, 'detalle', arguments: pelicula );
+
+    //   },
+    // );
+
+  }
+
+
   _tomarForo( ) async {
 
     // _procesarImagen( ImageSource.camera, evaluacion );
@@ -450,5 +876,79 @@ class _FormPageState extends State<FormPage> {
 
   }
 
+  _actualizarValues() {
 
+    
+    switch ( evaluacion.nivelDeficiencia ) {
+      case 0:
+        _valueDeficiencia = 0;
+        break;
+      case 2:        
+        _valueDeficiencia = 1;
+        break;
+      case 6:        
+        _valueDeficiencia = 2;
+        break;
+      case 10:        
+        _valueDeficiencia = 3;
+        break;
+    }
+
+    switch ( evaluacion.nivelConsecuencias ) {
+      case 10:
+        _valueConsecuencias = 0;
+        break;
+      case 25:        
+        _valueConsecuencias = 1;
+        break;
+      case 60:        
+        _valueConsecuencias = 2;
+        break;
+      case 100:        
+        _valueConsecuencias = 3;
+        break;
+    }
+
+
+  }
+
+  _getLocation() async {
+
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+
+    setState(() {
+      evaluacion.coordenadas.latitud = _locationData.latitude;
+      print(_locationData.latitude);
+      print(evaluacion.coordenadas.latitud);
+      evaluacion.coordenadas.longitud = _locationData.longitude;
+      print(_locationData.longitude);
+      print(evaluacion.coordenadas.longitud);
+    });
+
+    _formKey.currentState.save();
+
+    
+  }
 }

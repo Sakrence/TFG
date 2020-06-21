@@ -100,10 +100,18 @@ class DBProvider {
           ')'
         );
 
+        // await db.execute(
+        //   'CREATE TABLE Foto ('
+        //   ' id INTEGER PRIMARY KEY AUTOINCREMENT,'
+        //   ' foto BLOB,'
+        //   ' idEvaluacion INTEGER,'
+        //   ' FOREIGN KEY (idEvaluacion) REFERENCES Evaluaciones (id) ON DELETE NO ACTION ON UPDATE NO ACTION'
+        //   ')'
+        // );
         await db.execute(
           'CREATE TABLE Foto ('
           ' id INTEGER PRIMARY KEY AUTOINCREMENT,'
-          ' foto BLOB,'
+          ' foto TEXT,'
           ' idEvaluacion INTEGER,'
           ' FOREIGN KEY (idEvaluacion) REFERENCES Evaluaciones (id) ON DELETE NO ACTION ON UPDATE NO ACTION'
           ')'
@@ -182,6 +190,13 @@ class DBProvider {
       res++;
     }
     return res;
+  }
+
+  nuevaCoordenada( EvaluacionModel evaluacion ) async {
+
+    final db  = await database;
+    evaluacion.coordenadas.idEvaluacion = evaluacion.id;
+    return await db.insert('Coordenadas', evaluacion.coordenadas.toJson());
   }
 
 
@@ -289,15 +304,23 @@ class DBProvider {
     int res = 0;
     for (var i = 0; i < evaluacion.fotos.length ; i++) {
 
-      if ( evaluacion.fotos[i].idEvaluacion == null ) {
+      if ( evaluacion.fotos[i].id == null ) {
         evaluacion.fotos[i].idEvaluacion = evaluacion.id;
         await db.insert('Foto', evaluacion.fotos[i].toJson());
         res++;
       } else {
-        await db.update('Foto', evaluacion.fotos[i].toJson(), where: 'id = ?', whereArgs: [evaluacion.fotos[i].id] );
+        await db.update('Foto', evaluacion.fotos[i].toJson(), where: 'id = ? and idEvaluacion = ?', whereArgs: [evaluacion.fotos[i].id, evaluacion.id] );
         res++;
       }
     }
+    return res;
+  }
+
+  Future<int> editarCoordenadas( Coordenadas coordenadas ) async {
+
+    final db  = await database;
+    // evaluacion.coordenadas.idEvaluacion = evaluacion.id;
+    final res = await db.update('Coordenadas', coordenadas.toJson(), where: 'id = ?', whereArgs: [coordenadas.id] );
     return res;
   }
 
@@ -327,11 +350,11 @@ class DBProvider {
     return (res+3);
   }
 
-  // Future<int> deleteAll() async {
-
-  //   final db = await database;
-  //   final res = await db.delete('Inspecciones');
-  //   return res;
-  // }
+  Future<int> deleteFoto( Foto foto ) async {
+    
+    final db  = await database;
+    final res = await db.delete('Foto', where: 'id = ?', whereArgs: [foto.id]);
+    return res;
+  }
 
 }

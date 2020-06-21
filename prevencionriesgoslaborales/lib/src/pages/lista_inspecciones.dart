@@ -201,24 +201,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   }
 
-  Widget _botonInspeccionar( BuildContext context, InspeccionBloc bloc, InspeccionModel inspeccion) {
-
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: FloatingActionButton.extended(
-        heroTag: UniqueKey(),
-        backgroundColor: Color.fromRGBO(52, 54, 101, 1.0),
-        onPressed: (){
-          bloc.changeInspeccionSeleccionada(inspeccion);
-          Navigator.pushNamed(context, 'categorias', arguments: inspeccion);
-        },
-        label: Text('Inspeccionar', overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.white),),
-        icon: Icon(Icons.search, color: Colors.blueAccent),
-      ),
-    );
-
-  }
-
   _inspeccionar( InspeccionBloc bloc, inspeccion ){
     bloc.changeInspeccionSeleccionada(inspeccion);
     Navigator.pushNamed(context, 'categorias', arguments: inspeccion);
@@ -432,8 +414,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                           _crearTextFieldProvincia(inspeccion),
                           _crearTextFieldPais(inspeccion),
                           _crearFieldCoordenadas(inspeccion),
-                          // _crearTextFieldLatitud(inspeccion),
-                          // _crearTextFieldLongitud(inspeccion),
                           _crearTextFieldComentarios(inspeccion),
                           _crearSeleccionInspector(inspeccion, bloc),
                         ],

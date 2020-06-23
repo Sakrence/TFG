@@ -1,11 +1,19 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:csv/csv.dart';
+// import 'package:downloads_path_provider/downloads_path_provider.dart';
+import 'package:downloads_path_provider/downloads_path_provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
+
 
 class ListaInspeccionPage extends StatefulWidget {
   @override
@@ -14,6 +22,7 @@ class ListaInspeccionPage extends StatefulWidget {
 
 class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
   static final _formKey = GlobalKey<FormState>();
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
   final _latitudController = TextEditingController(text:'0.0');
   final _longitudController = TextEditingController(text:'0.0');
 
@@ -21,8 +30,10 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
   Widget build(BuildContext context) {
 
     final _inspeccionBloc = Provider.inspeccionBloc(context);
+    _inspeccionBloc.obtenerInspecciones(_inspeccionBloc.inspectorSeleccionado.id);
 
     return Scaffold(
+      key: scaffoldKey,
       body: Stack(
         children: <Widget>[
           _fondoApp(),
@@ -82,15 +93,15 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
               padding: EdgeInsets.all(12.0),
               child: Row(
                 children: <Widget>[
-                  FloatingActionButton.extended(
-                    heroTag: UniqueKey(),
-                    onPressed: (){
-                      _mostrarAlertaInspector(context, _inspeccionBloc);
-                      // crear informe con las deficiencias
-                    },
-                    label: Text('Crear Inspector'),
-                  ),
-                  SizedBox(width: 10.0,),
+                  // FloatingActionButton.extended(
+                  //   heroTag: UniqueKey(),
+                  //   onPressed: (){
+                  //     _mostrarAlertaInspector(context, _inspeccionBloc);
+                  //     // crear informe con las deficiencias
+                  //   },
+                  //   label: Text('Crear Inspector'),
+                  // ),
+                  // SizedBox(width: 10.0,),
                   FloatingActionButton.extended(
                     heroTag: UniqueKey(),
                     onPressed: (){
@@ -206,11 +217,41 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     Navigator.pushNamed(context, 'categorias', arguments: inspeccion);
   }
 
-  _crearInforme( InspeccionBloc bloc, inspeccion ) {
+  _crearInforme( InspeccionBloc bloc, InspeccionModel inspeccion ) async {
+    
+    // await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    if (await permission.Permission.storage.request().isGranted) {
 
+      List<List<dynamic>> csvData = [
+        <String>["Inspeccion","Pais", "Provincia", "Dirección", "Latitud", "Longitud"],
+        [inspeccion.id, inspeccion.pais, inspeccion.provincia, inspeccion.direccion, inspeccion.latitud, inspeccion.longitud],
+        [],
+        <String>["FACTORES"],
+        <String>["Código", "Nombre"], 
+        ...inspeccion.deficiencias.map((item) => 
+                [item.factorRiesgo.idPadre.toString()+item.factorRiesgo.codigo,
+                item.factorRiesgo.nombre]),
+      ];
+
+      String csv = ListToCsvConverter(fieldDelimiter: ';').convert(csvData);
+
+      Directory downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
+
+      final String path = '${downloadsDirectory.path}/lugar_inspeccion${inspeccion.id}.csv';
+      print(path);
+      final File file = File(path);
+
+      // Save csv string using default configuration
+      await file.writeAsString(csv, mode: FileMode.write);
+      // await file.writeAsStringSync(csv, mode: FileMode.write);
+
+      print(csvData);
+      _showSnackBar('Se ha creado el archivo CSV en su tarjeta SD -> Download');
+      
+    }
   }
 
-  _cerrarInspeccion(  InspeccionBloc bloc, inspeccion  ) {
+  _cerrarInspeccion(  InspeccionBloc bloc, InspeccionModel inspeccion  ) {
     
   }
 
@@ -236,7 +277,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   }
 
-    Widget _crearAcciones(IconData icono, String texto, Color color, Function callback,  InspeccionBloc bloc, InspeccionModel inspeccion) {
+  Widget _crearAcciones(IconData icono, String texto, Color color, Function callback,  InspeccionBloc bloc, InspeccionModel inspeccion) {
 
       return GestureDetector(
       child: Column(
@@ -259,16 +300,11 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
               child: Icon( icono, color: Colors.white, size: 20.0 ),
             ),
           ),
-          Text(texto, style: TextStyle( color: color)),
+          Text(texto, style: TextStyle( color: color, fontSize: 10.0)),
         ],
       ),
       onTap: () => callback(bloc, inspeccion), 
     );
-
-      
-              
-
-    
   }
 
 
@@ -415,7 +451,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                           _crearTextFieldProvincia(inspeccion),
                           _crearFieldCoordenadas(inspeccion),
                           _crearTextFieldComentarios(inspeccion),
-                          _crearSeleccionInspector(inspeccion, bloc),
+                          // _crearSeleccionInspector(inspeccion, bloc),
                         ],
                       ),
                     ),
@@ -433,6 +469,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                       onPressed: () {
                         // inspeccion.idInspector = 1;
                         if ( !_formKey.currentState.validate() ) return;
+                        inspeccion.idInspector = bloc.inspectorSeleccionado.id;
                         bloc.agregarInspeccion(inspeccion);
                         Navigator.of(context).pop();
                       },
@@ -569,7 +606,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
         labelStyle: TextStyle(fontSize: 20.0),
       ),
       readOnly: true,
-      onSaved: (value) => _latitudController.text = '${inspeccion.coordenadas.latitud}',
+      onSaved: (value) => _latitudController.text = '${inspeccion.latitud}',
       validator: (value) {
         bool flag;
         if ( value.isEmpty) flag = false;
@@ -594,7 +631,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
         labelText: 'Longitud',
         labelStyle: TextStyle(fontSize: 20.0)
       ),
-      onSaved: (value) => _longitudController.text = '${inspeccion.coordenadas.longitud}',
+      onSaved: (value) => _longitudController.text = '${inspeccion.longitud}',
       validator: (value) {
         bool flag;
         if ( value.isEmpty) flag = false;
@@ -680,16 +717,24 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     _locationData = await location.getLocation();
 
     setState(() {
-      inspeccion.coordenadas.latitud = _locationData.latitude;
-      print(_locationData.latitude);
-      print(inspeccion.coordenadas.latitud);
-      inspeccion.coordenadas.longitud = _locationData.longitude;
-      print(_locationData.longitude);
-      print(inspeccion.coordenadas.longitud);
+      // inspeccion.coordenadas.latitud = _locationData.latitude;
+      inspeccion.latitud = _locationData.latitude;
+      // print(_locationData.latitude);
+      // print(inspeccion.coordenadas.latitud);
+      // inspeccion.coordenadas.longitud = _locationData.longitude;
+      inspeccion.longitud = _locationData.longitude;
+      // print(_locationData.longitude);
+      // print(inspeccion.coordenadas.longitud);
     });
 
     _formKey.currentState.save();
 
     
+  }
+
+  void _showSnackBar(String text) {
+    scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(text),
+    ));
   }
 }

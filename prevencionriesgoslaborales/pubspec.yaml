@@ -34,6 +34,9 @@ dependencies:
   path_provider: ^1.6.10
   location: ^3.0.2
   flutter_xlider: ^3.4.0
+  csv: ^4.0.3
+  downloads_path_provider: ^0.1.0
+  permission_handler: ^5.0.1
 
 dev_dependencies:
   flutter_test:

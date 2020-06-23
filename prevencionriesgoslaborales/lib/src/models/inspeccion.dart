@@ -21,9 +21,9 @@ class InspeccionModel {
         this.direccion,
         this.provincia,
         this.pais,
-        // this.latitud,
-        // this.longitud,
-        this.coordenadas,
+        this.latitud,
+        this.longitud,
+        // this.coordenadas,
         this.comentarios,
         this.idInspector,
         // this.inspector,
@@ -31,9 +31,9 @@ class InspeccionModel {
     }){
       if ( this.fechaFin == null ) {
             this.fechaFin = DateTime.now().millisecondsSinceEpoch;
-            // this.latitud = 1.0;
-            // this.longitud = 1.0;
-            this.coordenadas = new Coordenadas(latitud: 0.0, longitud: 0.0);
+            this.latitud = 0.0;
+            this.longitud = 0.0;
+            // this.coordenadas = new Coordenadas(latitud: 0.0, longitud: 0.0);
             this.pais = "";
             this.provincia = "";
             this.deficiencias = [];
@@ -46,9 +46,9 @@ class InspeccionModel {
     String direccion;
     String provincia;
     String pais;
-    // double latitud;
-    // double longitud;
-    Coordenadas coordenadas;
+    double latitud;
+    double longitud;
+    // Coordenadas coordenadas;
     String comentarios;
     // Inspector inspector;
     int idInspector;
@@ -62,8 +62,8 @@ class InspeccionModel {
         direccion     : json["direccion"],
         provincia     : json["provincia"],
         pais          : json["pais"],
-        // latitud       : json["latitud"],
-        // longitud      : json["longitud"],
+        latitud       : json["latitud"],
+        longitud      : json["longitud"],
         // coordenadas   : Coordenadas.fromJson(json["coordenadas"]),
         comentarios   : json["comentarios"],
         idInspector   : json["inspector"],
@@ -81,8 +81,10 @@ class InspeccionModel {
         "direccion"   : direccion,
         "provincia"   : provincia,
         "pais"        : pais,
-        "latitud"     : coordenadas.latitud,
-        "longitud"    : coordenadas.longitud,
+        // "latitud"     : coordenadas.latitud,
+        // "longitud"    : coordenadas.longitud,
+        "latitud"     : latitud,
+        "longitud"    : longitud,
         // "coordenadas" : coordenadas.toJson(),
         "comentarios" : comentarios,
         "idInspector" : idInspector,

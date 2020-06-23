@@ -14,7 +14,7 @@ class LoginResponse {
   doLogin(InspeccionBloc bloc, String usuario, String contrasena) {
     bloc
         .getLogin(usuario, contrasena)
-        .then((usuario) => _callBack.onLoginSuccess(usuario, bloc))
+        .then((inspector) => _callBack.onLoginSuccess(inspector, bloc))
         .catchError((onError) => _callBack.onLoginError());
   } 
 }

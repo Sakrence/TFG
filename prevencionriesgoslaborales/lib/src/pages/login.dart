@@ -23,6 +23,14 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     _response = new LoginResponse(this);
   }
 
+  bool _obscureText = true;
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     
@@ -211,21 +219,24 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     // return StreamBuilder(
     //   stream: bloc.passwordStream ,
     //   builder: (BuildContext context, AsyncSnapshot snapshot){
-
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: TextFormField(
-            obscureText: true,
-            decoration: InputDecoration(
-              icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
-              labelText: 'Contraseña',
-              // counterText: snapshot.data,
-              // errorText: snapshot.error
-            ),
-            onSaved: (value) => _contrasena = value,
-            // onChanged: bloc.changePassword,
-          ),
-        );
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: TextFormField(
+        obscureText: _obscureText,
+        decoration: InputDecoration(
+          icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
+          labelText: 'Contraseña',
+          suffixIcon: IconButton(
+            icon: Icon(Icons.visibility),
+            onPressed: _toggle,
+          )
+          // counterText: snapshot.data,
+          // errorText: snapshot.error
+        ),
+        onSaved: (value) => _contrasena = value,
+        // onChanged: bloc.changePassword,
+      ),
+    );
     //   },
     // );
 
@@ -413,16 +424,19 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
     if ( inspector != null ){
 
-      List<Inspector> list = bloc.inspectores;
+      // List<Inspector> list = bloc.inspectores;
 
-      list.add(inspector);
-      bloc.changeInspectores(list);
+      // list.add(inspector);
+      // bloc.changeInspectores(list);
+      
+      bloc.changeInspectorSeleccionado(inspector);
+      // bloc.obtenerInspecciones(inspector.id);
 
       Navigator.of(context).pushNamed("inspecciones");
     
     }else{
 
-      _showSnackBar("No se ha podido recuperar el Usuario, prueba otra vez");
+      _showSnackBar('No existe ese usuario, prueba de nuevo, o registrate');
 
       setState(() {
         _isLoading = false;

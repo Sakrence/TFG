@@ -765,17 +765,20 @@ class _FormPageState extends State<FormPage> {
 
     final _screenSize = MediaQuery.of(context).size;
 
-    return Container(
-      height: _screenSize.height * 0.2,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.0),
-        child: Image(
-            image: AssetImage('assets/img/no-image.png'),
-            // height: 300.0,
-            // width: 300.0,
-            fit: BoxFit.cover,
-          ),
+    return GestureDetector(
+      child: Container(
+        height: _screenSize.height * 0.2,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: Image(
+              image: AssetImage('assets/img/no-image.png'),
+              // height: 300.0,
+              // width: 300.0,
+              fit: BoxFit.cover,
+            ),
+        ),
       ),
+      onTap: _tomarForo,
     );
   }
   

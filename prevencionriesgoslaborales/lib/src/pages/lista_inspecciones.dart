@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
+import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
 
 
@@ -222,6 +223,35 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     // await PermissionHandler().requestPermissions([PermissionGroup.storage]);
     if (await permission.Permission.storage.request().isGranted) {
 
+      Map<String, List<DeficienciaModel>> riesgosAgrupados = _agruparRiesgos(inspeccion);
+
+      List<String> linea;
+      List<List<String>> datos = [];
+      int index = 0;
+      String tipoFactor;
+
+      riesgosAgrupados.forEach((riesgo, deficiencias) {
+        for (var i = 0; i < deficiencias.length; i++) {
+          
+          if ( deficiencias[i].evaluacion.tipoFactor == "Potencial" ) {
+            tipoFactor = 'P';
+          } else {
+            tipoFactor = 'E';
+          }
+
+          if ( i == (deficiencias.length % 2) || deficiencias.length == 1 ) {
+            linea = ["0${index+1}", "0${index+1}", "($tipoFactor)${deficiencias[i].evaluacion.riesgo}", "", "", "$riesgo", "", "", "${_maxND(deficiencias)}", "${_maxNE(deficiencias)}", "${_calculoNP(deficiencias)}", "${_maxNC(deficiencias)}", "${_calculoNR(deficiencias)}", "${_calculoNI(deficiencias)}"];
+            index++;
+          } else {
+            linea = ["", "", "($tipoFactor)${deficiencias[i].evaluacion.riesgo}", "", "", "", "", "", "", "", "", "", "", ""];
+          }
+
+          datos.add(linea);
+          
+          
+        }
+      });
+
       List<List<dynamic>> csvData = [
         <String>["Inspeccion","Pais", "Provincia", "Dirección", "Latitud", "Longitud"],
         [inspeccion.id, inspeccion.pais, inspeccion.provincia, inspeccion.direccion, inspeccion.latitud, inspeccion.longitud],
@@ -231,6 +261,11 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
         ...inspeccion.deficiencias.map((item) => 
                 [item.factorRiesgo.idPadre.toString()+item.factorRiesgo.codigo,
                 item.factorRiesgo.nombre]),
+        [],
+        <String>["", "", "", "", "", "", "", "", "", "", "EVALUACIÓN"],
+        <String>["", "", "FACTOR RIESGO", "", "", "", "RIESGO", "", "", "PROBABILIDAD"],
+        <String>["Nº", "ID", "FACTOR(POTENCIAL (P)/ EXISTENTE(E))", "", "", "", "RIESGO", "", "ND", "NE", "NP", "NC", "NR", "NI"],
+        ...datos
       ];
 
       String csv = ListToCsvConverter(fieldDelimiter: ';').convert(csvData);
@@ -249,6 +284,82 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
       _showSnackBar('Se ha creado el archivo CSV en su tarjeta SD -> Download');
       
     }
+  }
+
+  Map<String, List<DeficienciaModel>> _agruparRiesgos( InspeccionModel inspeccion ) {
+    
+    List<DeficienciaModel> deficiencias = List();
+
+    Map<String, List<DeficienciaModel>> mapa = Map<String, List<DeficienciaModel>>();
+
+    inspeccion.deficiencias.forEach((item) => {
+      
+      if ( item.evaluacion != null ) {
+
+        if( mapa.containsKey(item.factorRiesgo.nombre) ) {
+          mapa.update(item.factorRiesgo.nombre, (value) {
+            value.add(item);
+            return value;
+          })
+        } else {
+          deficiencias = [],
+          deficiencias.add(item),
+          mapa[item.factorRiesgo.nombre] = deficiencias
+        }
+      }
+    });
+    return mapa;
+  }
+
+  int _maxND( List<DeficienciaModel> deficiencias ) {
+    
+    int max = 0;
+
+    deficiencias.forEach((element) {
+      if ( element.evaluacion.nivelDeficiencia > max ) max = element.evaluacion.nivelDeficiencia; 
+    });
+
+    return max;
+  }
+
+  int _maxNE( List<DeficienciaModel> deficiencias ) {
+    
+    int max = 0;
+
+    deficiencias.forEach((element) {
+      if ( element.evaluacion.nivelExposicion > max ) max = element.evaluacion.nivelExposicion; 
+    });
+
+    return max;
+  }
+
+  int _calculoNP( List<DeficienciaModel> deficiencias ) {
+    
+    int max = 0;
+    return max;
+  }
+
+  int _maxNC( List<DeficienciaModel> deficiencias ) {
+    
+    int max = 0;
+
+    deficiencias.forEach((element) {
+      if ( element.evaluacion.nivelConsecuencias > max ) max = element.evaluacion.nivelConsecuencias; 
+    });
+
+    return max;
+  }
+
+  int _calculoNR( List<DeficienciaModel> deficiencias ) {
+    
+    int max = 0;
+    return max;
+  }
+
+  int _calculoNI( List<DeficienciaModel> deficiencias ) {
+    
+    int max = 0;
+    return max;
   }
 
   _cerrarInspeccion(  InspeccionBloc bloc, InspeccionModel inspeccion  ) {

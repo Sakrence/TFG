@@ -61,6 +61,7 @@ class InspeccionBloc {
       for (var j = 0; j < list[i].deficiencias.length; j++) {
         list[i].deficiencias[j].factorRiesgo = await DBProvider.db.getFactorById(list[i].deficiencias[j].idFactorRiesgo);
         list[i].deficiencias[j].evaluacion = await DBProvider.db.getEvaluacionByIdDeficiencia(list[i].deficiencias[j].id);
+        list[i].deficiencias[j].evaluacion.fotos = await DBProvider.db.getFotoByIdEvaluacion(list[i].deficiencias[j].evaluacion.id);
       }
       // Coordenadas coordenadas = await DBProvider.db.getCoordenadasByIdEvaluacion(list[i].id);
       // list[i].latitud = coordenadas.latitud;

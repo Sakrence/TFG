@@ -121,31 +121,47 @@ class ListaEvaluacionPage extends StatelessWidget {
   Widget _tarjeta( BuildContext context, DeficienciaBloc bloc, DeficienciaModel deficiencia, EvaluacionesBloc evaluacionBloc) {
 
 // si quiero quitar el boton de evaluar pongo un gesture detector aqui y quito el boton
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 6.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10.0,
-            spreadRadius: 0.5,
-            offset: Offset(-8.0, 10.0)
-          )
-        ],
-      ),
-      child: Card(
-        elevation: 20.0,
-        shadowColor: Colors.black,
-        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0) ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-              _icono(deficiencia),
-              _texto(deficiencia),
-              _botonEvaluar(context, bloc, deficiencia, evaluacionBloc)
+    return GestureDetector(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 6.0),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10.0,
+              spreadRadius: 0.5,
+              offset: Offset(-8.0, 10.0)
+            )
           ],
         ),
+        child: Card(
+          elevation: 20.0,
+          shadowColor: Colors.black,
+          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0) ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+                _icono(deficiencia),
+                _texto(deficiencia),
+                _botonEvaluar(context, bloc, deficiencia, evaluacionBloc)
+            ],
+          ),
+        ),
       ),
+      onTap: (){
+        if ( deficiencia.evaluacion == null ) {
+          EvaluacionModel evaluacion = EvaluacionModel(idDeficiencia: deficiencia.id);
+          evaluacionBloc.addEvaluacion(evaluacion, deficiencia.id);
+          evaluacionBloc.getEvaluacion(deficiencia.id);
+
+          deficiencia.evaluacion = evaluacion;
+        } 
+        // else {
+        //   // evaluacionBloc.getEvaluacion(deficiencia.id);
+        //   deficiencia.evaluacion = evaluacionBloc.evaluacion;
+        // }
+        Navigator.pushNamed(context, 'formPage', arguments: deficiencia);
+      },
     );
 
   }

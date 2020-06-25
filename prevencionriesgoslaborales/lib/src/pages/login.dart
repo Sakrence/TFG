@@ -174,11 +174,11 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
               _mostrarAlertaInspector(context, inspeccionBloc);
             },
           ),
-          SizedBox(height: 10.0),
-          GestureDetector(
-            child: Text('¿Olvido la contraseña?'),
-            onTap: () {},
-          ),
+          // SizedBox(height: 10.0),
+          // GestureDetector(
+          //   child: Text('¿Olvido la contraseña?'),
+          //   onTap: () {},
+          // ),
           SizedBox( height: 100.0 ),
         ],
       ),

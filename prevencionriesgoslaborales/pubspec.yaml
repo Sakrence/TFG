@@ -59,6 +59,7 @@ flutter:
     - assets/riesgos/
     - data/categorias.json
     - data/subcategorias.json
+    - data/provincias.json
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

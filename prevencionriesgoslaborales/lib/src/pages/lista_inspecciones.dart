@@ -418,92 +418,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     );
   }
 
-
-  void _mostrarAlertaInspector( BuildContext context, InspeccionBloc bloc) {
-
-    final size = MediaQuery.of(context).size;
-
-    final inspector = Inspector();
-
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-
-        return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 35.0),
-            child: Container(
-              width: size.width * 0.80,
-              // margin: EdgeInsets.symmetric(vertical: 30.0),
-              // padding: EdgeInsets.symmetric(vertical: 40.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5.0),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 3.0,
-                    offset: Offset(0.0, 5.0),
-                    spreadRadius: 3.0
-                  )
-                ]
-              ),
-              child: Column(
-                children: <Widget>[
-                  Container( 
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.purple,
-                          Colors.blue
-                        ]
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    height: size.height * 0.1,
-                    width: double.infinity,
-                    child: Text('Crear Inspector', style: TextStyle(decoration: TextDecoration.none, fontSize: 20.0, color: Colors.white) ,),
-                  ),
-                  Material(
-                    child: Container(
-                      padding: EdgeInsets.all(20.0),
-                      child: Form(
-                        child: Column(
-                          children: <Widget>[
-                            _crearTextNombre(inspector),
-                            // _crearTextDNI(inspector),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      FlatButton(
-                        child: Text('Cancelar'),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      FlatButton(
-                        child: Text('Ok'),
-                        onPressed: () {
-                          bloc.agregarInspector(inspector);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
-        );
-      }
-    );
-
-  }
-
-
   void _mostrarAlertaInspeccion( BuildContext context, InspeccionBloc bloc) {
 
     final size = MediaQuery.of(context).size;
@@ -558,8 +472,10 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                       child: Column(
                         children: <Widget>[
                           _crearTextFieldDireccion(inspeccion),
-                          _crearTextFieldPais(inspeccion),
-                          _crearTextFieldProvincia(inspeccion),
+                          // _crearTextFieldPais(inspeccion),
+                          _creatSelectPais(inspeccion),
+                          _crearSelectProvincia(inspeccion, bloc),
+                          // _crearTextFieldProvincia(inspeccion),
                           _crearFieldCoordenadas(inspeccion),
                           _crearTextFieldComentarios(inspeccion),
                           // _crearSeleccionInspector(inspeccion, bloc),
@@ -640,25 +556,43 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   }
 
-  Widget _crearTextFieldProvincia( InspeccionModel inspeccion ) {
+  Widget _crearSelectProvincia( InspeccionModel inspeccion, InspeccionBloc bloc) {
 
-    return TextFormField(
-      initialValue: inspeccion.provincia,
-      textCapitalization: TextCapitalization.words,
+    return DropdownButtonFormField(
       decoration: InputDecoration(
         labelText: 'Provincia',
         labelStyle: TextStyle(fontSize: 20.0)
       ),
-      onChanged: (value) => inspeccion.provincia = value,
-      validator: (value) {
-        if ( value.length < 3 ) {
-          return 'Ingrese la provincia donde se va a realizar la inspección';
-        } else {
-          return null;
-        }
-      },
+      value: inspeccion.provincia,
+      onChanged: ( value ) => inspeccion.provincia = value,
+      items: bloc.provincias
+        .map<DropdownMenuItem<String>>((String value) {
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+      }).toList(),
     );
 
+  }
+
+  Widget _creatSelectPais( InspeccionModel inspeccion ) {
+
+    return DropdownButtonFormField(
+      decoration: InputDecoration(
+        labelText: 'País',
+        labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      value: inspeccion.pais,
+      onChanged: ( value ) => inspeccion.pais = value,
+      items: <String>['España']
+        .map<DropdownMenuItem<String>>((String value) {
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+      }).toList(),
+    );
   }
 
   Widget _crearTextFieldPais( InspeccionModel inspeccion ) {
@@ -735,7 +669,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
   Widget _crearTextFieldLongitud( InspeccionModel inspeccion ) {
     return TextFormField(
       keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
-      // initialValue: '${inspeccion.coordenadas.longitud}',
       controller: _longitudController,
       // enabled: false,
       decoration: InputDecoration(
@@ -779,28 +712,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   }
 
-  Widget _crearSeleccionInspector( InspeccionModel inspeccion, InspeccionBloc bloc ) {
-
-    return DropdownButtonFormField(
-      decoration: InputDecoration(
-        labelText: 'Selección Inspector',
-        labelStyle: TextStyle(fontSize: 20.0)
-      ),
-      value: inspeccion.idInspector,
-      onChanged: ( value ) => setState(() {
-        inspeccion.idInspector = value.id;
-      }),
-      items: bloc.inspectores
-        .map<DropdownMenuItem<Inspector>>((Inspector value) {
-      return DropdownMenuItem<Inspector>(
-        value: value,
-        child: (value.usuario) == null ? Text('') : Text(value.usuario),
-      );
-      }).toList(),
-    );
-
-  }
-
   _getLocation( InspeccionModel inspeccion ) async {
 
     Location location = new Location();
@@ -828,19 +739,11 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     _locationData = await location.getLocation();
 
     setState(() {
-      // inspeccion.coordenadas.latitud = _locationData.latitude;
       inspeccion.latitud = _locationData.latitude;
-      // print(_locationData.latitude);
-      // print(inspeccion.coordenadas.latitud);
-      // inspeccion.coordenadas.longitud = _locationData.longitude;
       inspeccion.longitud = _locationData.longitude;
-      // print(_locationData.longitude);
-      // print(inspeccion.coordenadas.longitud);
     });
 
     _formKey.currentState.save();
-
-    
   }
 
   void _showSnackBar(String text) {

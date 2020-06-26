@@ -1,0 +1,212 @@
+{ 
+    "provincias" : [
+        {
+            "id": "12",
+            "nm": "A Coruña"
+        }, 
+        {
+            "id": "35",
+            "nm": "Albacete"
+        }, 
+        {
+            "id": "5",
+            "nm": "Alicante"
+        }, 
+        {
+            "id": "22",
+            "nm": "Almería"
+        }, 
+        {
+            "id": "14",
+            "nm": "Asturias"
+        },
+        {
+            "id": "37",
+            "nm": "Álava"
+        }, 
+        {
+            "id": "47",
+            "nm": "Ávila"
+        },
+        {
+            "id": "24",
+            "nm": "Badajoz"
+        }, 
+        {
+            "id": "10",
+            "nm": "Baleares"
+        }, 
+        {
+            "id": "2",
+            "nm": "Barcelona"
+        }, 
+        {
+            "id": "36",
+            "nm": "Burgos"
+        }, 
+        {
+            "id": "27",
+            "nm": "Cantabria"
+        }, 
+        {
+            "id": "28",
+            "nm": "Castellón"
+        }, 
+        {
+            "id": "52",
+            "nm": "Ceuta"
+        }, 
+        {
+            "id": "31",
+            "nm": "Ciudad Real"
+        }, 
+        {
+            "id": "44",
+            "nm": "Cuenca"
+        }, 
+        {
+            "id": "44",
+            "nm": "Cáceres"
+        }, 
+        {
+            "id": "8",
+            "nm": "Cádiz"
+        }, 
+        {
+            "id": "19",
+            "nm": "Córdoba"
+        }, 
+        {
+            "id": "21",
+            "nm": "Gipuzkoa"
+        }, 
+        {
+            "id": "20",
+            "nm": "Girona"
+        }, 
+        {
+            "id": "17",
+            "nm": "Granada"
+        }, 
+        {
+            "id": "42",
+            "nm": "Guadalajara"
+        }, 
+        {
+            "id": "29",
+            "nm": "Huelva"
+        }, 
+        {
+            "id": "43",
+            "nm": "Huesca"
+        }, 
+        {
+            "id": "26",
+            "nm": "Jaén"
+        }, 
+        {
+            "id": "40",
+            "nm": "La Rioja"
+        }, 
+        {
+            "id": "11",
+            "nm": "Las Palmas"
+        }, 
+        {
+            "id": "32",
+            "nm": "León"
+        }, 
+        {
+            "id": "33",
+            "nm": "Lleida"
+        }, 
+        {
+            "id": "39",
+            "nm": "Lugo"
+        }, 
+        {
+            "id": "1",
+            "nm": "Madrid"
+        }, 
+        {
+            "id": "51",
+            "nm": "Melilla"
+        }, 
+        {
+            "id": "7",
+            "nm": "Murcia"
+        }, 
+        {
+            "id": "6",
+            "nm": "Málaga"
+        }, 
+        {
+            "id": "25",
+            "nm": "Navarra"
+        }, 
+        {
+            "id": "41",
+            "nm": "Ourense"
+        }, 
+        {
+            "id": "46",
+            "nm": "Palencia"
+        }, 
+        {
+            "id": "16",
+            "nm": "Pontevedra"
+        }, 
+        {
+            "id": "38",
+            "nm": "Salamanca"
+        }, 
+        {
+            "id": "13",
+            "nm": "Santa Cruz de Tenerife"
+        }, 
+        {
+            "id": "48",
+            "nm": "Segovia"
+        }, 
+        {
+            "id": "4",
+            "nm": "Sevilla"
+        }, 
+        {
+            "id": "50",
+            "nm": "Soria"
+        }, 
+        {
+            "id": "18",
+            "nm": "Tarragona"
+        }, 
+        {
+            "id": "49",
+            "nm": "Teruel"
+        }, 
+        {
+            "id": "23",
+            "nm": "Toledo"
+        }, 
+        {
+            "id": "3",
+            "nm": "Valencia"
+        }, 
+        {
+            "id": "30",
+            "nm": "Valladolid"
+        }, 
+        {
+            "id": "9",
+            "nm": "Vizcaya"
+        }, 
+        {
+            "id": "45",
+            "nm": "Zamora"
+        }, 
+        {
+            "id": "15",
+            "nm": "Zaragoza"
+        }
+    ]
+}

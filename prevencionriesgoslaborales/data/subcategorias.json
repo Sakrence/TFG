@@ -1,53 +1,1453 @@
 {
     "subcategorias" : [
         {
-            "id": 8,
+            "id": 60,
             "codigo": "01",
-            "nombre" : "Caídas de personas a distinto nivel",
-            "icono" : "01",
+            "nombre" : "Caídas por trabajos en altura",
+            "icono" : "0101",
             "idPadre": 1
         },
         {
-            "id": 9,
+            "id": 61,
             "codigo": "02",
-            "nombre" : "Caídas de personas al mismo nivel",
-            "icono" : "02",
+            "nombre" : "Caídas de espacios no protegidos",
+            "icono" : "0102",
             "idPadre": 1
         },
         {
-            "id": 10,
+            "id": 63,
             "codigo": "03",
-            "nombre" : "Caídas de objetos por desplome o derrumbamiento",
-            "icono" : "03",
+            "nombre" : "Caídas en zanjas, pozos u otros desniveles",
+            "icono" : "0103",
             "idPadre": 1
         },
         {
-            "id": 11,
-            "codigo": "04",
-            "nombre" : "Caídas de objetos en manipulación",
-            "icono" : "04",
+            "id": 64,
+            "codigo": "01",
+            "nombre" : "Caídas por suelos o plataformas antideslizantes",
+            "icono" : "0201",
             "idPadre": 2
         },
         {
-            "id": 12,
-            "codigo": "05",
-            "nombre" : "Caídas de objetos desprendidos",
-            "icono" : "05",
+            "id": 65,
+            "codigo": "02",
+            "nombre" : "Caídas por tropiezo con obstáculo",
+            "icono" : "0202",
             "idPadre": 2
         },
         {
-            "id": 13,
-            "codigo": "06",
-            "nombre" : "Pisadas sobre objetos",
-            "icono" : "06",
-            "idPadre": 2
-        },
-        {
-            "id": 14,
-            "codigo": "07",
-            "nombre" : "Choques contra objetos inmóviles",
-            "icono" : "07",
+            "id": 66,
+            "codigo": "01",
+            "nombre" : "Desplome de elemntos fijos",
+            "icono" : "0301",
             "idPadre": 3
+        },
+        {
+            "id": 67,
+            "codigo": "02",
+            "nombre" : "Derrumbamiento o vuelco de materiales",
+            "icono" : "0302",
+            "idPadre": 3
+        },
+        {
+            "id": 68,
+            "codigo": "03",
+            "nombre" : "Derrumbamiento del terreno",
+            "icono" : "0303",
+            "idPadre": 3
+        },
+        {
+            "id": 69,
+            "codigo": "01",
+            "nombre" : "Caída de materiales o piezas en manipulación",
+            "icono" : "0401",
+            "idPadre": 4
+        },
+        {
+            "id": 70,
+            "codigo": "02",
+            "nombre" : "Caída de equipos o herramientas",
+            "icono" : "0402",
+            "idPadre": 4
+        },
+        {
+            "id": 71,
+            "codigo": "01",
+            "nombre" : "Caída de objetos o materiales almacenados",
+            "icono" : "0501",
+            "idPadre": 5
+        },
+        {
+            "id": 72,
+            "codigo": "02",
+            "nombre" : "Caída de equipos, herramientas",
+            "icono" : "0502",
+            "idPadre": 5
+        },
+        {
+            "id": 73,
+            "codigo": "03",
+            "nombre" : "Caída de objetos o materiales",
+            "icono" : "0503",
+            "idPadre": 5
+        },
+        {
+            "id": 74,
+            "codigo": "01",
+            "nombre" : "Pisada sobre objeto o desnivel",
+            "icono" : "0601",
+            "idPadre": 6
+        },
+        {
+            "id": 75,
+            "codigo": "02",
+            "nombre" : "Pisada sobre objeto cortante o punzante",
+            "icono" : "0602",
+            "idPadre": 6
+        },
+        {
+            "id": 76,
+            "codigo": "01",
+            "nombre" : "Choques con elementos fijos",
+            "icono" : "0701",
+            "idPadre": 7
+        },
+        {
+            "id": 77,
+            "codigo": "02",
+            "nombre" : "Choques con materiales u objetos",
+            "icono" : "0702",
+            "idPadre": 7
+        },
+        {
+            "id": 78,
+            "codigo": "01",
+            "nombre" : "Choque contra elementos móviles",
+            "icono" : "0801",
+            "idPadre": 8
+        },
+        {
+            "id":79,
+            "codigo": "02",
+            "nombre" : "Choque contra objetos en movimiento",
+            "icono" : "0802",
+            "idPadre": 8
+        },
+        {
+            "id": 80,
+            "codigo": "01",
+            "nombre" : "Golpes con objetos",
+            "icono" : "0901",
+            "idPadre": 9
+        },
+        {
+            "id": 81,
+            "codigo": "02",
+            "nombre" : "Golpes con herramientas",
+            "icono" : "0902",
+            "idPadre": 9
+        },
+        {
+            "id": 82,
+            "codigo": "03",
+            "nombre" : "Cortes con herramientas o útiles",
+            "icono" : "0903",
+            "idPadre": 9
+        },
+        {
+            "id": 83,
+            "codigo": "04",
+            "nombre" : "Cortes con objetos o materiales",
+            "icono" : "0904",
+            "idPadre": 9
+        },
+        {
+            "id": 84,
+            "codigo": "05",
+            "nombre" : "Pinchazos",
+            "icono" : "0905",
+            "idPadre": 9
+        },
+        {
+            "id": 85,
+            "codigo": "06",
+            "nombre" : "Cortes y/O pinchazos",
+            "icono" : "0906",
+            "idPadre": 9
+        },
+        {
+            "id": 86,
+            "codigo": "01",
+            "nombre" : "Protección de elementos o piezas desprendidas",
+            "icono" : "1001",
+            "idPadre": 10
+        },
+        {
+            "id": 87,
+            "codigo": "02",
+            "nombre" : "Protección de fragmentos de piezas o herramientas",
+            "icono" : "1002",
+            "idPadre": 10
+        },
+        {
+            "id": 88,
+            "codigo": "03",
+            "nombre" : "Protección de partículas sólidas",
+            "icono" : "1003",
+            "idPadre": 10
+        },
+        {
+            "id": 89,
+            "codigo": "04",
+            "nombre" : "Protección de líquidos a presión",
+            "icono" : "1004",
+            "idPadre": 10
+        },
+        {
+            "id": 90,
+            "codigo": "05",
+            "nombre" : "Protección de gases o aire comprimidos",
+            "icono" : "1005",
+            "idPadre": 10
+        },
+        {
+            "id": 91,
+            "codigo": "0",
+            "nombre" : "Ambiente con gases",
+            "icono" : "110",
+            "idPadre": 11
+        },
+        {
+            "id": 92,
+            "codigo": "01",
+            "nombre" : "Atrapamiento por elementos móviles de equipos",
+            "icono" : "1101",
+            "idPadre": 11
+        },
+        {
+            "id": 93,
+            "codigo": "02",
+            "nombre" : "Atrapamiento por o entre objetos manipulados",
+            "icono" : "1102",
+            "idPadre": 11
+        },
+        {
+            "id": 94,
+            "codigo": "03",
+            "nombre" : "Atrapamiento entre elementos por acción humana",
+            "icono" : "1103",
+            "idPadre": 11
+        },
+        {
+            "id": 95,
+            "codigo": "01",
+            "nombre" : "Atrapamiento por vuelco de máquina",
+            "icono" : "1201",
+            "idPadre": 12
+        },
+        {
+            "id": 96,
+            "codigo": "02",
+            "nombre" : "Atrapamiento por vuelco de vehículo",
+            "icono" : "1202",
+            "idPadre": 12
+        },
+        {
+            "id": 97,
+            "codigo": "01",
+            "nombre" : "Sobreesfuerzos continuados",
+            "icono" : "1301",
+            "idPadre": 13
+        },
+        {
+            "id": 98,
+            "codigo": "02",
+            "nombre" : "Sobreesfuerzos ocasionales",
+            "icono" : "1302",
+            "idPadre": 13
+        },
+        {
+            "id": 99,
+            "codigo": "03",
+            "nombre" : "Sobreesfuerzos por movimientos repetitivos",
+            "icono" : "1303",
+            "idPadre": 13
+        },
+        {
+            "id": 100,
+            "codigo": "04",
+            "nombre" : "Sobreesfuerzos por posturas forzadas",
+            "icono" : "1304",
+            "idPadre": 13
+        },
+        {
+            "id": 101,
+            "codigo": "01",
+            "nombre" : "Exposición a ambientes calurosos",
+            "icono" : "1401",
+            "idPadre": 14
+        },
+        {
+            "id": 102,
+            "codigo": "02",
+            "nombre" : "Exposición a ambientes fríos",
+            "icono" : "1402",
+            "idPadre": 14
+        },
+        {
+            "id": 103,
+            "codigo": "03",
+            "nombre" : "Exposición a la intemperie",
+            "icono" : "1403",
+            "idPadre": 14
+        },
+        {
+            "id": 104,
+            "codigo": "04",
+            "nombre" : "Contacto con llamas abiertas",
+            "icono" : "1404",
+            "idPadre": 14
+        },
+        {
+            "id": 105,
+            "codigo": "05",
+            "nombre" : "Disconfort por temperatura inadecuada",
+            "icono" : "1405",
+            "idPadre": 14
+        },
+        {
+            "id": 106,
+            "codigo": "01",
+            "nombre" : "Contacto con superfícies calientes",
+            "icono" : "1501",
+            "idPadre": 15
+        },
+        {
+            "id": 107,
+            "codigo": "02",
+            "nombre" : "Contacto con superfícies frías",
+            "icono" : "1502",
+            "idPadre": 15
+        },
+        {
+            "id": 108,
+            "codigo": "03",
+            "nombre" : "Contacto con llamas abiertas",
+            "icono" : "1503",
+            "idPadre": 15
+        },
+        {
+            "id": 109,
+            "codigo": "04",
+            "nombre" : "Proyección de solidos a alta temperatura",
+            "icono" : "1504",
+            "idPadre": 15
+        },
+        {
+            "id": 110,
+            "codigo": "05",
+            "nombre" : "Proyección de líquidos calientes",
+            "icono" : "1505",
+            "idPadre": 15
+        },
+        {
+            "id": 111,
+            "codigo": "06",
+            "nombre" : "Proyección de humos, vapores o gases licuados",
+            "icono" : "1506",
+            "idPadre": 15
+        },
+        {
+            "id": 112,
+            "codigo": "07",
+            "nombre" : "Contacto con líquidos calientes",
+            "icono" : "1507",
+            "idPadre": 15
+        },
+        {
+            "id": 113,
+            "codigo": "01",
+            "nombre" : "Contactos eléctricos directos",
+            "icono" : "1601",
+            "idPadre": 16
+        },
+        {
+            "id": 114,
+            "codigo": "02",
+            "nombre" : "Contactos eléctricos indirectos",
+            "icono" : "1602",
+            "idPadre": 16
+        },
+        {
+            "id": 115,
+            "codigo": "03",
+            "nombre" : "Descarga de electricidad estática",
+            "icono" : "1603",
+            "idPadre": 16
+        },
+        {
+            "id": 116,
+            "codigo": "01",
+            "nombre" : "Inhalación de sustancias nocivas o tóxicas",
+            "icono" : "1701",
+            "idPadre": 17
+        },
+        {
+            "id": 117,
+            "codigo": "02",
+            "nombre" : "Ingestión de sustancias químicas",
+            "icono" : "1702",
+            "idPadre": 17
+        },
+        {
+            "id": 118,
+            "codigo": "03",
+            "nombre" : "Asfixia, ahogamiento en atmosferas irrespirables",
+            "icono" : "1703",
+            "idPadre": 17
+        },
+        {
+            "id": 119,
+            "codigo": "04",
+            "nombre" : "Accidentes mayores por fuga de gases o vapores",
+            "icono" : "1704",
+            "idPadre": 17
+        },
+        {
+            "id": 120,
+            "codigo": "01",
+            "nombre" : "Contacto con sustancias causticas, corrosivas",
+            "icono" : "1801",
+            "idPadre": 18
+        },
+        {
+            "id": 121,
+            "codigo": "02",
+            "nombre" : "Proyección de líquidos agresivos o irritantes",
+            "icono" : "1802",
+            "idPadre": 18
+        },
+        {
+            "id": 122,
+            "codigo": "03",
+            "nombre" : "Proyección de gases o vapores",
+            "icono" : "1803",
+            "idPadre": 18
+        },
+        {
+            "id": 123,
+            "codigo": "04",
+            "nombre" : "Accidentes mayores por derrame de sustancias",
+            "icono" : "1804",
+            "idPadre": 18
+        },
+        {
+            "id": 124,
+            "codigo": "05",
+            "nombre" : "Contacto con muestras biológicas",
+            "icono" : "1805",
+            "idPadre": 18
+        },
+        {
+            "id": 125,
+            "codigo": "01",
+            "nombre" : "Radiaciones ionizantes",
+            "icono" : "1901",
+            "idPadre": 19
+        },
+        {
+            "id": 126,
+            "codigo": "02",
+            "nombre" : "Radiaciones no ionizantes",
+            "icono" : "1902",
+            "idPadre": 19
+        },
+        {
+            "id": 127,
+            "codigo": "01",
+            "nombre" : "Explosiones de polvo",
+            "icono" : "2001",
+            "idPadre": 20
+        },
+        {
+            "id": 128,
+            "codigo": "02",
+            "nombre" : "Explosiones por atsmóferas deflagrantes",
+            "icono" : "2002",
+            "idPadre": 20
+        },
+        {
+            "id": 129,
+            "codigo": "03",
+            "nombre" : "Explosiones de equipos o aparatos a presión",
+            "icono" : "2003",
+            "idPadre": 20
+        },
+        {
+            "id": 130,
+            "codigo": "04",
+            "nombre" : "Explosiones debidas a explosivos sólidos",
+            "icono" : "2004",
+            "idPadre": 20
+        },
+        {
+            "id": 131,
+            "codigo": "05",
+            "nombre" : "Explosiones de materiales inflamables",
+            "icono" : "2005",
+            "idPadre": 20
+        },
+        {
+            "id": 132,
+            "codigo": "06",
+            "nombre" : "Accidentes mayores por explosión",
+            "icono" : "2006",
+            "idPadre": 20
+        },
+        {
+            "id": 133,
+            "codigo": "01",
+            "nombre" : "Incendio por factores de ignición",
+            "icono" : "2101",
+            "idPadre": 21
+        },
+        {
+            "id": 134,
+            "codigo": "02",
+            "nombre" : "Porpagación de incendios por materias inflamables",
+            "icono" : "2102",
+            "idPadre": 21
+        },
+        {
+            "id": 135,
+            "codigo": "03",
+            "nombre" : "Porpagación de incendios por medidas insuficientes",
+            "icono" : "2103",
+            "idPadre": 21
+        },
+        {
+            "id": 136,
+            "codigo": "04",
+            "nombre" : "Evacuación dificultosa en caso de incendio",
+            "icono" : "2104",
+            "idPadre": 21
+        },
+        {
+            "id": 137,
+            "codigo": "05",
+            "nombre" : "Accidentes mayores por incendio",
+            "icono" : "2105",
+            "idPadre": 21
+        },
+        {
+            "id": 138,
+            "codigo": "01",
+            "nombre" : "Accidentes debidos a personas",
+            "icono" : "2201",
+            "idPadre": 22
+        },
+        {
+            "id": 139,
+            "codigo": "02",
+            "nombre" : "Accidentes debidos a animales",
+            "icono" : "2202",
+            "idPadre": 22
+        },
+        {
+            "id": 140,
+            "codigo": "03",
+            "nombre" : "Accidentes debidos a insectos-plantas",
+            "icono" : "2203",
+            "idPadre": 22
+        },
+        {
+            "id": 141,
+            "codigo": "04",
+            "nombre" : "Agresiones, sabotajes, atracos, intrusismo",
+            "icono" : "2204",
+            "idPadre": 22
+        },
+        {
+            "id": 142,
+            "codigo": "01",
+            "nombre" : "Atropello con vehículo",
+            "icono" : "2301",
+            "idPadre": 23
+        },
+        {
+            "id": 143,
+            "codigo": "02",
+            "nombre" : "Choques o golpes con vehículo",
+            "icono" : "2302",
+            "idPadre": 23
+        },
+        {
+            "id": 144,
+            "codigo": "03",
+            "nombre" : "Accidentes de circulación durante el trabajo",
+            "icono" : "2303",
+            "idPadre": 23
+        },
+        {
+            "id": 145,
+            "codigo": "04",
+            "nombre" : "Accidentes in itinere",
+            "icono" : "2304",
+            "idPadre": 23
+        },
+        {
+            "id": 146,
+            "codigo": "01",
+            "nombre" : "Patologías no traumáticas por causas fisiológicas",
+            "icono" : "2601",
+            "idPadre": 26
+        },
+        {
+            "id": 147,
+            "codigo": "02",
+            "nombre" : "Riesgos por agentes de la naturaleza",
+            "icono" : "2602",
+            "idPadre": 26
+        },
+        {
+            "id": 148,
+            "codigo": "03",
+            "nombre" : "Otros riesgos no codificados",
+            "icono" : "2603",
+            "idPadre": 26
+        },
+        {
+            "id": 149,
+            "codigo": "01",
+            "nombre" : "Exposición a virus",
+            "icono" : "3201",
+            "idPadre": 32
+        },
+        {
+            "id": 150,
+            "codigo": "02",
+            "nombre" : "Exposición a bacterias",
+            "icono" : "3202",
+            "idPadre": 32
+        },
+        {
+            "id": 151,
+            "codigo": "03",
+            "nombre" : "Exposición a hongos",
+            "icono" : "3203",
+            "idPadre": 32
+        },
+        {
+            "id": 152,
+            "codigo": "04",
+            "nombre" : "Exposición a parásitos",
+            "icono" : "3204",
+            "idPadre": 32
+        },
+        {
+            "id": 153,
+            "codigo": "05",
+            "nombre" : "Exposición a organismos genéticamente modificados",
+            "icono" : "3205",
+            "idPadre": 32
+        },
+        {
+            "id": 154,
+            "codigo": "101",
+            "nombre" : "Aspergilus",
+            "icono" : "32101",
+            "idPadre": 32
+        },
+        {
+            "id": 155,
+            "codigo": "102",
+            "nombre" : "B. Anthracis",
+            "icono" : "32102",
+            "idPadre": 32
+        },
+        {
+            "id": 156,
+            "codigo": "103",
+            "nombre" : "Pasteurella tularensis",
+            "icono" : "32103",
+            "idPadre": 32
+        },
+        {
+            "id": 157,
+            "codigo": "104",
+            "nombre" : "Clamydia psittaci",
+            "icono" : "32104",
+            "idPadre": 32
+        },
+        {
+            "id": 158,
+            "codigo": "105",
+            "nombre" : "Mycobacterium tuberculosis",
+            "icono" : "32105",
+            "idPadre": 32
+        },
+        {
+            "id": 159,
+            "codigo": "106",
+            "nombre" : "Clostridium tetani",
+            "icono" : "32106",
+            "idPadre": 32
+        },
+        {
+            "id": 160,
+            "codigo": "107",
+            "nombre" : "Brucela abortus, suis",
+            "icono" : "32107",
+            "idPadre": 32
+        },
+        {
+            "id": 161,
+            "codigo": "108",
+            "nombre" : "Virus hepatitis A",
+            "icono" : "32108",
+            "idPadre": 32
+        },
+        {
+            "id": 162,
+            "codigo": "109",
+            "nombre" : "Virus hepatitis B",
+            "icono" : "32109",
+            "idPadre": 32
+        },
+        {
+            "id": 163,
+            "codigo": "110",
+            "nombre" : "Virus hepatitis C",
+            "icono" : "32110",
+            "idPadre": 32
+        },
+        {
+            "id": 164,
+            "codigo": "111",
+            "nombre" : "Virus hepatitis D",
+            "icono" : "32111",
+            "idPadre": 32
+        },
+        {
+            "id": 165,
+            "codigo": "112",
+            "nombre" : "Virus hepatitis, otros",
+            "icono" : "32112",
+            "idPadre": 32
+        },
+        {
+            "id": 166,
+            "codigo": "113",
+            "nombre" : "Virus rubeola",
+            "icono" : "32113",
+            "idPadre": 32
+        },
+        {
+            "id": 167,
+            "codigo": "114",
+            "nombre" : "Sarcoptes scabiei",
+            "icono" : "32114",
+            "idPadre": 32
+        },
+        {
+            "id": 168,
+            "codigo": "115",
+            "nombre" : "Yersinia petsis",
+            "icono" : "32115",
+            "idPadre": 32
+        },
+        {
+            "id": 169,
+            "codigo": "116",
+            "nombre" : "Virus de la rabia",
+            "icono" : "32116",
+            "idPadre": 32
+        },
+        {
+            "id": 170,
+            "codigo": "117",
+            "nombre" : "Mycopacterium marinum",
+            "icono" : "32117",
+            "idPadre": 32
+        },
+        {
+            "id": 171,
+            "codigo": "118",
+            "nombre" : "Virus herpes simple",
+            "icono" : "32118",
+            "idPadre": 32
+        },
+        {
+            "id": 172,
+            "codigo": "119",
+            "nombre" : "Histoplasma capsulatum",
+            "icono" : "32119",
+            "idPadre": 32
+        },
+        {
+            "id": 173,
+            "codigo": "120",
+            "nombre" : "Sporotrix schenki",
+            "icono" : "32120",
+            "idPadre": 32
+        },
+        {
+            "id": 174,
+            "codigo": "121",
+            "nombre" : "Plasmodium falciparum",
+            "icono" : "32121",
+            "idPadre": 32
+        },
+        {
+            "id": 175,
+            "codigo": "122",
+            "nombre" : "Protozoos sistema digestivo (Ameba, giardia..)",
+            "icono" : "32122",
+            "idPadre": 32
+        },
+        {
+            "id": 176,
+            "codigo": "123",
+            "nombre" : "Helmintos sistema digestivo (Ascaris, tenia,..)",
+            "icono" : "32123",
+            "idPadre": 32
+        },
+        {
+            "id": 177,
+            "codigo": "124",
+            "nombre" : "Otros protozoos",
+            "icono" : "32124",
+            "idPadre": 32
+        },
+        {
+            "id": 178,
+            "codigo": "125",
+            "nombre" : "Otros helmintos",
+            "icono" : "32125",
+            "idPadre": 32
+        },
+        { 
+            "id": 179,
+            "codigo": "126",
+            "nombre" : "Virus inmunodeficiencia humana (SIDA)",
+            "icono" : "32126",
+            "idPadre": 32
+        },
+        {
+            "id": 180,
+            "codigo": "01",
+            "nombre" : "Exposición a ruido continuo",
+            "icono" : "3301",
+            "idPadre": 33
+        },
+        {
+            "id": 181,
+            "codigo": "02",
+            "nombre" : "Exposición a ruido de impacto",
+            "icono" : "3302",
+            "idPadre": 33
+        },
+        {
+            "id": 182,
+            "codigo": "03",
+            "nombre" : "Exposición a ultrasonidos e infrasonidos",
+            "icono" : "3303",
+            "idPadre": 33
+        },
+        {
+            "id": 183,
+            "codigo": "01",
+            "nombre" : "Exposición a vibraciones en mano-brazo",
+            "icono" : "3401",
+            "idPadre": 34
+        },
+        {
+            "id": 184,
+            "codigo": "02",
+            "nombre" : "Exposición a vibraciones del cuerpo (De pie)",
+            "icono" : "3402",
+            "idPadre": 34
+        },
+        {
+            "id": 185,
+            "codigo": "03",
+            "nombre" : "Exposición a vibraciones del cuerpo (Sentado)",
+            "icono" : "3403",
+            "idPadre": 34
+        },
+        {
+            "id": 186,
+            "codigo": "01",
+            "nombre" : "Estrés térmico por calor",
+            "icono" : "3501",
+            "idPadre": 35
+        },
+        {
+            "id": 187,
+            "codigo": "02",
+            "nombre" : "Estrés térmico por frío",
+            "icono" : "3502",
+            "idPadre": 35
+        },
+        {
+            "id": 188,
+            "codigo": "01",
+            "nombre" : "Exposición a rayos alfa",
+            "icono" : "3601",
+            "idPadre": 36
+        },
+        {
+            "id": 189,
+            "codigo": "02",
+            "nombre" : "Exposición a rayos beta",
+            "icono" : "3602",
+            "idPadre": 36
+        },
+        {
+            "id": 190,
+            "codigo": "03",
+            "nombre" : "Exposición a rayos gamma",
+            "icono" : "3603",
+            "idPadre": 36
+        },
+        {
+            "id": 191,
+            "codigo": "04",
+            "nombre" : "Exposición a rayos x",
+            "icono" : "3604",
+            "idPadre": 36
+        },
+        {
+            "id": 192,
+            "codigo": "05",
+            "nombre" : "Exposición a rayos ultravioletas ionizantes",
+            "icono" : "3605",
+            "idPadre": 36
+        },
+        {
+            "id": 193,
+            "codigo": "01",
+            "nombre" : "Exposición a rayos ultravioletas no ionizantes",
+            "icono" : "3701",
+            "idPadre": 37
+        },
+        {
+            "id": 194,
+            "codigo": "02",
+            "nombre" : "Exposición a radiaciones visibles",
+            "icono" : "3702",
+            "idPadre": 37
+        },
+        {
+            "id": 195,
+            "codigo": "03",
+            "nombre" : "Exposición a rayos infrarrojos",
+            "icono" : "3703",
+            "idPadre": 37
+        },
+        {
+            "id": 196,
+            "codigo": "04",
+            "nombre" : "Exposición a rayos láser, máser",
+            "icono" : "3704",
+            "idPadre": 37
+        },
+        {
+            "id": 197,
+            "codigo": "05",
+            "nombre" : "Exposición a radiaciones electromagnéticas",
+            "icono" : "3705",
+            "idPadre": 37
+        },
+        {
+            "id": 198,
+            "codigo": "06",
+            "nombre" : "Exposición a microondas",
+            "icono" : "3706",
+            "idPadre": 37
+        },
+        {
+            "id": 199,
+            "codigo": "01",
+            "nombre" : "Carga estática por posturas",
+            "icono" : "25",
+            "idPadre": 41
+        },
+        {
+            "id": 200,
+            "codigo": "02",
+            "nombre" : "Carga dinámica por esfuerzo",
+            "icono" : "4102",
+            "idPadre": 41
+        },
+        {
+            "id": 201,
+            "codigo": "03",
+            "nombre" : "Carga física por exigencia de la tarea",
+            "icono" : "4103",
+            "idPadre": 41
+        },
+        {
+            "id": 202,
+            "codigo": "04",
+            "nombre" : "Atención visual",
+            "icono" : "4104",
+            "idPadre": 41
+        },
+        {
+            "id": 203,
+            "codigo": "05",
+            "nombre" : "Sensibilidad auditiva",
+            "icono" : "27",
+            "idPadre": 41
+        },
+        {
+            "id": 204,
+            "codigo": "06",
+            "nombre" : "Sentido del tacto",
+            "icono" : "4106",
+            "idPadre": 41
+        },
+        {
+            "id": 205,
+            "codigo": "07",
+            "nombre" : "Trabajo muscular",
+            "icono" : "4107",
+            "idPadre": 41
+        },
+        {
+            "id": 206,
+            "codigo": "08",
+            "nombre" : "Ambiente con iluminación excesiva",
+            "icono" : "28",
+            "idPadre": 41
+        },
+        {
+            "id": 207,
+            "codigo": "09",
+            "nombre" : "Ambiente con iluminación insuficiente",
+            "icono" : "28",
+            "idPadre": 41
+        },
+        {
+            "id": 208,
+            "codigo": "10",
+            "nombre" : "Ambiente con hipertermia",
+            "icono" : "4110",
+            "idPadre": 41
+        },
+        {
+            "id": 209,
+            "codigo": "11",
+            "nombre" : "Ambiente con hipotermia",
+            "icono" : "4111",
+            "idPadre": 41
+        },
+        {
+            "id": 210,
+            "codigo": "12",
+            "nombre" : "Ambiente con vibraciones",
+            "icono" : "29",
+            "idPadre": 41
+        },
+        {
+            "id": 211,
+            "codigo": "13",
+            "nombre" : "Ambiente con polvo",
+            "icono" : "26",
+            "idPadre": 41
+        },
+        {
+            "id": 212,
+            "codigo": "14",
+            "nombre" : "Ambiente con gases",
+            "icono" : "26",
+            "idPadre": 41
+        },
+        {
+            "id": 213,
+            "codigo": "15",
+            "nombre" : "Ambiente con humedad",
+            "icono" : "26",
+            "idPadre": 41
+        },
+        {
+            "id": 214,
+            "codigo": "16",
+            "nombre" : "EPI's no existen/no se utilizan",
+            "icono" : "4116",
+            "idPadre": 41
+        },
+        {
+            "id": 215,
+            "codigo": "17",
+            "nombre" : "No utiliza guantes",
+            "icono" : "4117",
+            "idPadre": 41
+        },
+        {
+            "id": 216,
+            "codigo": "18",
+            "nombre" : "No utiliza zapatos de seguridad",
+            "icono" : "4118",
+            "idPadre": 41
+        },
+        {
+            "id": 217,
+            "codigo": "19",
+            "nombre" : "No utiliza gafas",
+            "icono" : "4119",
+            "idPadre": 41
+        },
+        {
+            "id": 218,
+            "codigo": "20",
+            "nombre" : "No utiliza protectores auditivos",
+            "icono" : "27",
+            "idPadre": 41
+        },
+        {
+            "id": 219,
+            "codigo": "21",
+            "nombre" : "No utiliza casco",
+            "icono" : "4121",
+            "idPadre": 41
+        },
+        {
+            "id": 220,
+            "codigo": "22",
+            "nombre" : "No utiliza mascarilla",
+            "icono" : "4122",
+            "idPadre": 41
+        },
+        {
+            "id": 221,
+            "codigo": "23",
+            "nombre" : "No utiliza respiración autonoma",
+            "icono" : "4123",
+            "idPadre": 41
+        },
+        {
+            "id": 222,
+            "codigo": "24",
+            "nombre" : "Inmersión",
+            "icono" : "4124",
+            "idPadre": 41
+        },
+        {
+            "id": 223,
+            "codigo": "01",
+            "nombre" : "Manipulación de cargas",
+            "icono" : "4201",
+            "idPadre": 42
+        },
+        {
+            "id": 224,
+            "codigo": "02",
+            "nombre" : "Movimientos repetitivos",
+            "icono" : "4202",
+            "idPadre": 42
+        },
+        {
+            "id": 225,
+            "codigo": "03",
+            "nombre" : "Desplazamiento",
+            "icono" : "32",
+            "idPadre": 42
+        },
+        {
+            "id": 226,
+            "codigo": "01",
+            "nombre" : "Carga mental por contenidos de la tarea",
+            "icono" : "30",
+            "idPadre": 46
+        },
+        {
+            "id": 227,
+            "codigo": "02",
+            "nombre" : "Carga mental por ritmos de trabajo",
+            "icono" : "30",
+            "idPadre": 46
+        },
+        {
+            "id": 228,
+            "codigo": "03",
+            "nombre" : "Carga mental por horarios de trabajo",
+            "icono" : "30",
+            "idPadre": 46
+        },
+        {
+            "id": 229,
+            "codigo": "04",
+            "nombre" : "Exigencias de utilización de la memoria",
+            "icono" : "30",
+            "idPadre": 46
+        },
+        {
+            "id": 230,
+            "codigo": "01",
+            "nombre" : "Exigencias de estres",
+            "icono" : "30",
+            "idPadre": 47
+        },
+        {
+            "id": 231,
+            "codigo": "02",
+            "nombre" : "Horarios por turnos",
+            "icono" : "4702",
+            "idPadre": 47
+        },
+        {
+            "id": 232,
+            "codigo": "03",
+            "nombre" : "Horario nocturno",
+            "icono" : "4703",
+            "idPadre": 47
+        },
+        {
+            "id": 233,
+            "codigo": "04",
+            "nombre" : "Poco contenido de trabajo",
+            "icono" : "4704",
+            "idPadre": 47
+        },
+        {
+            "id": 234,
+            "codigo": "01",
+            "nombre" : "Fatiga por insuficiente calidad del aire",
+            "icono" : "26",
+            "idPadre": 48
+        },
+        {
+            "id": 235,
+            "codigo": "02",
+            "nombre" : "Disconfort térmico por condiciones ambientales",
+            "icono" : "4802",
+            "idPadre": 48
+        },
+        {
+            "id": 236,
+            "codigo": "03",
+            "nombre" : "Disconfort acústico por ambientes ruidosos",
+            "icono" : "4803",
+            "idPadre": 48
+        },
+        {
+            "id": 237,
+            "codigo": "04",
+            "nombre" : "Disconfort o fatiga por vibraciones",
+            "icono" : "4804",
+            "idPadre": 48
+        },
+        {
+            "id": 238,
+            "codigo": "05",
+            "nombre" : "Otras situaciones de fatiga crónica",
+            "icono" : "4805",
+            "idPadre": 48
+        },
+        {
+            "id": 239,
+            "codigo": "01",
+            "nombre" : "Fatiga visual por elementos o pautas del trabajo",
+            "icono" : "4901",
+            "idPadre": 49
+        },
+        {
+            "id": 240,
+            "codigo": "02",
+            "nombre" : "Fatiga visual por condiciones de iluminación",
+            "icono" : "4902",
+            "idPadre": 49
+        },
+        {
+            "id": 241,
+            "codigo": "03",
+            "nombre" : "Otras situaciones de fatiga visual",
+            "icono" : "4903",
+            "idPadre": 49
+        },
+        {
+            "id": 242,
+            "codigo": "01",
+            "nombre" : "Actitud negativa por comunicación inadecuada",
+            "icono" : "5901",
+            "idPadre": 59
+        },
+        {
+            "id": 243,
+            "codigo": "02",
+            "nombre" : "Actitud negativa por relaciones inadecuadas",
+            "icono" : "5902",
+            "idPadre": 59
+        },
+        {
+            "id": 244,
+            "codigo": "03",
+            "nombre" : "Actitud negativa por motivaciones inadecuadas",
+            "icono" : "5903",
+            "idPadre": 59
+        },
+        {
+            "id": 245,
+            "codigo": "04",
+            "nombre" : "Aptitud insuficiente por capacidad inadecuada",
+            "icono" : "5904",
+            "idPadre": 59
+        },
+        {
+            "id": 246,
+            "codigo": "05",
+            "nombre" : "Aptitud insuficiente por falta de formación",
+            "icono" : "5905",
+            "idPadre": 59
+        },
+        {
+            "id": 247,
+            "codigo": "06",
+            "nombre" : "Aptitud insuficiente por entrenamiento inadecuado",
+            "icono" : "5906",
+            "idPadre": 59
+        },
+        {
+            "id": 248,
+            "codigo": "07",
+            "nombre" : "Sit pelig por organización o recursos inadecuados",
+            "icono" : "5907",
+            "idPadre": 59
+        },
+        {
+            "id": 249,
+            "codigo": "08",
+            "nombre" : "Sit pelig por riterios preventivos inadecuados",
+            "icono" : "5908",
+            "idPadre": 59
+        },
+        {
+            "id": 250,
+            "codigo": "09",
+            "nombre" : "Sit pelig por análisis de riesgo insuficiente",
+            "icono" : "5909",
+            "idPadre": 59
+        },
+        {
+            "id": 251,
+            "codigo": "10",
+            "nombre" : "Sit pelig por información o formación insuficiente",
+            "icono" : "5910",
+            "idPadre": 59
+        },
+        {
+            "id": 252,
+            "codigo": "",
+            "nombre" : "Accidentes in itinere",
+            "icono" : "24",
+            "idPadre": 24
+        },
+        {
+            "id": 253,
+            "codigo": "",
+            "nombre" : "Accidentes por causas naturales",
+            "icono" : "25",
+            "idPadre": 25
+        },
+        {
+            "id": 254,
+            "codigo": "",
+            "nombre" : "Exposición a contaminantes químicos",
+            "icono" : "31",
+            "idPadre": 31
+        },
+        {
+            "id": 255,
+            "codigo": "",
+            "nombre" : "Iluminación",
+            "icono" : "28",
+            "idPadre": 38
+        },
+        {
+            "id": 256,
+            "codigo": "",
+            "nombre" : "Pantallas de visualización de datos (PVD)",
+            "icono" : "39",
+            "idPadre": 39
+        },
+        {
+            "id": 257,
+            "codigo": "",
+            "nombre" : "Física. Esfuerzo",
+            "icono" : "43",
+            "idPadre": 43
+        },
+        {
+            "id": 258,
+            "codigo": "",
+            "nombre" : "Física. Manejos de cargas",
+            "icono" : "44",
+            "idPadre": 44
+        },
+        {
+            "id": 259,
+            "codigo": "",
+            "nombre" : "Mental. recepción de la información",
+            "icono" : "30",
+            "idPadre": 45
+        },
+        {
+            "id": 260,
+            "codigo": "",
+            "nombre" : "Contenido",
+            "icono" : "51",
+            "idPadre": 51
+        },
+        {
+            "id": 261,
+            "codigo": "",
+            "nombre" : "Monotonía",
+            "icono" : "52",
+            "idPadre": 52
+        },
+        {
+            "id": 262,
+            "codigo": "",
+            "nombre" : "Rol (Inadecuado)",
+            "icono" : "53",
+            "idPadre": 53
+        },
+        {
+            "id": 263,
+            "codigo": "",
+            "nombre" : "Autonomía (Insuficiente)",
+            "icono" : "54",
+            "idPadre": 54
+        },
+        {
+            "id": 264,
+            "codigo": "",
+            "nombre" : "Comunicaciones",
+            "icono" : "55",
+            "idPadre": 55
+        },
+        {
+            "id": 265,
+            "codigo": "",
+            "nombre" : "Relaciones",
+            "icono" : "56",
+            "idPadre": 56
+        },
+        {
+            "id": 266,
+            "codigo": "",
+            "nombre" : "Tiempo de trabajo (Horario inadecuado)",
+            "icono" : "57",
+            "idPadre": 57
+        },
+        {
+            "id": 267,
+            "codigo": "",
+            "nombre" : "Organización del trabajo incorrecta",
+            "icono" : "58",
+            "idPadre": 58
         }
     ]
 }

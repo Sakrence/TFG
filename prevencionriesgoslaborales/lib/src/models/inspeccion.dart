@@ -34,8 +34,8 @@ class InspeccionModel {
             this.latitud = 0.0;
             this.longitud = 0.0;
             // this.coordenadas = new Coordenadas(latitud: 0.0, longitud: 0.0);
-            this.pais = "";
-            this.provincia = "";
+            this.pais = null;
+            this.provincia = null;
             this.deficiencias = [];
       }
     }
@@ -175,17 +175,24 @@ class Inspector {
       "usuario": usuario,
       "contrasena": contrasena,
     };
+}
 
-    // Inspector.fromMap(dynamic obj) {
-    //   this.usuario = obj['usuario'];
-    //   this.contrasena = obj['contrasena'];
-    // }
+class Provincia {
+    Provincia({
+      this.id,
+      this.nm,
+    });
 
-    // Map<String, dynamic> toMap() {
-    //   var map = new Map<String, dynamic>();
-    //   map["usuario"] = usuario;
-    //   map["contrasena"] = contrasena;
-    //   return map;
-    // }
+    String id;
+    String nm;
 
+    factory Provincia.fromJson(Map<String, dynamic> json) => Provincia(
+      id      : json["id"],
+      nm  : json["nm"],
+    );
+
+    Map<String, dynamic> toJson() => {
+      "id"    : id,
+      "nm": nm,
+    };
 }

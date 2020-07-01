@@ -4,7 +4,7 @@
             "id": 60,
             "codigo": "01",
             "nombre" : "Caídas por trabajos en altura",
-            "icono" : "0101",
+            "icono" : "01",
             "idPadre": 1
         },
         {
@@ -25,175 +25,175 @@
             "id": 64,
             "codigo": "01",
             "nombre" : "Caídas por suelos o plataformas antideslizantes",
-            "icono" : "0201",
+            "icono" : "02",
             "idPadre": 2
         },
         {
             "id": 65,
             "codigo": "02",
             "nombre" : "Caídas por tropiezo con obstáculo",
-            "icono" : "0202",
+            "icono" : "06",
             "idPadre": 2
         },
         {
             "id": 66,
             "codigo": "01",
             "nombre" : "Desplome de elemntos fijos",
-            "icono" : "0301",
+            "icono" : "03",
             "idPadre": 3
         },
         {
             "id": 67,
             "codigo": "02",
             "nombre" : "Derrumbamiento o vuelco de materiales",
-            "icono" : "0302",
+            "icono" : "05",
             "idPadre": 3
         },
         {
             "id": 68,
             "codigo": "03",
             "nombre" : "Derrumbamiento del terreno",
-            "icono" : "0303",
+            "icono" : "34",
             "idPadre": 3
         },
         {
             "id": 69,
             "codigo": "01",
             "nombre" : "Caída de materiales o piezas en manipulación",
-            "icono" : "0401",
+            "icono" : "04",
             "idPadre": 4
         },
         {
             "id": 70,
             "codigo": "02",
             "nombre" : "Caída de equipos o herramientas",
-            "icono" : "0402",
+            "icono" : "04",
             "idPadre": 4
         },
         {
             "id": 71,
             "codigo": "01",
             "nombre" : "Caída de objetos o materiales almacenados",
-            "icono" : "0501",
+            "icono" : "03",
             "idPadre": 5
         },
         {
             "id": 72,
             "codigo": "02",
             "nombre" : "Caída de equipos, herramientas",
-            "icono" : "0502",
+            "icono" : "04",
             "idPadre": 5
         },
         {
             "id": 73,
             "codigo": "03",
             "nombre" : "Caída de objetos o materiales",
-            "icono" : "0503",
+            "icono" : "04",
             "idPadre": 5
         },
         {
             "id": 74,
             "codigo": "01",
             "nombre" : "Pisada sobre objeto o desnivel",
-            "icono" : "0601",
+            "icono" : "06",
             "idPadre": 6
         },
         {
             "id": 75,
             "codigo": "02",
             "nombre" : "Pisada sobre objeto cortante o punzante",
-            "icono" : "0602",
+            "icono" : "06",
             "idPadre": 6
         },
         {
             "id": 76,
             "codigo": "01",
             "nombre" : "Choques con elementos fijos",
-            "icono" : "0701",
+            "icono" : "07",
             "idPadre": 7
         },
         {
             "id": 77,
             "codigo": "02",
             "nombre" : "Choques con materiales u objetos",
-            "icono" : "0702",
+            "icono" : "07",
             "idPadre": 7
         },
         {
             "id": 78,
             "codigo": "01",
             "nombre" : "Choque contra elementos móviles",
-            "icono" : "0801",
+            "icono" : "08",
             "idPadre": 8
         },
         {
             "id":79,
             "codigo": "02",
             "nombre" : "Choque contra objetos en movimiento",
-            "icono" : "0802",
+            "icono" : "08",
             "idPadre": 8
         },
         {
             "id": 80,
             "codigo": "01",
             "nombre" : "Golpes con objetos",
-            "icono" : "0901",
+            "icono" : "09",
             "idPadre": 9
         },
         {
             "id": 81,
             "codigo": "02",
             "nombre" : "Golpes con herramientas",
-            "icono" : "0902",
+            "icono" : "09",
             "idPadre": 9
         },
         {
             "id": 82,
             "codigo": "03",
             "nombre" : "Cortes con herramientas o útiles",
-            "icono" : "0903",
+            "icono" : "09",
             "idPadre": 9
         },
         {
             "id": 83,
             "codigo": "04",
             "nombre" : "Cortes con objetos o materiales",
-            "icono" : "0904",
+            "icono" : "09",
             "idPadre": 9
         },
         {
             "id": 84,
             "codigo": "05",
             "nombre" : "Pinchazos",
-            "icono" : "0905",
+            "icono" : "09",
             "idPadre": 9
         },
         {
             "id": 85,
             "codigo": "06",
             "nombre" : "Cortes y/O pinchazos",
-            "icono" : "0906",
+            "icono" : "09",
             "idPadre": 9
         },
         {
             "id": 86,
             "codigo": "01",
             "nombre" : "Protección de elementos o piezas desprendidas",
-            "icono" : "1001",
+            "icono" : "10",
             "idPadre": 10
         },
         {
             "id": 87,
             "codigo": "02",
             "nombre" : "Protección de fragmentos de piezas o herramientas",
-            "icono" : "1002",
+            "icono" : "10",
             "idPadre": 10
         },
         {
             "id": 88,
             "codigo": "03",
             "nombre" : "Protección de partículas sólidas",
-            "icono" : "1003",
+            "icono" : "10",
             "idPadre": 10
         },
         {
@@ -214,56 +214,56 @@
             "id": 91,
             "codigo": "0",
             "nombre" : "Ambiente con gases",
-            "icono" : "110",
+            "icono" : "26",
             "idPadre": 11
         },
         {
             "id": 92,
             "codigo": "01",
             "nombre" : "Atrapamiento por elementos móviles de equipos",
-            "icono" : "1101",
+            "icono" : "11",
             "idPadre": 11
         },
         {
             "id": 93,
             "codigo": "02",
             "nombre" : "Atrapamiento por o entre objetos manipulados",
-            "icono" : "1102",
+            "icono" : "11",
             "idPadre": 11
         },
         {
             "id": 94,
             "codigo": "03",
             "nombre" : "Atrapamiento entre elementos por acción humana",
-            "icono" : "1103",
+            "icono" : "11",
             "idPadre": 11
         },
         {
             "id": 95,
             "codigo": "01",
             "nombre" : "Atrapamiento por vuelco de máquina",
-            "icono" : "1201",
+            "icono" : "12",
             "idPadre": 12
         },
         {
             "id": 96,
             "codigo": "02",
             "nombre" : "Atrapamiento por vuelco de vehículo",
-            "icono" : "1202",
+            "icono" : "12",
             "idPadre": 12
         },
         {
             "id": 97,
             "codigo": "01",
             "nombre" : "Sobreesfuerzos continuados",
-            "icono" : "1301",
+            "icono" : "13",
             "idPadre": 13
         },
         {
             "id": 98,
             "codigo": "02",
             "nombre" : "Sobreesfuerzos ocasionales",
-            "icono" : "1302",
+            "icono" : "13",
             "idPadre": 13
         },
         {
@@ -277,21 +277,21 @@
             "id": 100,
             "codigo": "04",
             "nombre" : "Sobreesfuerzos por posturas forzadas",
-            "icono" : "1304",
+            "icono" : "25",
             "idPadre": 13
         },
         {
             "id": 101,
             "codigo": "01",
             "nombre" : "Exposición a ambientes calurosos",
-            "icono" : "1401",
+            "icono" : "14",
             "idPadre": 14
         },
         {
             "id": 102,
             "codigo": "02",
             "nombre" : "Exposición a ambientes fríos",
-            "icono" : "1402",
+            "icono" : "14",
             "idPadre": 14
         },
         {
@@ -305,21 +305,21 @@
             "id": 104,
             "codigo": "04",
             "nombre" : "Contacto con llamas abiertas",
-            "icono" : "1404",
+            "icono" : "15",
             "idPadre": 14
         },
         {
             "id": 105,
             "codigo": "05",
             "nombre" : "Disconfort por temperatura inadecuada",
-            "icono" : "1405",
+            "icono" : "14",
             "idPadre": 14
         },
         {
             "id": 106,
             "codigo": "01",
             "nombre" : "Contacto con superfícies calientes",
-            "icono" : "1501",
+            "icono" : "15",
             "idPadre": 15
         },
         {
@@ -333,7 +333,7 @@
             "id": 108,
             "codigo": "03",
             "nombre" : "Contacto con llamas abiertas",
-            "icono" : "1503",
+            "icono" : "15",
             "idPadre": 15
         },
         {
@@ -368,7 +368,7 @@
             "id": 113,
             "codigo": "01",
             "nombre" : "Contactos eléctricos directos",
-            "icono" : "1601",
+            "icono" : "16",
             "idPadre": 16
         },
         {
@@ -389,7 +389,7 @@
             "id": 116,
             "codigo": "01",
             "nombre" : "Inhalación de sustancias nocivas o tóxicas",
-            "icono" : "1701",
+            "icono" : "17",
             "idPadre": 17
         },
         {
@@ -403,21 +403,21 @@
             "id": 118,
             "codigo": "03",
             "nombre" : "Asfixia, ahogamiento en atmosferas irrespirables",
-            "icono" : "1703",
+            "icono" : "26",
             "idPadre": 17
         },
         {
             "id": 119,
             "codigo": "04",
             "nombre" : "Accidentes mayores por fuga de gases o vapores",
-            "icono" : "1704",
+            "icono" : "26",
             "idPadre": 17
         },
         {
             "id": 120,
             "codigo": "01",
             "nombre" : "Contacto con sustancias causticas, corrosivas",
-            "icono" : "1801",
+            "icono" : "18",
             "idPadre": 18
         },
         {
@@ -438,7 +438,7 @@
             "id": 123,
             "codigo": "04",
             "nombre" : "Accidentes mayores por derrame de sustancias",
-            "icono" : "1804",
+            "icono" : "18",
             "idPadre": 18
         },
         {
@@ -452,28 +452,28 @@
             "id": 125,
             "codigo": "01",
             "nombre" : "Radiaciones ionizantes",
-            "icono" : "1901",
+            "icono" : "19",
             "idPadre": 19
         },
         {
             "id": 126,
             "codigo": "02",
             "nombre" : "Radiaciones no ionizantes",
-            "icono" : "1902",
+            "icono" : "19",
             "idPadre": 19
         },
         {
             "id": 127,
             "codigo": "01",
             "nombre" : "Explosiones de polvo",
-            "icono" : "2001",
+            "icono" : "20",
             "idPadre": 20
         },
         {
             "id": 128,
             "codigo": "02",
             "nombre" : "Explosiones por atsmóferas deflagrantes",
-            "icono" : "2002",
+            "icono" : "20",
             "idPadre": 20
         },
         {
@@ -487,42 +487,42 @@
             "id": 130,
             "codigo": "04",
             "nombre" : "Explosiones debidas a explosivos sólidos",
-            "icono" : "2004",
+            "icono" : "20",
             "idPadre": 20
         },
         {
             "id": 131,
             "codigo": "05",
             "nombre" : "Explosiones de materiales inflamables",
-            "icono" : "2005",
+            "icono" : "21",
             "idPadre": 20
         },
         {
             "id": 132,
             "codigo": "06",
             "nombre" : "Accidentes mayores por explosión",
-            "icono" : "2006",
+            "icono" : "20",
             "idPadre": 20
         },
         {
             "id": 133,
             "codigo": "01",
             "nombre" : "Incendio por factores de ignición",
-            "icono" : "2101",
+            "icono" : "21",
             "idPadre": 21
         },
         {
             "id": 134,
             "codigo": "02",
             "nombre" : "Porpagación de incendios por materias inflamables",
-            "icono" : "2102",
+            "icono" : "21",
             "idPadre": 21
         },
         {
             "id": 135,
             "codigo": "03",
             "nombre" : "Porpagación de incendios por medidas insuficientes",
-            "icono" : "2103",
+            "icono" : "21",
             "idPadre": 21
         },
         {
@@ -536,49 +536,49 @@
             "id": 137,
             "codigo": "05",
             "nombre" : "Accidentes mayores por incendio",
-            "icono" : "2105",
+            "icono" : "21",
             "idPadre": 21
         },
         {
             "id": 138,
             "codigo": "01",
             "nombre" : "Accidentes debidos a personas",
-            "icono" : "2201",
+            "icono" : "31",
             "idPadre": 22
         },
         {
             "id": 139,
             "codigo": "02",
             "nombre" : "Accidentes debidos a animales",
-            "icono" : "2202",
+            "icono" : "22",
             "idPadre": 22
         },
         {
             "id": 140,
             "codigo": "03",
             "nombre" : "Accidentes debidos a insectos-plantas",
-            "icono" : "2203",
+            "icono" : "22",
             "idPadre": 22
         },
         {
             "id": 141,
             "codigo": "04",
             "nombre" : "Agresiones, sabotajes, atracos, intrusismo",
-            "icono" : "2204",
+            "icono" : "33",
             "idPadre": 22
         },
         {
             "id": 142,
             "codigo": "01",
             "nombre" : "Atropello con vehículo",
-            "icono" : "2301",
+            "icono" : "23",
             "idPadre": 23
         },
         {
             "id": 143,
             "codigo": "02",
             "nombre" : "Choques o golpes con vehículo",
-            "icono" : "2302",
+            "icono" : "23",
             "idPadre": 23
         },
         {
@@ -592,7 +592,7 @@
             "id": 145,
             "codigo": "04",
             "nombre" : "Accidentes in itinere",
-            "icono" : "2304",
+            "icono" : "24",
             "idPadre": 23
         },
         {
@@ -613,7 +613,7 @@
             "id": 148,
             "codigo": "03",
             "nombre" : "Otros riesgos no codificados",
-            "icono" : "2603",
+            "icono" : "35",
             "idPadre": 26
         },
         {
@@ -837,7 +837,7 @@
             "id": 180,
             "codigo": "01",
             "nombre" : "Exposición a ruido continuo",
-            "icono" : "3301",
+            "icono" : "27",
             "idPadre": 33
         },
         {
@@ -851,21 +851,21 @@
             "id": 182,
             "codigo": "03",
             "nombre" : "Exposición a ultrasonidos e infrasonidos",
-            "icono" : "3303",
+            "icono" : "27",
             "idPadre": 33
         },
         {
             "id": 183,
             "codigo": "01",
             "nombre" : "Exposición a vibraciones en mano-brazo",
-            "icono" : "3401",
+            "icono" : "29",
             "idPadre": 34
         },
         {
             "id": 184,
             "codigo": "02",
             "nombre" : "Exposición a vibraciones del cuerpo (De pie)",
-            "icono" : "3402",
+            "icono" : "29",
             "idPadre": 34
         },
         {
@@ -879,14 +879,14 @@
             "id": 186,
             "codigo": "01",
             "nombre" : "Estrés térmico por calor",
-            "icono" : "3501",
+            "icono" : "14",
             "idPadre": 35
         },
         {
             "id": 187,
             "codigo": "02",
             "nombre" : "Estrés térmico por frío",
-            "icono" : "3502",
+            "icono" : "14",
             "idPadre": 35
         },
         {
@@ -984,14 +984,14 @@
             "id": 201,
             "codigo": "03",
             "nombre" : "Carga física por exigencia de la tarea",
-            "icono" : "4103",
+            "icono" : "13",
             "idPadre": 41
         },
         {
             "id": 202,
             "codigo": "04",
             "nombre" : "Atención visual",
-            "icono" : "4104",
+            "icono" : "31",
             "idPadre": 41
         },
         {
@@ -1012,7 +1012,7 @@
             "id": 205,
             "codigo": "07",
             "nombre" : "Trabajo muscular",
-            "icono" : "4107",
+            "icono" : "13",
             "idPadre": 41
         },
         {

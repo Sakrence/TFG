@@ -7,6 +7,7 @@ import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
+import 'package:prevencionriesgoslaborales/src/widgets/fondoApp.dart';
 
 class ListaEvaluacionPage extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class ListaEvaluacionPage extends StatelessWidget {
 
     return Stack(
       children: <Widget>[
-        _fondoApp(),
+        FondoApp(),
         SafeArea(
           child: StreamBuilder(
             stream: _deficienciaBloc.deficienciasStream,
@@ -71,53 +72,6 @@ class ListaEvaluacionPage extends StatelessWidget {
       ],
     );
   }
-
-  Widget _fondoApp() {
-
-    final gradiente = Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: FractionalOffset(0.0, 0.6),
-          end: FractionalOffset(0.0, 1.0),
-          colors: [
-            Color.fromRGBO(52, 54, 101, 1.0),
-            Color.fromRGBO(35, 37, 57, 1.0)
-          ],
-        )
-      ),
-    );
-
-    final cajaRosa = Transform.rotate(
-      angle: -pi / 5.2,
-      child: Container(
-        height: 350.0,
-        width: 350.0,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(85.0),
-          gradient: LinearGradient(
-            colors: [
-              Colors.cyanAccent,
-              Colors.blueAccent
-            ]
-          ),
-        ),
-      ),
-    );
-    
-
-    return Stack(
-      children: <Widget>[
-        gradiente,
-        Positioned(
-          top: -100,
-          child: cajaRosa
-        ),
-      ],
-    );
-  }
-
 
   Widget _tarjeta( BuildContext context, DeficienciaBloc bloc, DeficienciaModel deficiencia, EvaluacionesBloc evaluacionBloc) {
 

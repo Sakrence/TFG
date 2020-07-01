@@ -7,6 +7,7 @@ import 'package:prevencionriesgoslaborales/src/bloc/factores_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/factor_riesgo_model.dart';
+import 'package:prevencionriesgoslaborales/src/widgets/fondoApp.dart';
 
 class SubcategoriaPage extends StatefulWidget {
 
@@ -29,7 +30,7 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          _fondoApp(),
+          FondoApp(),
 
           SingleChildScrollView(
             child: Column(
@@ -42,52 +43,6 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
         ],
       ),
       floatingActionButton: _botonFlotante(_deficienciasBloc, _radius),
-    );
-  }
-
-  Widget _fondoApp() {
-
-    final gradiente = Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: FractionalOffset(0.0, 0.6),
-          end: FractionalOffset(0.0, 1.0),
-          colors: [
-            Color.fromRGBO(52, 54, 101, 1.0),
-            Color.fromRGBO(35, 37, 57, 1.0)
-          ],
-        )
-      ),
-    );
-
-    final caja = Transform.rotate(
-      angle: -pi / 5.2,
-      child: Container(
-        height: 350.0,
-        width: 350.0,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(85.0),
-          gradient: LinearGradient(
-            colors: [
-              Colors.cyanAccent,
-              Colors.blueAccent
-            ]
-          ),
-        ),
-      ),
-    );
-    
-
-    return Stack(
-      children: <Widget>[
-        gradiente,
-        Positioned(
-          top: -100,
-          child: caja
-        ),
-      ],
     );
   }
 

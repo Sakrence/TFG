@@ -44,9 +44,7 @@ class EvaluacionModel {
         nivelDeficiencia    : json["nivelDeficiencia"],
         nivelExposicion     : json["nivelExposicion"],
         nivelConsecuencias  : json["nivelConsecuencias"],
-        // fotos               : List<Foto>.from(json["fotos"].map((x) => x)),
         accionCorrectora    : json["accionCorrectora"],
-        // coordenadas         : Coordenadas.fromJson(json["coordenadas"]),
         nivelRiesgo         : json["nivelRiesgo"],
         idDeficiencia       : json["idDeficiencia"],
     );
@@ -58,9 +56,7 @@ class EvaluacionModel {
         "nivelDeficiencia"  : nivelDeficiencia,
         "nivelExposicion"   : nivelExposicion,
         "nivelConsecuencias": nivelConsecuencias,
-        // "fotos"             : List<Foto>.from(fotos.map((x) => x.toJson())),
         "accionCorrectora"  : accionCorrectora,
-        // "coordenadas"       : coordenadas.toJson(),
         "nivelRiesgo"       : nivelRiesgo,
         "idDeficiencia"     : idDeficiencia,
     };

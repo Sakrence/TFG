@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'dart:math';
 
 import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
@@ -120,7 +121,6 @@ class ListaEvaluacionPage extends StatelessWidget {
 
   Widget _tarjeta( BuildContext context, DeficienciaBloc bloc, DeficienciaModel deficiencia, EvaluacionesBloc evaluacionBloc) {
 
-// si quiero quitar el boton de evaluar pongo un gesture detector aqui y quito el boton
     return GestureDetector(
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 6.0),
@@ -156,10 +156,6 @@ class ListaEvaluacionPage extends StatelessWidget {
 
           deficiencia.evaluacion = evaluacion;
         } 
-        // else {
-        //   // evaluacionBloc.getEvaluacion(deficiencia.id);
-        //   deficiencia.evaluacion = evaluacionBloc.evaluacion;
-        // }
         Navigator.pushNamed(context, 'formPage', arguments: deficiencia);
       },
     );
@@ -214,10 +210,6 @@ class ListaEvaluacionPage extends StatelessWidget {
 
             deficiencia.evaluacion = evaluacion;
           } 
-          // else {
-          //   // evaluacionBloc.getEvaluacion(deficiencia.id);
-          //   deficiencia.evaluacion = evaluacionBloc.evaluacion;
-          // }
           Navigator.pushNamed(context, 'formPage', arguments: deficiencia);
         },
         child: Column(

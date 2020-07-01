@@ -1,15 +1,13 @@
+import 'package:flutter/material.dart';
+
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:csv/csv.dart';
-// import 'package:downloads_path_provider/downloads_path_provider.dart';
-import 'package:downloads_path_provider/downloads_path_provider.dart';
-
-import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
+
 import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
@@ -94,20 +92,10 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
               padding: EdgeInsets.all(12.0),
               child: Row(
                 children: <Widget>[
-                  // FloatingActionButton.extended(
-                  //   heroTag: UniqueKey(),
-                  //   onPressed: (){
-                  //     _mostrarAlertaInspector(context, _inspeccionBloc);
-                  //     // crear informe con las deficiencias
-                  //   },
-                  //   label: Text('Crear Inspector'),
-                  // ),
-                  // SizedBox(width: 10.0,),
                   FloatingActionButton.extended(
                     heroTag: UniqueKey(),
                     onPressed: (){
                       _mostrarAlertaInspeccion(context, _inspeccionBloc);
-                      // crear informe con las deficiencias
                     },
                     label: Text('Iniciar Inspeccion'),
                   ),
@@ -169,7 +157,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   Widget _tarjeta( BuildContext context, InspeccionBloc bloc, InspeccionModel inspeccion ) {
 
-// si quiero quitar el boton de evaluar pongo un gesture detector aqui y quito el boton
     return Container(
       height: 70.0,
       margin: EdgeInsets.symmetric(vertical: 6.0),
@@ -220,7 +207,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   _crearInforme( InspeccionBloc bloc, InspeccionModel inspeccion ) async {
     
-    // await PermissionHandler().requestPermissions([PermissionGroup.storage]);
     if (await permission.Permission.storage.request().isGranted) {
 
       Map<String, List<DeficienciaModel>> riesgosAgrupados = _agruparRiesgos(inspeccion);
@@ -248,7 +234,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
           datos.add(linea);
           
-          
         }
       });
 
@@ -273,14 +258,10 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
       Directory downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
 
       final String path = '${downloadsDirectory.path}/lugar_inspeccion${inspeccion.id}.csv';
-      print(path);
       final File file = File(path);
 
-      // Save csv string using default configuration
       await file.writeAsString(csv, mode: FileMode.write);
-      // await file.writeAsStringSync(csv, mode: FileMode.write);
 
-      print(csvData);
       _showSnackBar('Se ha creado el archivo CSV en su tarjeta SD -> Download');
       
     }
@@ -433,8 +414,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
           padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 35.0),
           child: Container(
             width: size.width * 0.80,
-            // margin: EdgeInsets.symmetric(vertical: 30.0),
-            // padding: EdgeInsets.symmetric(vertical: 40.0),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(5.0),
@@ -472,13 +451,10 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                       child: Column(
                         children: <Widget>[
                           _crearTextFieldDireccion(inspeccion),
-                          // _crearTextFieldPais(inspeccion),
                           _creatSelectPais(inspeccion),
                           _crearSelectProvincia(inspeccion, bloc),
-                          // _crearTextFieldProvincia(inspeccion),
                           _crearFieldCoordenadas(inspeccion),
                           _crearTextFieldComentarios(inspeccion),
-                          // _crearSeleccionInspector(inspeccion, bloc),
                         ],
                       ),
                     ),
@@ -494,7 +470,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
                     FlatButton(
                       child: Text('Ok'),
                       onPressed: () {
-                        // inspeccion.idInspector = 1;
                         if ( !_formKey.currentState.validate() ) return;
                         inspeccion.idInspector = bloc.inspectorSeleccionado.id;
                         bloc.agregarInspeccion(inspeccion);
@@ -508,29 +483,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
           )
         );
       }
-    );
-
-  }
-
-  Widget _crearTextNombre( Inspector inspector) {
-
-    return TextFormField(
-      initialValue: inspector.usuario,
-      textCapitalization: TextCapitalization.words,
-      decoration: InputDecoration(
-        labelText: 'Usuario',
-        labelStyle: TextStyle(fontSize: 20.0)
-      ),
-      onChanged: (value) => setState(() {
-          inspector.usuario = value;
-      }),
-      validator: (value) {
-        if ( value.length < 2 ) {
-          return 'Ingrese más de 2 carácteres';
-        } else {
-          return null;
-        }
-      },
     );
 
   }
@@ -595,27 +547,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     );
   }
 
-  Widget _crearTextFieldPais( InspeccionModel inspeccion ) {
-
-    return TextFormField(
-      initialValue: inspeccion.pais,
-      textCapitalization: TextCapitalization.words,
-      decoration: InputDecoration(
-        labelText: 'País',
-        labelStyle: TextStyle(fontSize: 20.0)
-      ),
-      onChanged: (value) => inspeccion.pais = value,
-      validator: (value) {
-        if ( value.length < 3 ) {
-          return 'Ingrese el país donde se va a realizar la inspección';
-        } else {
-          return null;
-        }
-      },
-    );
-
-  }
-
   Widget _crearFieldCoordenadas( InspeccionModel inspeccion ) {
     return Container(
       child: Row(
@@ -643,9 +574,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
   Widget _crearTextFieldLatitud( InspeccionModel inspeccion ) {
     return TextFormField(
       keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
-      // initialValue: '${inspeccion.coordenadas.latitud}',
       controller: _latitudController,
-      // enabled: false,
       decoration: InputDecoration(
         labelText: 'Latitud',
         labelStyle: TextStyle(fontSize: 20.0),
@@ -670,7 +599,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     return TextFormField(
       keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
       controller: _longitudController,
-      // enabled: false,
       decoration: InputDecoration(
         labelText: 'Longitud',
         labelStyle: TextStyle(fontSize: 20.0)
@@ -701,13 +629,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
         labelStyle: TextStyle(fontSize: 20.0)
       ),
       onChanged: (value) => inspeccion.comentarios = value,
-      // validator: (value) {
-      //   if ( value.length < 3 ) {
-      //     return 'Ingrese un comentario';
-      //   } else {
-      //     return null;
-      //   }
-      // },
     );
 
   }

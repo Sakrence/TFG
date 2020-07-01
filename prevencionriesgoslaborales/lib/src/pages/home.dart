@@ -1,7 +1,8 @@
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+
+import 'dart:ui';
+import 'dart:math';
+
 import 'package:prevencionriesgoslaborales/src/bloc/factores_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/categorias.dart';
@@ -12,7 +13,6 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final bloc = Provider.categoriasBloc(context);
-    // bloc.obtenerCategorias();
 
     return Scaffold(
       body: Stack(
@@ -174,7 +174,6 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         child: Container(
           height: 220.0,
-          // width: 200.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30.0),
             color: Colors.white,

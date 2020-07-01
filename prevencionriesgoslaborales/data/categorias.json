@@ -172,14 +172,14 @@
             "id": 25,
             "codigo": "25",
             "nombre" : "Accidentes por causas naturales",
-            "icono" : "24",
+            "icono" : "34",
             "idPadre": null
         },
         {
             "id": 26,
             "codigo": "26",
             "nombre" : "Accidentes por causa no codificada",
-            "icono" : "261",
+            "icono" : "35",
             "idPadre": null
         },
         {
@@ -193,7 +193,7 @@
             "id": 32,
             "codigo": "32",
             "nombre" : "Exposición a contaminantes biológicos",
-            "icono" : "17",
+            "icono" : "36",
             "idPadre": null
         },
         {
@@ -242,7 +242,7 @@
             "id": 39,
             "codigo": "39",
             "nombre" : "Pantallas de visualización de datos (PVD)",
-            "icono" : "39",
+            "icono" : "37",
             "idPadre": null
         },
         {
@@ -256,7 +256,7 @@
             "id": 42,
             "codigo": "42",
             "nombre" : "Física. Desplazamiento",
-            "icono" : "42",
+            "icono" : "38",
             "idPadre": null
         },
         {
@@ -312,63 +312,63 @@
             "id": 51,
             "codigo": "51",
             "nombre" : "Contenido",
-            "icono" : "51",
+            "icono" : "39",
             "idPadre": null
         },
         {
             "id": 52,
             "codigo": "52",
             "nombre" : "Monotonía",
-            "icono" : "52",
+            "icono" : "40",
             "idPadre": null
         },
         {
             "id": 53,
             "codigo": "53",
             "nombre" : "Rol (Inadecuado)",
-            "icono" : "53",
+            "icono" : "41",
             "idPadre": null
         },
         {
             "id": 54,
             "codigo": "54",
             "nombre" : "Autonomía (Insuficiente)",
-            "icono" : "54",
+            "icono" : "42",
             "idPadre": null
         },
         {
             "id": 55,
             "codigo": "55",
             "nombre" : "Comunicaciones",
-            "icono" : "55",
+            "icono" : "43",
             "idPadre": null
         },
         {
             "id": 56,
             "codigo": "56",
             "nombre" : "Relaciones",
-            "icono" : "56",
+            "icono" : "44",
             "idPadre": null
         },
         {
             "id": 57,
             "codigo": "57",
             "nombre" : "Tiempo de trabajo (Horario inadecuado)",
-            "icono" : "57",
+            "icono" : "45",
             "idPadre": null
         },
         {
             "id": 58,
             "codigo": "58",
             "nombre" : "Organización del trabajo incorrecta",
-            "icono" : "58",
+            "icono" : "46",
             "idPadre": null
         },
         {
             "id": 59,
             "codigo": "59",
             "nombre" : "Otros riesgos de insatisfacción",
-            "icono" : "59",
+            "icono" : "47",
             "idPadre": null
         }
     ]

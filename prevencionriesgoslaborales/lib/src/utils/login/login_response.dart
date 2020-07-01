@@ -1,7 +1,6 @@
 import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
 
-
 abstract class LoginCallBack {
   void onLoginSuccess(Inspector usuario, InspeccionBloc bloc);
   void onLoginError();

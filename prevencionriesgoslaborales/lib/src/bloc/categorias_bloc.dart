@@ -13,20 +13,16 @@ class CategoriasBloc{
   }
 
   CategoriasBloc._internal() {
-    // Obtener Categorias de la Base de datos
     obtenerCategorias();
   }
-
 
   final _categoriasController    = BehaviorSubject<List<CategoriaModel>>();
 
   // Recuperar los datos del Stream
   Stream<List<CategoriaModel>> get categoriasStream    => _categoriasController.stream;
   
-
   // Insertar valores al Stream
   Function(List<CategoriaModel>) get changeCategorias    => _categoriasController.sink.add;
-
 
   dispose() {
     _categoriasController?.close();

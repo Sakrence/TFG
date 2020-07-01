@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
+import 'package:prevencionriesgoslaborales/src/providers/db_provider.dart';
 import 'package:prevencionriesgoslaborales/src/utils/login/login_response.dart';
 
 class LoginPage extends StatefulWidget {
@@ -94,8 +96,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
             ],
           ),
         ),
-  
-        
       ],
     );
 
@@ -103,7 +103,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
   Widget _loginForm( BuildContext context, InspeccionBloc inspeccionBloc ) {
 
-    // final bloc = Provider.of(context);
     final size = MediaQuery.of(context).size;
 
     return SingleChildScrollView(
@@ -174,11 +173,13 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
               _mostrarAlertaInspector(context, inspeccionBloc);
             },
           ),
-          // SizedBox(height: 10.0),
-          // GestureDetector(
-          //   child: Text('¿Olvido la contraseña?'),
-          //   onTap: () {},
-          // ),
+          SizedBox(height: 10.0),
+          GestureDetector(
+            child: Text('¿Olvido la contraseña?'),
+            onTap: () {
+              _mostrarAlertaContrasena(context, inspeccionBloc);
+            },
+          ),
           SizedBox( height: 100.0 ),
         ],
       ),
@@ -186,39 +187,24 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
   }
 
-  Widget _crearUsuario(  ) {
+  Widget _crearUsuario() {
 
-    // return StreamBuilder(
-    //   stream: bloc.emailStream ,
-    //   builder: (BuildContext context, AsyncSnapshot snapshot){
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: TextFormField(
-            // keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              icon: Icon(Icons.person_outline, color: Colors.deepPurple),
-              hintText: 'Usuario',
-              labelText: 'Usuario',
-              // counterText: snapshot.data,
-              // errorText: snapshot.error
-            ),
-            onSaved: (value) => _usuario = value,
-            // onChanged: bloc.changeEmail,
-          ),
-        );
-      // },
-    // );
-
-
-
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          icon: Icon(Icons.person_outline, color: Colors.deepPurple),
+          hintText: 'Usuario',
+          labelText: 'Usuario',
+        ),
+        onSaved: (value) => _usuario = value,
+      ),
+    );
     
   }
 
   Widget _crearPassword( ) {
 
-    // return StreamBuilder(
-    //   stream: bloc.passwordStream ,
-    //   builder: (BuildContext context, AsyncSnapshot snapshot){
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
@@ -230,41 +216,28 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
             icon: Icon(Icons.visibility),
             onPressed: _toggle,
           )
-          // counterText: snapshot.data,
-          // errorText: snapshot.error
         ),
         onSaved: (value) => _contrasena = value,
-        // onChanged: bloc.changePassword,
       ),
     );
-    //   },
-    // );
-
-
     
   }
 
   Widget _crearBoton( InspeccionBloc inspeccionBloc ) {
 
-    // return StreamBuilder(
-    //   stream: bloc.formValidStream ,
-    //   builder: (BuildContext context, AsyncSnapshot snapshot){
-         return RaisedButton(
-          child: Container(
-            padding: EdgeInsets.symmetric( horizontal: 80.0, vertical: 20.0),
-            child: Text('Ingresar'),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0)
-          ),
-          elevation: 0.0,
-          color: Colors.deepPurple,
-          textColor: Colors.white,
-          onPressed: () => _submit(inspeccionBloc),
-          // onPressed: snapshot.hasData ? () => _login(bloc, context) : null
-        );
-    //   },
-    // );
+    return RaisedButton(
+    child: Container(
+      padding: EdgeInsets.symmetric( horizontal: 80.0, vertical: 20.0),
+      child: Text('Ingresar'),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5.0)
+    ),
+    elevation: 0.0,
+    color: Colors.deepPurple,
+    textColor: Colors.white,
+    onPressed: () => _submit(inspeccionBloc),
+  );
   }
 
   _mostrarAlertaInspector( BuildContext context, InspeccionBloc bloc) {
@@ -282,8 +255,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
             padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 35.0),
             child: Container(
               width: size.width * 0.80,
-              // margin: EdgeInsets.symmetric(vertical: 30.0),
-              // padding: EdgeInsets.symmetric(vertical: 40.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5.0),
@@ -336,9 +307,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
                       FlatButton(
                         child: Text('Ok'),
                         onPressed: () {
-                          bloc.agregarInspector(inspector);
-                          Navigator.of(context).pop();
-                          _showSnackBar('Se ha creado el usuario satisfactoriamente');
+                          _agregarUsuario(inspector, bloc);
                         },
                       ),
                     ],
@@ -349,6 +318,141 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
         );
       }
     );
+
+  }
+
+  _agregarUsuario( Inspector inspector, InspeccionBloc bloc ) async {
+
+    if (await _usuarioUnico(inspector)) {
+      bloc.agregarInspector(inspector);
+      Navigator.of(context).pop();
+      _showSnackBar('Se ha creado el usuario satisfactoriamente');
+    } else {
+      _showSnackBar('El usuario ya existe');
+    }
+
+  }
+
+  Future<bool> _usuarioUnico(Inspector inspector ) async {
+    List<Inspector> inspectores = await DBProvider.db.getAllInspectores();
+  
+    bool flag = true;
+
+    inspectores.forEach((element) {
+      if ( element.usuario == inspector.usuario ) {
+        if ( element.contrasena == inspector.contrasena ) flag = false;
+      }
+    });
+
+    return flag;
+  }
+
+  Future<String> _recuperarContrasena( String usuario ) async {
+    List<Inspector> inspectores = await DBProvider.db.getAllInspectores();
+
+    String contrasena = null;
+
+    inspectores.forEach((element) { 
+      if (element.usuario.split(' ')[0] == usuario) contrasena = element.contrasena;
+    });
+
+    return contrasena;
+  }
+
+  _mostrarAlertaContrasena( BuildContext context, InspeccionBloc bloc ) {
+
+    
+    final size = MediaQuery.of(context).size;
+
+    final inspector = Inspector();
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+
+        return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 35.0),
+            child: Container(
+              width: size.width * 0.80,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5.0),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 3.0,
+                    offset: Offset(0.0, 5.0),
+                    spreadRadius: 3.0
+                  )
+                ]
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container( 
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.purple,
+                          Colors.blue
+                        ]
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    height: size.height * 0.1,
+                    width: double.infinity,
+                    child: Text('Recuperar contraseña', style: TextStyle(decoration: TextDecoration.none, fontSize: 20.0, color: Colors.white) ,),
+                  ),
+                  Material(
+                    child: Container(
+                      padding: EdgeInsets.all(20.0),
+                      child: Form(
+                        child: Column(
+                          children: <Widget>[
+                            _crearTextUsuario(inspector),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text('Cancelar'),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      FlatButton(
+                        child: Text('Ok'),
+                        onPressed: () {
+                          _contrasenaOlvidada(context, inspector);
+                          // bloc.agregarInspector(inspector);
+                          // Navigator.of(context).pop();
+                          // _showSnackBar('Se ha creado el usuario satisfactoriamente');
+                        },
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+        );
+      }
+    );
+
+  }
+
+  _contrasenaOlvidada( BuildContext context, Inspector inspector ) async {
+
+    String contrasena = await _recuperarContrasena(inspector.usuario);
+
+    if (contrasena == null ) {
+      _showSnackBar('No existe ese usuario');
+    } else {
+      Navigator.of(context).pop();
+      _showSnackBar('La contraseña es: $contrasena');
+    }
 
   }
 

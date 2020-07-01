@@ -21,19 +21,11 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
   @override
   Widget build(BuildContext context) {
 
-    // final _factoresBloc = BlocProvider.of<FactoresBloc>(context);
-    // final _deficienciasBloc = BlocProvider.of<DeficienciaBloc>(context);
-    // final _evaluacionesBloc = BlocProvider.of<EvaluacionesBloc>(context);
-    
-    // final CategoriaModel categoria = ModalRoute.of(context).settings.arguments;
-    // Provider.of(context).factoresBloc = FactoresBloc(categoria);
     final _factoresBloc = Provider.of(context).factoresBloc;
     final _deficienciasBloc = Provider.deficienciaBloc(context);
     final _inspeccionBloc = Provider.inspeccionBloc(context);
     _deficienciasBloc.obtenerDeficiencias(_inspeccionBloc.inspeccionSeleccionada.id);
     
-    
-
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -170,7 +162,6 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
             image: AssetImage('assets/riesgos/${factor.icono}_V-01.png'),
             fadeInDuration: Duration( milliseconds: 200 ),
             height: 165.0,
-            // width: 160.0,
             fit: BoxFit.cover,
           ),
 
@@ -188,8 +179,6 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
     return GestureDetector(
       onTap: () async {
         deficienciasBloc.addDeficiencia(factor, inspeccionBloc.inspeccionSeleccionada.id);
-        // inspeccionBloc.inspeccionSeleccionada.deficiencias = deficienciasBloc.deficiencias;
-        // inspeccionBloc.inspeccionSeleccionada.deficiencias = [];
         animateEventPart1();
         await animateEventPart2();
       },
@@ -197,7 +186,6 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
         padding: EdgeInsets.all(10.0),
         child: Container(
           height: 220.0,
-          // width: 200.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30.0),
             color: Colors.white,
@@ -229,20 +217,12 @@ class _SubcategoriaPageState extends State<SubcategoriaPage> {
             backgroundColor: Colors.blue,
             
             onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (BuildContext context) => BlocProvider<DeficienciaBloc> (
-              //                   bloc: DeficienciaBloc(),
-              //                   child: SubcategoriaPage(),
-              //                 )
-              // ));
               Navigator.pushNamed(context, 'listaEvaluaciones');
             }
         ),
         Positioned (
           top: -0.5,
           right: 0,
-          // height: 25.0,
-          // width: 25.0,
           child: AnimatedContainer(
             duration: Duration(milliseconds: 100),
             curve: Curves.fastOutSlowIn,

@@ -77,9 +77,7 @@ class InspeccionBloc {
   agregarInspector( Inspector inspector) async {
 
     await DBProvider.db.nuevoInspector(inspector);
-    
     // obtenerInspectores();
-
   }
 
   eliminarInspector( Inspector inspector ) async {

@@ -9,10 +9,9 @@ export 'package:prevencionriesgoslaborales/src/bloc/categorias_bloc.dart';
 
 class Provider extends InheritedWidget{
 
-
   static Provider _instancia;
 
-  factory Provider({ Key key, Widget child }) { // si necesito una nueva instancia o usar la exstente
+  factory Provider({ Key key, Widget child }) {
     
     if ( _instancia == null ) {
       _instancia = new Provider._internal(key: key, child: child);
@@ -22,9 +21,7 @@ class Provider extends InheritedWidget{
 
   }
   
-  
   final _categoriasBloc   = CategoriasBloc();
-  // final factoresBloc = FactoresBloc(categoria);
   FactoresBloc factoresBloc = null ;
   final _evaluacionesBloc = EvaluacionesBloc();
   final _deficienciaBloc = DeficienciaBloc();

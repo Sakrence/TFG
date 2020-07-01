@@ -1,16 +1,14 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'dart:io';
+import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
-import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'dart:math';
 
+import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
 import 'package:prevencionriesgoslaborales/src/providers/db_provider.dart';
@@ -26,7 +24,6 @@ class _FormPageState extends State<FormPage> {
   static final _formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // bool _guardando = false;
   File foto;
   EvaluacionModel evaluacion;
   EvaluacionesBloc evaluacionBloc;
@@ -45,12 +42,7 @@ class _FormPageState extends State<FormPage> {
     evaluacionBloc = Provider.evaluacionesBloc(context);
     final DeficienciaModel deficienciaData = ModalRoute.of(context).settings.arguments;
 
-    // evaluacionBloc.getEvaluacion(deficienciaData.id);
-    // if ( deficienciaData.evaluacion.id != null ) {
-    //   evaluacion = evaluacionBloc.evaluacion;
-    // } else {
     evaluacion = deficienciaData.evaluacion;
-    // }
     deficiencia = deficienciaData;
 
     _actualizarValues();
@@ -67,7 +59,6 @@ class _FormPageState extends State<FormPage> {
             padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 20.0),
             child: Column(
               children: <Widget>[
-                // _formulario(context, evaluacion),
                 _formulario(context),
               ],
             ),
@@ -133,13 +124,9 @@ class _FormPageState extends State<FormPage> {
 
     return Column(
       children: <Widget>[
-        // SafeArea(
-        //   child: Container(),
-        // ),
         Container(
           width: size.width * 0.90,
           margin: EdgeInsets.symmetric(vertical: 30.0),
-          // padding: EdgeInsets.symmetric(vertical: 40.0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5.0),
@@ -163,7 +150,6 @@ class _FormPageState extends State<FormPage> {
                       Colors.blue
                     ]
                   )
-
                 ),
                 alignment: Alignment.center,
                 height: size.height * 0.1,
@@ -176,27 +162,20 @@ class _FormPageState extends State<FormPage> {
                     SizedBox(width: 5.0,),
                     IconButton(
                       icon: Icon(Icons.photo_size_select_actual),
-                      // onPressed: (){},
-                      // onPressed: () => _seleccionarForo(evaluacion),
                       onPressed: _seleccionarForo,
                     ),
                     IconButton(
                       icon: Icon(Icons.camera_alt),
-                      // onPressed: (){},
-                      // onPressed: () => _tomarForo(evaluacion),
                       onPressed: _tomarForo,
                     )
                   ],
                 ),
               ),
               Text(''),
-              // _crearForm(evaluacion),
               _crearForm(),
-              
             ],
           ),
         ),
-        Text('¿Olvido la contraseña?', style: TextStyle(color: Colors.white)),
         SizedBox( height: 100.0 ),
       ],
     );
@@ -252,15 +231,6 @@ class _FormPageState extends State<FormPage> {
       ),
       value: evaluacion.tipoFactor,
       onChanged: ( value ) => evaluacion.tipoFactor = value,
-      // onSaved: ( value ) => setState(() {
-      //     evaluacion.tipoFactor = value;
-      // }),
-      // onChanged: ( value ) => setState(() {
-      //     evaluacion.tipoFactor = value;
-      // }),
-      // onSaved: ( value ) => setState(() {
-      //     evaluacion.tipoFactor = value;
-      // }),
       items: <String>['Potencial', 'Existente']
         .map<DropdownMenuItem<String>>((String value) {
       return DropdownMenuItem<String>(
@@ -309,7 +279,6 @@ class _FormPageState extends State<FormPage> {
                 min: 0,
                 max: 3,
                 divisions: 3,
-                // label: 'Nivel de Exposicion: ${evaluacion.nivelDeficiencia}',
                 onChanged: (value) {
                   _valueDeficiencia = value;
                   switch ( value.ceil() ) {
@@ -386,7 +355,6 @@ class _FormPageState extends State<FormPage> {
                 min: 0,
                 max: 3,
                 divisions: 3,
-                // label: 'Nivel de Exposicion: ${evaluacion.nivelExposicion}',
                 onChanged: (value) {
                   setState(
                     () {
@@ -453,7 +421,6 @@ class _FormPageState extends State<FormPage> {
                 min: 0,
                 max: 3,
                 divisions: 3,
-                // label: 'Nivel de Exposicion: ${evaluacion.nivelDeficiencia}',
                 onChanged: (value) {
                   _valueConsecuencias = value;
                   switch ( value.ceil() ) {
@@ -488,7 +455,6 @@ class _FormPageState extends State<FormPage> {
             ),
           ),
         ],
-        
       ),
     );
   }
@@ -520,7 +486,6 @@ class _FormPageState extends State<FormPage> {
   Widget _crearTextFieldLatitud() {
     return TextFormField(
       keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
-      // initialValue: '${inspeccion.coordenadas.latitud}',
       controller: _latitudController,
       enabled: false,
       decoration: InputDecoration(
@@ -528,10 +493,6 @@ class _FormPageState extends State<FormPage> {
         labelStyle: TextStyle(fontSize: 20.0),
       ),
       readOnly: true,
-      // onChanged: (value) => setState(() {
-      //   print('Latitud: ${value}');
-      //     inspeccion.coordenadas.latitud = num.tryParse(value);
-      // }),
       onSaved: (value) => _latitudController.text = '${evaluacion.coordenadas.latitud}',
       validator: (value) {
         bool flag;
@@ -550,7 +511,6 @@ class _FormPageState extends State<FormPage> {
   Widget _crearTextFieldLongitud() {
     return TextFormField(
       keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
-      // initialValue: '${inspeccion.coordenadas.longitud}',
       controller: _longitudController,
       enabled: false,
       decoration: InputDecoration(
@@ -581,10 +541,6 @@ class _FormPageState extends State<FormPage> {
         labelText: 'Riesgo',
         labelStyle: TextStyle(fontSize: 20.0)
       ),
-      // onChanged: (value) {
-      //   evaluacion.riesgo = value;
-      //   // print(evaluacion.riesgo);
-      // },
       onSaved: (value) => evaluacion.riesgo = value,
       validator: (value) {
         if ( value.length < 3 ) {
@@ -632,8 +588,6 @@ class _FormPageState extends State<FormPage> {
         textColor: Colors.white,
         label: Text('Guardar'),
         icon: Icon( Icons.save ),
-        // onPressed: (_guardando) ? null :  _submit,
-        // onPressed: () => _submit(evaluacion),
         onPressed: _submit,
       ),
     );
@@ -645,42 +599,13 @@ class _FormPageState extends State<FormPage> {
     if ( !_formKey.currentState.validate() ) return;
 
     _formKey.currentState.save();
-    // setState(() { _guardando = true; }); // para evitar que se guarden varias veces lo mismo sin querer
 
-    
-    // addFoto();
-
-    // if ( foto != null ) {
-    //   // deficiencia.imagen = await deficienciaBloc.subirFoto(foto); // crearla para que suba foto a la base de datos y devuelva la foto
-    //   List<int> imageBytes = foto.readAsBytesSync();
-    //   String base64Image = base64Encode(imageBytes);
-    //   // print(base64Image);
-    //   if ( evaluacion.fotos == null ) {
-    //     List<Foto> lista = List();
-    //     Foto aux = Foto(foto: Base64Decoder().convert(base64Image), idEvaluacion: evaluacion.id);
-    //     lista.add(aux);
-    //     evaluacion.fotos = lista;
-    //   } else {
-    //     evaluacion.fotos.add(Foto(foto: Base64Decoder().convert(base64Image), idEvaluacion: evaluacion.id));
-    //     //evaluacion.fotos[0].foto = Base64Decoder().convert(base64Image);
-    //   }
-
-    //   // Uint8List _bytesImage = Base64Decoder().convert(base64Image);
-    // }
-
-   
-    // await DBProvider.db.nuevaEvaluacion(evaluacion);
     if ( evaluacion.id != null ) {
       await evaluacionBloc.editarEvaluacion(evaluacion);
     } else {
       await evaluacionBloc.addEvaluacion(evaluacion, deficiencia.id);
     }
 
-
-    print('Todo OK');
-
-
-    // setState(() { _guardando = false; }); // mejor cambiarlo a que vuelva a la pagina anterior
     mostrarSnackbar('Registro guardado');
 
     Navigator.pop(context);
@@ -744,7 +669,6 @@ class _FormPageState extends State<FormPage> {
   }
 
   _procesarImagen( ImageSource source) async {
-  // TODO: mirar que no haya problemas de que pierdan los datos
     final picker = ImagePicker();
     
     final pickedFile = await picker.getImage( source: source );
@@ -772,8 +696,6 @@ class _FormPageState extends State<FormPage> {
           borderRadius: BorderRadius.circular(20.0),
           child: Image(
               image: AssetImage('assets/img/no-image.png'),
-              // height: 300.0,
-              // width: 300.0,
               fit: BoxFit.cover,
             ),
         ),
@@ -797,7 +719,6 @@ class _FormPageState extends State<FormPage> {
       child: PageView.builder(
         pageSnapping: false,
         controller: _pageController,
-        // children: _tarjetas( context ),
         itemCount: fotos.length,
         itemBuilder: ( context, i ) => _tarjeta(context, fotos[i])
       ),
@@ -806,7 +727,6 @@ class _FormPageState extends State<FormPage> {
 
   Widget _tarjeta( BuildContext context, Foto foto ) {
 
-    // final tarjeta = Container(
     return Container(
         margin: EdgeInsets.only(right: 15.0),
         child: Column(
@@ -860,28 +780,16 @@ class _FormPageState extends State<FormPage> {
         ),
       );
 
-    // return GestureDetector(
-    //   child: tarjeta,
-    //   onTap: () {
-
-    //     Navigator.pushNamed(context, 'detalle', arguments: pelicula );
-
-    //   },
-    // );
-
   }
 
 
   _tomarForo( ) async {
 
-    // _procesarImagen( ImageSource.camera, evaluacion );
     _procesarImagen( ImageSource.camera);
-
   }
 
   _actualizarValues() {
 
-    
     switch ( evaluacion.nivelDeficiencia ) {
       case 0:
         _valueDeficiencia = 0;
@@ -911,7 +819,6 @@ class _FormPageState extends State<FormPage> {
         _valueConsecuencias = 3;
         break;
     }
-
 
   }
 
@@ -952,6 +859,5 @@ class _FormPageState extends State<FormPage> {
 
     _formKey.currentState.save();
 
-    
   }
 }

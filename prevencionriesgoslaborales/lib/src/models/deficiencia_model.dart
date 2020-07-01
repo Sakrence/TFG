@@ -25,14 +25,12 @@ class DeficienciaModel {
     factory DeficienciaModel.fromJson(Map<String, dynamic> json) => DeficienciaModel(
         id              : json["id"],
         idFactorRiesgo  : json["idFactorRiesgo"],
-        // evaluacion    : EvaluacionModel.fromJson(json["evaluacion"]),
         idInspeccion    : json["idInspeccion"],
     );
 
     Map<String, dynamic> toJson() => {
         "id"            : id,
         "idFactorRiesgo": idFactorRiesgo,
-        // "evaluacion"  : evaluacion.toJson(),
         "idInspeccion"  : idInspeccion,
     };
 }

@@ -5,9 +5,9 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
-import 'dart:math';
 
 import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
+import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
@@ -28,6 +28,7 @@ class _FormPageState extends State<FormPage> {
   File foto;
   EvaluacionModel evaluacion;
   EvaluacionesBloc evaluacionBloc;
+  InspeccionBloc inspeccionBloc;
   DeficienciaModel deficiencia;
   double _valueDeficiencia = 0.0;
   double _valueConsecuencias = 0.0;
@@ -41,6 +42,7 @@ class _FormPageState extends State<FormPage> {
   Widget build(BuildContext context) {
 
     evaluacionBloc = Provider.evaluacionesBloc(context);
+    inspeccionBloc = Provider.inspeccionBloc(context);
     final DeficienciaModel deficienciaData = ModalRoute.of(context).settings.arguments;
 
     evaluacion = deficienciaData.evaluacion;
@@ -560,6 +562,8 @@ class _FormPageState extends State<FormPage> {
     } else {
       await evaluacionBloc.addEvaluacion(evaluacion, deficiencia.id);
     }
+
+    inspeccionBloc.obtenerInspecciones(inspeccionBloc.inspectorSeleccionado.id);    
 
     mostrarSnackbar('Registro guardado');
 

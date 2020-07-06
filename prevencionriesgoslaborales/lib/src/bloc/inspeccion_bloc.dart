@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
-import 'package:prevencionriesgoslaborales/src/providers/categorias_provider.dart';
 import 'package:prevencionriesgoslaborales/src/providers/db_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -73,6 +72,11 @@ class InspeccionBloc {
 
     _inspeccionesController.sink.add( list );
   }
+
+  // Stream<List<InspeccionModel>> getInspecciones() {
+  //   obtenerInspecciones(inspectorSeleccionado.id);
+  //   return inspeccionesStream;
+  // }
 
   agregarInspector( Inspector inspector) async {
 

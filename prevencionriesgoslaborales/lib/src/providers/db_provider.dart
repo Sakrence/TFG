@@ -213,6 +213,7 @@ class DBProvider {
 
     final db  = await database;
     final res = await db.query('Inspector', where: 'usuario = ? and contrasena = ?', whereArgs: [usuario, contrasena] );
+    print(res);
     return res.isNotEmpty ? Inspector.fromJson( res.first ) : null;
   }
 

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'dart:math';
-
 import 'package:prevencionriesgoslaborales/src/bloc/deficiencia_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/evaluaciones_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';

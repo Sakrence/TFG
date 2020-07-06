@@ -12,7 +12,7 @@ class EvaluacionesBloc {
     return _singleton;
   }
 
-  EvaluacionesBloc._internal() {  }
+  EvaluacionesBloc._internal();
 
   final _evaluacionController = BehaviorSubject<EvaluacionModel>();
 

@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'dart:io';
-import 'dart:math';
 import 'dart:ui';
 import 'package:csv/csv.dart';
 import 'package:location/location.dart';
@@ -133,7 +134,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
               _texto(inspeccion),
-              // _botonInspeccionar(context, bloc, inspeccion),
               _acciones(bloc, inspeccion),
           ],
         ),
@@ -215,9 +215,9 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
       final String path = '${downloadsDirectory.path}/lugar_inspeccion${inspeccion.id}.csv';
       final File file = File(path);
 
-      await file.writeAsString(csv, mode: FileMode.write);
+      await file.writeAsString(csv, mode: FileMode.write, encoding: utf8);
 
-      _showSnackBar('Se ha creado el archivo CSV en su tarjeta SD -> Download');
+      _showSnackBar('Se ha creado el archivo CSV en Download');
       
     }
   }
@@ -230,7 +230,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
     inspeccion.deficiencias.forEach((item) => {
       
-      if ( item.evaluacion != null ) {
+      if ( item.evaluacion != null && item.evaluacion.riesgo != "" ) {
 
         if( mapa.containsKey(item.factorRiesgo.nombre) ) {
           mapa.update(item.factorRiesgo.nombre, (value) {
@@ -298,9 +298,9 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     return max;
   }
 
-  _cerrarInspeccion(  InspeccionBloc bloc, InspeccionModel inspeccion  ) {
+  // _cerrarInspeccion(  InspeccionBloc bloc, InspeccionModel inspeccion  ) {
     
-  }
+  // }
 
   _acciones( InspeccionBloc bloc, InspeccionModel inspeccion ) {
 
@@ -312,11 +312,11 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _crearAcciones(Icons.edit, 'Inspeccionar', Colors.green, _inspeccionar, bloc, inspeccion),
-            SizedBox(width: 10.0,),
+            SizedBox(width: 5.0,),
             _crearAcciones(Icons.insert_drive_file, 'Informe', Colors.blueAccent, _crearInforme, bloc, inspeccion),
-            SizedBox(width: 10.0,),
-            _crearAcciones(Icons.lock, 'Cerrar', Colors.red, _cerrarInspeccion, bloc, inspeccion),
-            SizedBox(width: 10.0,),
+            SizedBox(width: 5.0,),
+            // _crearAcciones(Icons.lock, 'Cerrar', Colors.red, _cerrarInspeccion, bloc, inspeccion),
+            // SizedBox(width: 10.0,),
           ],
         ),
       ),

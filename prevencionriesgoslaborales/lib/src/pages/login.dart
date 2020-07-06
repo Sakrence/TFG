@@ -168,6 +168,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
             ),
           ),
           GestureDetector(
+            key: Key('Registrarse'),
             child: Text('Registrarse'),
             onTap: () {
               _mostrarAlertaInspector(context, inspeccionBloc);
@@ -175,6 +176,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
           ),
           SizedBox(height: 10.0),
           GestureDetector(
+            key: Key('Olvidar'),
             child: Text('¿Olvido la contraseña?'),
             onTap: () {
               _mostrarAlertaContrasena(context, inspeccionBloc);
@@ -192,6 +194,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
+        key: Key('usuario'),
         decoration: InputDecoration(
           icon: Icon(Icons.person_outline, color: Colors.deepPurple),
           hintText: 'Usuario',
@@ -208,6 +211,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
+        key: Key('contrasena'),
         obscureText: _obscureText,
         decoration: InputDecoration(
           icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
@@ -226,18 +230,19 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   Widget _crearBoton( InspeccionBloc inspeccionBloc ) {
 
     return RaisedButton(
-    child: Container(
-      padding: EdgeInsets.symmetric( horizontal: 80.0, vertical: 20.0),
-      child: Text('Ingresar'),
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(5.0)
-    ),
-    elevation: 0.0,
-    color: Colors.deepPurple,
-    textColor: Colors.white,
-    onPressed: () => _submit(inspeccionBloc),
-  );
+      key: Key('boton'),
+      child: Container(
+        padding: EdgeInsets.symmetric( horizontal: 80.0, vertical: 20.0),
+        child: Text('Ingresar'),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0)
+      ),
+      elevation: 0.0,
+      color: Colors.deepPurple,
+      textColor: Colors.white,
+      onPressed: () => _submit(inspeccionBloc),
+    );
   }
 
   _mostrarAlertaInspector( BuildContext context, InspeccionBloc bloc) {
@@ -301,13 +306,15 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       FlatButton(
+                        key: Key('registroCancelar'),
                         child: Text('Cancelar'),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       FlatButton(
+                        key: Key('registroOK'),
                         child: Text('Ok'),
                         onPressed: () {
-                          _agregarUsuario(inspector, bloc);
+                          agregarUsuario(inspector, bloc);
                         },
                       ),
                     ],
@@ -321,7 +328,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
   }
 
-  _agregarUsuario( Inspector inspector, InspeccionBloc bloc ) async {
+  agregarUsuario( Inspector inspector, InspeccionBloc bloc ) async {
 
     if (await _usuarioUnico(inspector)) {
       bloc.agregarInspector(inspector);
@@ -372,71 +379,72 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
       builder: (context) {
 
         return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 35.0),
-            child: Container(
-              width: size.width * 0.80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5.0),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 3.0,
-                    offset: Offset(0.0, 5.0),
-                    spreadRadius: 3.0
-                  )
-                ]
-              ),
-              child: Column(
-                children: <Widget>[
-                  Container( 
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.purple,
-                          Colors.blue
-                        ]
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    height: size.height * 0.1,
-                    width: double.infinity,
-                    child: Text('Recuperar contraseña', style: TextStyle(decoration: TextDecoration.none, fontSize: 20.0, color: Colors.white) ,),
-                  ),
-                  Material(
-                    child: Container(
-                      padding: EdgeInsets.all(20.0),
-                      child: Form(
-                        child: Column(
-                          children: <Widget>[
-                            _crearTextUsuario(inspector),
-                          ],
-                        ),
-                      ),
+          key: Key('olvidarDialog'),
+          padding: EdgeInsets.symmetric(vertical: 150.0, horizontal: 35.0),
+          child: Container(
+            width: size.width * 0.80,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5.0),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 3.0,
+                  offset: Offset(0.0, 5.0),
+                  spreadRadius: 3.0
+                )
+              ]
+            ),
+            child: Column(
+              children: <Widget>[
+                Container( 
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.purple,
+                        Colors.blue
+                      ]
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      FlatButton(
-                        child: Text('Cancelar'),
-                        onPressed: () => Navigator.of(context).pop(),
+                  alignment: Alignment.center,
+                  height: size.height * 0.1,
+                  width: double.infinity,
+                  child: Text('Recuperar contraseña', style: TextStyle(decoration: TextDecoration.none, fontSize: 20.0, color: Colors.white) ,),
+                ),
+                Material(
+                  child: Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: Form(
+                      child: Column(
+                        children: <Widget>[
+                          _crearTextUsuario(inspector),
+                        ],
                       ),
-                      FlatButton(
-                        child: Text('Ok'),
-                        onPressed: () {
-                          _contrasenaOlvidada(context, inspector);
-                          // bloc.agregarInspector(inspector);
-                          // Navigator.of(context).pop();
-                          // _showSnackBar('Se ha creado el usuario satisfactoriamente');
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text('Cancelar'),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    FlatButton(
+                      child: Text('Ok'),
+                      onPressed: () {
+                        _contrasenaOlvidada(context, inspector);
+                        // bloc.agregarInspector(inspector);
+                        // Navigator.of(context).pop();
+                        // _showSnackBar('Se ha creado el usuario satisfactoriamente');
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
         );
       }
     );
@@ -459,6 +467,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   Widget _crearTextUsuario( Inspector inspector) {
 
     return TextFormField(
+      key: Key('registroUsuario'),
       initialValue: inspector.usuario,
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
@@ -482,6 +491,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   Widget _crearTextContrasena( Inspector inspector) {
 
     return TextFormField(
+      key: Key('registroContrasena'),
       initialValue: inspector.contrasena,
       keyboardType: TextInputType.visiblePassword,
       decoration: InputDecoration(

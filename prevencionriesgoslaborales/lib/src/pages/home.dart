@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'dart:ui';
-import 'dart:math';
 
 import 'package:prevencionriesgoslaborales/src/bloc/factores_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';

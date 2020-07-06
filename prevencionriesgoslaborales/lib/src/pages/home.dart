@@ -108,10 +108,11 @@ class HomePage extends StatelessWidget {
           ),
 
           Expanded(
+            key: Key('${categoria.id.toString()}'),
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(10.0),
-              child: Text(categoria.nombre, style: TextStyle(fontWeight: FontWeight.w500 ))
+              child: Text( categoria.nombre, style: TextStyle(fontWeight: FontWeight.w500 ))
             ),
           )
         ],

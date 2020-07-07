@@ -538,16 +538,9 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
     if ( inspector != null ){
 
-      // List<Inspector> list = bloc.inspectores;
-
-      // list.add(inspector);
-      // bloc.changeInspectores(list);
-      
       bloc.changeInspectorSeleccionado(inspector);
-      // bloc.obtenerInspecciones(inspector.id);
-
       Navigator.of(context).pushNamed("inspecciones");
-    
+      
     }else{
 
       _showSnackBar('No existe ese usuario, prueba de nuevo, o registrate');

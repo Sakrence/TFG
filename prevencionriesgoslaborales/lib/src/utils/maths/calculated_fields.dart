@@ -1,5 +1,7 @@
 
-  int calculoNP(int nivelDeficiencia, int nivelExposicion) {
+  import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
+
+int calculoNP(int nivelDeficiencia, int nivelExposicion) {
 
     return nivelDeficiencia * nivelExposicion;
   }
@@ -21,4 +23,37 @@
       return 'I';
     }
     return null;
+  }
+
+  int maxND( List<DeficienciaModel> deficiencias ) {
+    
+    int max = 0;
+
+    deficiencias.forEach((element) {
+      if ( element.evaluacion.nivelDeficiencia > max ) max = element.evaluacion.nivelDeficiencia; 
+    });
+
+    return max;
+  }
+
+  int maxNE( List<DeficienciaModel> deficiencias ) {
+    
+    int max = 0;
+
+    deficiencias.forEach((element) {
+      if ( element.evaluacion.nivelExposicion > max ) max = element.evaluacion.nivelExposicion; 
+    });
+
+    return max;
+  }
+
+  int maxNC( List<DeficienciaModel> deficiencias ) {
+    
+    int max = 0;
+
+    deficiencias.forEach((element) {
+      if ( element.evaluacion.nivelConsecuencias > max ) max = element.evaluacion.nivelConsecuencias; 
+    });
+
+    return max;
   }

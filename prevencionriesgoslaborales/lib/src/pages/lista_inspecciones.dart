@@ -13,6 +13,7 @@ import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
+import 'package:prevencionriesgoslaborales/src/utils/dataManipulation/dataManipulation.dart';
 import 'package:prevencionriesgoslaborales/src/utils/maths/calculated_fields.dart';
 import 'package:prevencionriesgoslaborales/src/widgets/fondoApp.dart';
 
@@ -166,7 +167,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     
     if (await permission.Permission.storage.request().isGranted) {
 
-      Map<String, List<DeficienciaModel>> riesgosAgrupados = _agruparRiesgos(inspeccion);
+      Map<String, List<DeficienciaModel>> riesgosAgrupados = agruparRiesgos(inspeccion);
 
       List<String> linea;
       List<List<String>> datos = [];
@@ -183,7 +184,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
           }
 
           if ( i == (deficiencias.length % 2) || deficiencias.length == 1 ) {
-            linea = ["0${index+1}", "0${index+1}", "($tipoFactor)${deficiencias[i].evaluacion.riesgo}", "", "", "$riesgo", "", "", "${_maxND(deficiencias)}", "${_maxNE(deficiencias)}", "${_calculoNP(deficiencias)}", "${_maxNC(deficiencias)}", "${_calculoNR(deficiencias)}", "${_calculoNI(deficiencias)}"];
+            linea = ["0${index+1}", "0${index+1}", "($tipoFactor)${deficiencias[i].evaluacion.riesgo}", "", "", "$riesgo", "", "", "${maxND(deficiencias)}", "${maxNE(deficiencias)}", "${_calculoNP(deficiencias)}", "${maxNC(deficiencias)}", "${_calculoNR(deficiencias)}", "${_calculoNI(deficiencias)}"];
             index++;
           } else {
             linea = ["", "", "($tipoFactor)${deficiencias[i].evaluacion.riesgo}", "", "", "", "", "", "", "", "", "", "", ""];
@@ -224,78 +225,20 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
     }
   }
 
-  Map<String, List<DeficienciaModel>> _agruparRiesgos( InspeccionModel inspeccion ) {
-    
-    List<DeficienciaModel> deficiencias = List();
-
-    Map<String, List<DeficienciaModel>> mapa = Map<String, List<DeficienciaModel>>();
-
-    inspeccion.deficiencias.forEach((item) => {
-      
-      if ( item.evaluacion != null && item.evaluacion.riesgo != "" ) {
-
-        if( mapa.containsKey(item.factorRiesgo.nombre) ) {
-          mapa.update(item.factorRiesgo.nombre, (value) {
-            value.add(item);
-            return value;
-          })
-        } else {
-          deficiencias = [],
-          deficiencias.add(item),
-          mapa[item.factorRiesgo.nombre] = deficiencias
-        }
-      }
-    });
-    return mapa;
-  }
-
-  int _maxND( List<DeficienciaModel> deficiencias ) {
-    
-    int max = 0;
-
-    deficiencias.forEach((element) {
-      if ( element.evaluacion.nivelDeficiencia > max ) max = element.evaluacion.nivelDeficiencia; 
-    });
-
-    return max;
-  }
-
-  int _maxNE( List<DeficienciaModel> deficiencias ) {
-    
-    int max = 0;
-
-    deficiencias.forEach((element) {
-      if ( element.evaluacion.nivelExposicion > max ) max = element.evaluacion.nivelExposicion; 
-    });
-
-    return max;
-  }
-
   int _calculoNP( List<DeficienciaModel> deficiencias ) {
     
-    int maxND = _maxND(deficiencias);
-    int maxNE = _maxNE(deficiencias);
+    int nD = maxND(deficiencias);
+    int nE = maxNE(deficiencias);
 
-    return calculoNP(maxND, maxNE);
-  }
-
-  int _maxNC( List<DeficienciaModel> deficiencias ) {
-    
-    int max = 0;
-
-    deficiencias.forEach((element) {
-      if ( element.evaluacion.nivelConsecuencias > max ) max = element.evaluacion.nivelConsecuencias; 
-    });
-
-    return max;
+    return calculoNP(nD, nE);
   }
 
   int _calculoNR( List<DeficienciaModel> deficiencias ) {
     
-    int maxNC = _maxNC(deficiencias);
+    int nC = maxNC(deficiencias);
     int nP = _calculoNP(deficiencias);
 
-    return calculoNR(maxNC, nP);
+    return calculoNR(nC, nP);
   }
 
   String _calculoNI( List<DeficienciaModel> deficiencias ) {
@@ -304,10 +247,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
     return calculoNI(nR);
   }
-
-  // _cerrarInspeccion(  InspeccionBloc bloc, InspeccionModel inspeccion  ) {
-    
-  // }
 
   _acciones( InspeccionBloc bloc, InspeccionModel inspeccion ) {
 
@@ -322,8 +261,6 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
             SizedBox(width: 5.0,),
             _crearAcciones(Icons.insert_drive_file, 'Informe', Colors.blueAccent, _crearInforme, bloc, inspeccion),
             SizedBox(width: 5.0,),
-            // _crearAcciones(Icons.lock, 'Cerrar', Colors.red, _cerrarInspeccion, bloc, inspeccion),
-            // SizedBox(width: 10.0,),
           ],
         ),
       ),

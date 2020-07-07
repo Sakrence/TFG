@@ -16,6 +16,10 @@ import 'package:prevencionriesgoslaborales/src/widgets/fondoApp.dart';
 
 class FormPage extends StatefulWidget {
 
+  final DeficienciaModel data;
+
+  FormPage({this.data});
+
   @override
   _FormPageState createState() => _FormPageState();
 }
@@ -45,8 +49,13 @@ class _FormPageState extends State<FormPage> {
     inspeccionBloc = Provider.inspeccionBloc(context);
     final DeficienciaModel deficienciaData = ModalRoute.of(context).settings.arguments;
 
-    evaluacion = deficienciaData.evaluacion;
-    deficiencia = deficienciaData;
+    if ( widget.data != null ) {
+      evaluacion = widget.data.evaluacion;
+      deficiencia = widget.data;
+    } else {
+      evaluacion = deficienciaData.evaluacion;
+      deficiencia = deficienciaData;
+    }
 
     _actualizarValues();
 

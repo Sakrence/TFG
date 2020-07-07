@@ -95,6 +95,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
               child: Row(
                 children: <Widget>[
                   FloatingActionButton.extended(
+                    key: Key('IniciarInspeccion'),
                     heroTag: UniqueKey(),
                     onPressed: (){
                       _mostrarAlertaInspeccion(context, _inspeccionBloc);
@@ -445,6 +446,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
   Widget _crearTextFieldDireccion( InspeccionModel inspeccion ) {
 
     return TextFormField(
+      key: Key('Direccion'),
       initialValue: inspeccion.direccion,
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
@@ -466,6 +468,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
   Widget _crearSelectProvincia( InspeccionModel inspeccion, InspeccionBloc bloc) {
 
     return DropdownButtonFormField(
+      key: Key('provinciaSelect'),
       decoration: InputDecoration(
         labelText: 'Provincia',
         labelStyle: TextStyle(fontSize: 20.0)
@@ -486,6 +489,7 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
   Widget _creatSelectPais( InspeccionModel inspeccion ) {
 
     return DropdownButtonFormField(
+      key: Key('paisSelect'),
       decoration: InputDecoration(
         labelText: 'País',
         labelStyle: TextStyle(fontSize: 20.0)

@@ -13,6 +13,7 @@ import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';
 import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/inspeccion.dart';
+import 'package:prevencionriesgoslaborales/src/utils/maths/calculated_fields.dart';
 import 'package:prevencionriesgoslaborales/src/widgets/fondoApp.dart';
 
 
@@ -194,18 +195,18 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
       });
 
       List<List<dynamic>> csvData = [
-        <String>["Inspeccion","Pais", "Provincia", "Dirección", "Latitud", "Longitud"],
+        <String>["Inspeccion","Pais", "Provincia", "Direccion", "Latitud", "Longitud"],
         [inspeccion.id, inspeccion.pais, inspeccion.provincia, inspeccion.direccion, inspeccion.latitud, inspeccion.longitud],
         [],
         <String>["FACTORES"],
-        <String>["Código", "Nombre"], 
+        <String>["Codigo", "Nombre"], 
         ...inspeccion.deficiencias.map((item) => 
                 [item.factorRiesgo.idPadre.toString()+item.factorRiesgo.codigo,
                 item.factorRiesgo.nombre]),
         [],
-        <String>["", "", "", "", "", "", "", "", "", "", "EVALUACIÓN"],
+        <String>["", "", "", "", "", "", "", "", "", "", "EVALUACION"],
         <String>["", "", "FACTOR RIESGO", "", "", "", "RIESGO", "", "", "PROBABILIDAD"],
-        <String>["Nº", "ID", "FACTOR(POTENCIAL (P)/ EXISTENTE(E))", "", "", "", "RIESGO", "", "ND", "NE", "NP", "NC", "NR", "NI"],
+        <String>["N", "ID", "FACTOR(POTENCIAL (P)/ EXISTENTE(E))", "", "", "", "RIESGO", "", "ND", "NE", "NP", "NC", "NR", "NI"],
         ...datos
       ];
 
@@ -272,8 +273,10 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   int _calculoNP( List<DeficienciaModel> deficiencias ) {
     
-    int max = 0;
-    return max;
+    int maxND = _maxND(deficiencias);
+    int maxNE = _maxNE(deficiencias);
+
+    return calculoNP(maxND, maxNE);
   }
 
   int _maxNC( List<DeficienciaModel> deficiencias ) {
@@ -289,14 +292,17 @@ class _ListaInspeccionPageState extends State<ListaInspeccionPage> {
 
   int _calculoNR( List<DeficienciaModel> deficiencias ) {
     
-    int max = 0;
-    return max;
+    int maxNC = _maxNC(deficiencias);
+    int nP = _calculoNP(deficiencias);
+
+    return calculoNR(maxNC, nP);
   }
 
-  int _calculoNI( List<DeficienciaModel> deficiencias ) {
+  String _calculoNI( List<DeficienciaModel> deficiencias ) {
     
-    int max = 0;
-    return max;
+    int nR = _calculoNR(deficiencias);
+
+    return calculoNI(nR);
   }
 
   // _cerrarInspeccion(  InspeccionBloc bloc, InspeccionModel inspeccion  ) {

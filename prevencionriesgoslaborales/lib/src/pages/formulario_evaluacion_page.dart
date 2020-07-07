@@ -12,6 +12,7 @@ import 'package:prevencionriesgoslaborales/src/bloc/provider.dart';
 import 'package:prevencionriesgoslaborales/src/models/deficiencia_model.dart';
 import 'package:prevencionriesgoslaborales/src/models/evaluacion_model.dart';
 import 'package:prevencionriesgoslaborales/src/providers/db_provider.dart';
+import 'package:prevencionriesgoslaborales/src/utils/maths/calculated_fields.dart';
 import 'package:prevencionriesgoslaborales/src/widgets/fondoApp.dart';
 
 class FormPage extends StatefulWidget {
@@ -566,9 +567,9 @@ class _FormPageState extends State<FormPage> {
 
     _formKey.currentState.save();
 
-    evaluacion.nivelP = calculoNP(evaluacion);
-    evaluacion.nivelRiesgo = calculoNR(evaluacion);
-    evaluacion.nivelI = calculoNI(evaluacion);
+    evaluacion.nivelP      = calculoNP(evaluacion.nivelDeficiencia, evaluacion.nivelExposicion);
+    evaluacion.nivelRiesgo = calculoNR(evaluacion.nivelConsecuencias, evaluacion.nivelP);
+    evaluacion.nivelI      = calculoNI(evaluacion.nivelRiesgo);
 
     if ( evaluacion.id != null ) {
       await evaluacionBloc.editarEvaluacion(evaluacion);
@@ -584,29 +585,7 @@ class _FormPageState extends State<FormPage> {
 
   }
 
-  int calculoNP(EvaluacionModel evaluacion) {
 
-    return evaluacion.nivelDeficiencia * evaluacion.nivelExposicion;
-  }
-
-  int calculoNR(EvaluacionModel evaluacion) {
-
-    return evaluacion.nivelConsecuencias * evaluacion.nivelP;
-  }
-
-  String calculoNI(EvaluacionModel evaluacion) {
-
-    if ( evaluacion.nivelRiesgo <= 20 ) {
-      return 'IV';
-    } else if ( evaluacion.nivelRiesgo >= 40 && evaluacion.nivelRiesgo <= 120 ) {
-      return 'III';
-    } else if ( evaluacion.nivelRiesgo >= 150 && evaluacion.nivelRiesgo <= 500 ) {
-      return 'II';
-    } else if ( evaluacion.nivelRiesgo >= 600 && evaluacion.nivelRiesgo <= 4000 ) {
-      return 'I';
-    }
-    return null;
-  }
 
   void mostrarSnackbar(String mensaje) {
 

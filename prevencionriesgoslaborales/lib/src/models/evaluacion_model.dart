@@ -18,6 +18,8 @@ class EvaluacionModel {
         this.accionCorrectora = '',
         this.coordenadas,
         this.nivelRiesgo = 0,
+        this.nivelP = 0,
+        this.nivelI = 'I',
         this.idDeficiencia,
     }){
       if ( this.coordenadas == null) {
@@ -34,6 +36,8 @@ class EvaluacionModel {
     List<Foto> fotos;
     String accionCorrectora;
     Coordenadas coordenadas;
+    int nivelP;
+    String nivelI;
     int nivelRiesgo;
     int idDeficiencia;
 
@@ -46,6 +50,8 @@ class EvaluacionModel {
         nivelConsecuencias  : json["nivelConsecuencias"],
         accionCorrectora    : json["accionCorrectora"],
         nivelRiesgo         : json["nivelRiesgo"],
+        nivelP              : json["nivelP"],
+        nivelI              : json["nivelI"],
         idDeficiencia       : json["idDeficiencia"],
     );
 
@@ -58,6 +64,8 @@ class EvaluacionModel {
         "nivelConsecuencias": nivelConsecuencias,
         "accionCorrectora"  : accionCorrectora,
         "nivelRiesgo"       : nivelRiesgo,
+        "nivelP"            : nivelP,
+        "nivelI"            : nivelI,
         "idDeficiencia"     : idDeficiencia,
     };
 }

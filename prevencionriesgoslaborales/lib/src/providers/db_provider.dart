@@ -97,6 +97,8 @@ class DBProvider {
           ' nivelConsecuencias INTEGER,'
           ' accionCorrectora TEXT,'
           ' nivelRiesgo INTEGER,'
+          ' nivelP INTEGER,'
+          ' nivelI TEXT,'
           ' idDeficiencia INTEGER,'
           ' FOREIGN KEY (idDeficiencia) REFERENCES Deficiencias (id) ON DELETE NO ACTION ON UPDATE NO ACTION'
           ')'

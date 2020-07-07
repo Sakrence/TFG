@@ -566,6 +566,10 @@ class _FormPageState extends State<FormPage> {
 
     _formKey.currentState.save();
 
+    evaluacion.nivelP = calculoNP(evaluacion);
+    evaluacion.nivelRiesgo = calculoNR(evaluacion);
+    evaluacion.nivelI = calculoNI(evaluacion);
+
     if ( evaluacion.id != null ) {
       await evaluacionBloc.editarEvaluacion(evaluacion);
     } else {
@@ -578,6 +582,30 @@ class _FormPageState extends State<FormPage> {
 
     Navigator.pop(context);
 
+  }
+
+  int calculoNP(EvaluacionModel evaluacion) {
+
+    return evaluacion.nivelDeficiencia * evaluacion.nivelExposicion;
+  }
+
+  int calculoNR(EvaluacionModel evaluacion) {
+
+    return evaluacion.nivelConsecuencias * evaluacion.nivelP;
+  }
+
+  String calculoNI(EvaluacionModel evaluacion) {
+
+    if ( evaluacion.nivelRiesgo <= 20 ) {
+      return 'IV';
+    } else if ( evaluacion.nivelRiesgo >= 40 && evaluacion.nivelRiesgo <= 120 ) {
+      return 'III';
+    } else if ( evaluacion.nivelRiesgo >= 150 && evaluacion.nivelRiesgo <= 500 ) {
+      return 'II';
+    } else if ( evaluacion.nivelRiesgo >= 600 && evaluacion.nivelRiesgo <= 4000 ) {
+      return 'I';
+    }
+    return null;
   }
 
   void mostrarSnackbar(String mensaje) {

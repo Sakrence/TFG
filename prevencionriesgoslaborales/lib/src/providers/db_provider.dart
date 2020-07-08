@@ -104,14 +104,6 @@ class DBProvider {
           ')'
         );
 
-        // await db.execute(
-        //   'CREATE TABLE Foto ('
-        //   ' id INTEGER PRIMARY KEY AUTOINCREMENT,'
-        //   ' foto BLOB,'
-        //   ' idEvaluacion INTEGER,'
-        //   ' FOREIGN KEY (idEvaluacion) REFERENCES Evaluaciones (id) ON DELETE NO ACTION ON UPDATE NO ACTION'
-        //   ')'
-        // );
         await db.execute(
           'CREATE TABLE Foto ('
           ' id INTEGER PRIMARY KEY AUTOINCREMENT,'

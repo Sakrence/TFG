@@ -6,7 +6,8 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:csv/csv.dart';
 import 'package:location/location.dart';
-import 'package:downloads_path_provider/downloads_path_provider.dart';
+// import 'package:downloads_path_provider/downloads_path_provider.dart';
+import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 
 import 'package:prevencionriesgoslaborales/src/bloc/inspeccion_bloc.dart';

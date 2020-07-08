@@ -36,14 +36,21 @@ dependencies:
   location: ^3.0.2
   flutter_xlider: ^3.4.0
   csv: ^4.0.3
-  downloads_path_provider: ^0.1.0
+  # downloads_path_provider: #^0.1.0
+  downloads_path_provider_28: ^0.1.0
   permission_handler: ^5.0.1
 
 dev_dependencies:
   flutter_driver:
     sdk: flutter
   test: any
-  bloc_test: ^2.2.2
+  flutter_launcher_icons:
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/01_V-01.png"
+  adaptive_icon_background: "assets/icon/01_V-01.png"
   # flutter_test:
     # sdk: flutter
 

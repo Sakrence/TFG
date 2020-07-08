@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="prevencionriesgoslaborales"
+        android:label="PRL"
         android:icon="@mipmap/launcher_icon">
         <!-- android:requestLegacyExternalStorage="true"> -->
         <activity

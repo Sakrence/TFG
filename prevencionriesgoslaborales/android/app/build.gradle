@@ -38,11 +38,11 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.jrubioh.prevencionriesgoslaborales"
+        applicationId "com.example.prevencionriesgoslaborales"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0.0"
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
     }
 
     buildTypes {
@@ -52,11 +52,6 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    configurations.all {
-        resolutionStrategy {
-                force 'com.android.support:support-v4:27.1.0'
-    }
-} 
 }
 
 flutter {
